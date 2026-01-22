@@ -35,6 +35,7 @@ export default class Main extends Component {
   		return (
   			<div>
 	  			<div>GeoGenetics</div>
+	  			<div>Independent Dates Fun </div>
 	  			{	 
 	  				this.props.dates.map(date => {
 	  					return ( 
