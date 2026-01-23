@@ -1,0 +1,8 @@
+.dateCard {
+	display: flex;
+	flex-direction: row;
+	margin: 10px 0;
+	width: 20vw;
+	justify-content: space-between;
+	background-color: red;
+}

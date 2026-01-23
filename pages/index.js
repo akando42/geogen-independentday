@@ -5,6 +5,8 @@ import { Component } from "react"
 import path from "path" 
 import { getSortedDates } from '../libs/posts'
 
+import styles from '../styles/Home.module.css'
+
 export async function getStaticProps(){
 	const independentdates = path.join(
 		process.cwd(), 'public/content/locations'
@@ -12,7 +14,7 @@ export async function getStaticProps(){
 
 	let dates = getSortedDates(independentdates)
 
-	console.log("Sorted Dates ", dates)
+	// console.log("Sorted Dates ", dates)
 	
 	return {
 		props: {
@@ -39,7 +41,10 @@ export default class Main extends Component {
 	  			{	 
 	  				this.props.dates.map(date => {
 	  					return ( 
-	  						<div> {date} </div> 
+	  						<div className={styles.dateCard}> 
+	  							<div>{date.independent_date}</div>
+	  							<div>{date.city}</div>
+	  						</div> 
 	  					)
 	  				})
 	  			}
