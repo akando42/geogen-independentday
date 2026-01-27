@@ -101,23 +101,24 @@ export async function getPostData(postsDirectory, id) {
 }
 
 export function getSortedDates(dateDirectory){
-    
     const dateNations = fs.readdirSync(dateDirectory)
     let contentPath = []
-    let dates = dateNations.map(dateNation => {
-      let path = dateDirectory + "/" + dateNation
-      let files = fs.readdirSync(path).filter(file => file !== "research.md")
-      console.log("FILES ", files)
+    let dates = dateNations
+      .filter(dateNation => dateNation !== "DS_Store")
+      .map(dateNation => {
+        let path = dateDirectory + "/" + dateNation
+        let files = fs.readdirSync(path).filter(file => file !== "research.md")
+        console.log("FILES ", files)
 
-      let city = files[0].replace(/\.md$/, '')
-      let fullPath = path + "/" + files[0]
-      // contentPath.push(fullPath)
+        let city = files[0].replace(/\.md$/, '')
+        let fullPath = path + "/" + files[0]
+        // contentPath.push(fullPath)
 
-      return {
-        independent_date: dateNation,
-        city: city,
-        full_path: fullPath
-      }
+        return {
+          independent_date: dateNation,
+          city: city,
+          full_path: fullPath
+        }
     })
     
     console.log("Dates ", dates)
