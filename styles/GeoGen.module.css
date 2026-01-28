@@ -1,0 +1,53 @@
+.container {
+	background-color: red;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+}
+
+.leftPanel {
+	width: 30vw;
+	background-color: white;
+	height: 100vh;
+	padding: 20px;
+	overflow: auto;           /* or scroll */
+  	-ms-overflow-style: none; /* IE + Edge (legacy) */
+  	scrollbar-width: none;    /* Firefox */
+}
+
+
+.leftPanel::-webkit-scrollbar {
+  display: none;            /* Chrome, Safari, Opera */
+}
+
+.tactic {
+	padding: 10px;
+	/*background-color: white;*/
+}
+
+.cityList {
+	padding: 0px 20px 20px 20px;
+	/*background-color: white;*/
+}
+
+.citySelection {
+	padding: 10px;
+	/*background-color: white;*/
+	/*color: red;*/
+}
+
+.citySelection:hover {
+	background-color: white;
+}
+
+.rightPanel {
+	width: 70vw;
+}
+
+.section {
+	background-color: red;
+	/*padding: 10px;*/
+	margin: 10px 0;
+	font-weight: 700;
+}

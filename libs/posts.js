@@ -124,3 +124,27 @@ export function getSortedDates(dateDirectory){
     console.log("Dates ", dates)
     return dates
 }
+
+export function getSortedCities(cityDirectory){
+  const expSteps = fs.readdirSync(cityDirectory)
+    .filter(step => (step !== ".DS_Store"))
+
+  console.log("Exp Steps" ,expSteps)
+
+  let steps = expSteps.map(step => {
+    let path = cityDirectory + "/"+step
+    let cities = fs.readdirSync(path).map(city => {
+      return {
+        city: city.replace(/\.md$/, ''),
+        path: cityDirectory + "/"+step+"/"+city
+      }
+    })
+
+    return {
+      tactic: step,
+      cities: cities
+    }
+  })
+
+  return steps
+}
