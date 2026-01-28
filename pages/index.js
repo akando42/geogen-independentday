@@ -141,6 +141,8 @@ export default class Main extends Component {
 	    let cities = await this.getData()
 	    console.log(cities)
 
+	    
+
 		if (cities.length > 1){
 			cities.map(city => {
 				console.log("Add to Map", city)
@@ -150,8 +152,8 @@ export default class Main extends Component {
 
 		    	const popup = new mapboxgl
 		    		.Popup({ 
-		    			anchor: 'bottom-left', 
-		    			offset: 25, 
+		    			anchor: 'bottom', 
+		    			offset: 0, 
 		    			closeOnClick: true
 		    		})
 		    		.setMaxWidth('360px')
@@ -160,11 +162,19 @@ export default class Main extends Component {
 		    				<h3> ${city.city} </h3>
 		    			</a>
 		    		`)
+		    	const el = document.createElement('div')
+				el.className = 'red-dot-marker'
+				el.innerHTML = '<span class="ping"></span>'
+
 		    	const marker = new mapboxgl
-		    	    .Marker({
-		    	    	color: `black`,
-		    	    	occludedOpacity: 0.1
-		    	    })
+		    	    // .Marker({
+		    	    // 	color: `red`,
+		    	    // 	occludedOpacity: 0.1
+		    	    // })
+		    		.Marker({
+					  element: el,
+					  anchor: 'center'
+					})
 		    	    .setLngLat([lng,lat])
 		    	    .setPopup(popup)
 		    	    .addTo(map)

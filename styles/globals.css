@@ -15,6 +15,44 @@ a {
   box-sizing: border-box;
 }
 
+.red-dot-marker {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background: #e10600;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff;
+  pointer-events: auto;
+}
+
+/* Ping ring */
+.red-dot-marker .ping {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: rgba(225, 6, 0, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ping 1.8s ease-out infinite;
+}
+
+@keyframes ping {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
