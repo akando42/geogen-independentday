@@ -108,7 +108,7 @@ export function getSortedDates(dateDirectory){
       .map(dateNation => {
         let path = dateDirectory + "/" + dateNation
         let files = fs.readdirSync(path).filter(file => file !== "research.md")
-        console.log("FILES ", files)
+        // console.log("FILES ", files)
 
         let city = files[0].replace(/\.md$/, '')
         let fullPath = path + "/" + files[0]
@@ -121,7 +121,7 @@ export function getSortedDates(dateDirectory){
         }
     })
     
-    console.log("Dates ", dates)
+    // console.log("Dates ", dates)
     return dates
 }
 
@@ -129,7 +129,9 @@ export function getSortedCities(cityDirectory){
   const expSteps = fs.readdirSync(cityDirectory)
     .filter(step => (step !== ".DS_Store"))
 
-  console.log("Exp Steps" ,expSteps)
+  // console.log("Exp Steps" ,expSteps)
+
+  let the_cities = []
 
   let steps = expSteps.map(step => {
     let path = cityDirectory + "/"+step
@@ -137,10 +139,12 @@ export function getSortedCities(cityDirectory){
       let city_name = city.replace(/\.md$/, '')
       let tactic = step.slice(3)
       return {
-        city: city_name,
+        city: city_name.replace(/_/g, ' '),
         path: "/Expansion/"+step+"/"+city_name
       }
     })
+
+    the_cities = the_cities.concat(cities)
 
     return {
       tactic: step,
@@ -148,5 +152,8 @@ export function getSortedCities(cityDirectory){
     }
   })
 
-  return steps
+  return {
+    steps: steps,
+    cities: the_cities
+  }
 }

@@ -7,9 +7,12 @@ export async function getStaticProps(){
 	const fertileSteps = './public/content/geogen/Expansion'
 	let fertileCities = getSortedCities(fertileSteps)
 
+	console.log("Fertile Cities ", fertileCities)
+
 	return {
 		props: {
-			fertileCities: fertileCities
+			fertileCities: fertileCities.steps,
+			allCities: fertileCities.cities
 		}
 	}
 }
@@ -73,7 +76,10 @@ export default class Text extends Component {
 	}
 
 	render(){
-		console.log(this.props.fertileCities)
+		console.log(
+			"All Cities",
+			this.props.allCities
+		)
 
 		return (
 			<div className={styles.container}>

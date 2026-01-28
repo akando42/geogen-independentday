@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Component } from "react"
 
 import path from "path" 
-import { getSortedDates } from '../libs/posts'
+import { getSortedDates,getSortedCities} from '../libs/posts'
 import styles from '../styles/Home.module.css'
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -13,17 +13,17 @@ import React from 'react'
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';
 
 export async function getStaticProps(){
-	const independentdates = path.join(
-		process.cwd(), 'public/content/locations'
-	)
+	let dates = getSortedDates('./public/content/locations')
 
-	let dates = getSortedDates(independentdates)
+	const fertileSteps = './public/content/geogen/Expansion'
+	let fertileCities = getSortedCities(fertileSteps)
 
 	// console.log("Sorted Dates ", dates)
 	
 	return {
 		props: {
-			dates: dates
+			dates: dates,
+			cities: fertileCities.cities
 		}
 	}
 }
@@ -46,7 +46,13 @@ export default class Main extends Component {
 	}	
 
 	async loadCity(city){
-	  let the_city = city === "Saigon" ? "Ho Chi Minh" : city;
+	  let the_city = 
+	  	city === "Saigon" ? "Ho Chi Minh" :
+	  	city === "Dayton" ? "Cleveland" :
+	  	city === "Santa Fe" ? "Santa Fe US" :
+	  	city === "Bavaria" ? "Bavaria Germany" :
+  		city;
+	  
 
 	  const res = await fetch(
 	    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(the_city)}.json?types=place&limit=1&access_token=${mapboxgl.accessToken}`
@@ -67,7 +73,7 @@ export default class Main extends Component {
 	  		// console.log(cityCoordinate)
 	  		return cityCoordinate
 	  	}
-	  	let cityCoordinate = [21, 105]
+	  	let cityCoordinate = [105, 21]
 	  	return cityCoordinate
 	  }
 	}
@@ -97,7 +103,7 @@ export default class Main extends Component {
 		// return cities
 
 		const cities = await Promise.all(
-		    this.props.dates.map(async (date) => {
+		    this.props.cities.map(async (date) => {
 		      const coordinate = await this.loadCity(date.city);
 
 		      if (!coordinate) return null;
@@ -107,7 +113,7 @@ export default class Main extends Component {
 		        lat: coordinate[1],
 		        lng: coordinate[0],
 		        independent_date: date.independent_date,
-		        full_path: date.full_path
+		        full_path: date.full_path ? date.full_path : date.path
 		      };
 		    })
 		  );
@@ -150,7 +156,7 @@ export default class Main extends Component {
 		    		})
 		    		.setMaxWidth('360px')
 		    		.setHTML(`
-		    			<a href="/">
+		    			<a href=${city.full_path}>
 		    				<h3> ${city.city} </h3>
 		    			</a>
 		    		`)
