@@ -134,9 +134,11 @@ export function getSortedCities(cityDirectory){
   let steps = expSteps.map(step => {
     let path = cityDirectory + "/"+step
     let cities = fs.readdirSync(path).map(city => {
+      let city_name = city.replace(/\.md$/, '')
+      let tactic = step.slice(3)
       return {
-        city: city.replace(/\.md$/, ''),
-        path: cityDirectory + "/"+step+"/"+city
+        city: city_name,
+        path: "/Expansion/"+step+"/"+city_name
       }
     })
 

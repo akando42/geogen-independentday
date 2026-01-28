@@ -50,11 +50,22 @@ export default class Text extends Component {
 
 		let id = event.target.dataset.index
 		let openTactics = this.state.openTactics
-		openTactics[id] = !openTactics[id]
 
-		this.setState({
-			openTactics: openTactics
-		})
+		if (openTactics[id] === false){
+			openTactics = openTactics.map(openTactic => {return false})
+			openTactics[id] = true
+			this.setState({
+				openTactics: openTactics
+			})
+		} else {
+			openTactics = openTactics.map(openTactic => {return false})
+			this.setState({
+				openTactics: openTactics
+			})
+		}
+	
+
+	
 	}
 
 	componentDidMount(){
@@ -91,14 +102,18 @@ export default class Text extends Component {
 										status
 										?	<div className={styles.cityList}>
 												{
-													cities.map(c => (
-												  		<div 
-												  			key={c.city}
-												  			className={styles.citySelection}
-												  		>
-												  			{c.city}
-												  		</div>
-													))
+													cities.map(c => {
+														let city = c.city.replace(/_/g, ' ')
+														return (
+															<a
+												  				key={city}
+												  				className={styles.citySelection}
+												  				href={c.path}
+													  		>
+													  			{city}
+													  		</a>
+														)
+													})
 												}
 											</div>
 										:   <div></div>
