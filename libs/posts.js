@@ -4,6 +4,7 @@ import matter from 'gray-matter'
 import remark from 'remark'
 import html from 'remark-html'
 
+
 export function getSortedPostsData(postsDirectory) {
   // console.log("parsing Markdown post from", postsDirectory)
   
@@ -135,12 +136,13 @@ export function getSortedCities(cityDirectory){
 
   let steps = expSteps.map(step => {
     let path = cityDirectory + "/"+step
+
     let cities = fs.readdirSync(path).map(city => {
       let city_name = city.replace(/\.md$/, '')
       let tactic = step.slice(3)
       return {
         city: city_name.replace(/_/g, ' '),
-        path: "/Expansion/"+step+"/"+city_name
+        path: "/posts/Expansion/"+step+"/"+city_name
       }
     })
 
@@ -156,4 +158,8 @@ export function getSortedCities(cityDirectory){
     steps: steps,
     cities: the_cities
   }
+}
+
+export function getCityData(postsDirectory, id){
+  console.log(postsDirectory, id)
 }
