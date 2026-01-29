@@ -1,0 +1,1 @@
+# North Sea Sweat Oil Standard for Global Market
