@@ -25,6 +25,11 @@
 }
 
 .citySelection:hover {
+	border: 1px solid white;
+}
+
+.selectedCity {
+	padding: 10px;
 	background-color: white;
 }
 

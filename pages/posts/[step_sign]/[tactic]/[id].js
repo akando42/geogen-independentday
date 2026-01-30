@@ -37,6 +37,7 @@ export async function getStaticProps({ params }) {
 
 	return {
 		props: {
+			selectedCity: params.id,
 			tacticIndex: tacticIndex,
 			postData: postData,
 			fertileCities: fertileCities.steps
@@ -123,6 +124,7 @@ export default class Posts extends React.Component {
 			<Layout>
 				<SideBar 
 					cities={this.props.fertileCities}
+					selectedCity={this.props.selectedCity}
 					setTactic={this.setTactic}
 					openTactics={this.state.openTactics}
 				/>

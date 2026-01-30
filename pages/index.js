@@ -104,16 +104,24 @@ export default class Main extends Component {
 
 		const cities = await Promise.all(
 		    this.props.cities.map(async (date) => {
+		      
 		      const coordinate = await this.loadCity(date.city);
-
 		      if (!coordinate) return null;
+
+		      let full_path = date.full_path ? date.full_path : date.path
+
+		      let tactic_path = full_path.split("/")[3]
+		      let tactic_index = parseInt(tactic_path.split("_")[0])-1
+		      full_path = full_path + "#" + tactic_index
+		      console.log("Date ", tactic_path, tactic_index)
 
 		      return {
 		        city: date.city,
 		        lat: coordinate[1],
 		        lng: coordinate[0],
+		        // tactic: date.tactic,
 		        independent_date: date.independent_date,
-		        full_path: date.full_path ? date.full_path : date.path
+		        full_path: full_path
 		      };
 		    })
 		  );

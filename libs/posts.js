@@ -142,6 +142,7 @@ export function getSortedCities(cityDirectory){
       let tactic = step.slice(3)
       return {
         city: city_name.replace(/_/g, ' '),
+        tactic: tactic,
         path: "/posts/Expansion/"+step+"/"+city_name
       }
     })

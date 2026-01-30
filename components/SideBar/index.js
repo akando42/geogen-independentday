@@ -3,7 +3,7 @@ import styles from "./sidebar.module.css";
 export default function SideBar(props) {
 	let cities = props.cities
 	let setTactic = props.setTactic
-	
+
 	console.log(
 		"Tactic Status" ,
 		props.openTactics
@@ -30,6 +30,7 @@ export default function SideBar(props) {
 								className={styles.tactic} 
 								onClick={setTactic}
 								data-index={index}
+								id={index}
 							>
 								{tactic}
 							</div>
@@ -39,11 +40,17 @@ export default function SideBar(props) {
 										{
 											cities.map(c => {
 												let city = c.city.replace(/_/g, ' ')
+												let selectedCity = props.selectedCity.replace(/_/g, ' ')
+
+												let path = c.path + "#"+index
+
 												return (
 													<a
 										  				key={city}
-										  				className={styles.citySelection}
-										  				href={c.path}
+										  				className={`${
+										  					selectedCity === city ? styles.selectedCity : styles.citySelection
+										  				}`}
+										  				href={path}
 											  		>
 											  			{city}
 											  		</a>
