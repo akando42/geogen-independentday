@@ -1,0 +1,22 @@
+.container {
+	background-color: red;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+}
+
+.leftPanel {
+	width: 30vw;
+	background-color: white;
+	height: 100vh;
+	padding: 20px;
+	overflow: auto;           /* or scroll */
+  	-ms-overflow-style: none; /* IE + Edge (legacy) */
+  	scrollbar-width: none;    /* Firefox */
+}
+
+
+.rightPanel {
+	width: 70vw;
+}

@@ -121,7 +121,6 @@ export default class Text extends Component {
 											</div>
 										:   <div></div>
 									}
-									
 								</div>
 							)
 						})

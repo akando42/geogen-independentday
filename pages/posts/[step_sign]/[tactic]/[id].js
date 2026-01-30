@@ -2,12 +2,16 @@ import React from "react"
 import Head from "next/head";
 import Image from "next/image"
 
+import Layout from "@/components/Layout"
+import SideBar from "@/components/SideBar"
+import MainContent from "@/components/MainContent"
+
 import path from "path"
 
 import { 
 	getSortedCities,
 	getPostData
-} from "../../../../libs/posts"
+} from "@/libs/posts"
 
 
 const postsDir = "public/content/geogen"
@@ -16,9 +20,6 @@ const postsDirectory = path.join(process.cwd(), postsDir)
 export async function getStaticProps({ params }) {
 	
 	console.log("Params", params)
-
-
-
 	let postDir = path.join(
 		postsDirectory,
 		params.step_sign, 
@@ -26,12 +27,19 @@ export async function getStaticProps({ params }) {
 	)
 
 	console.log(postDir)
-
 	const postData = await getPostData(postDir, params.id)
+	
+	let tacticIndex = parseInt(params.tactic.split("_")[0])-1
+	console.log("PARAMS ", params.tactic, tacticIndex)
+
+	const fertileSteps = './public/content/geogen/Expansion'
+	let fertileCities = getSortedCities(fertileSteps)
 
 	return {
 		props: {
-			postData: postData
+			tacticIndex: tacticIndex,
+			postData: postData,
+			fertileCities: fertileCities.steps
 		}
 	}
 }
@@ -54,22 +62,56 @@ export async function getStaticPaths({}) {
 	}
 }
 
-
 export default class Posts extends React.Component {
 	constructor(props){
 		super(props)
 
 		this.state = {
 			post: "POST", 
-			postImage: ''
+			postImage: '',
+			openTactics: []
 		}
+
+		this.setTactic = this.setTactic.bind(this)
 	}
 
 	async loadContent(){
-		
 	}	
 
+	async getTactics(){
+		let openTactics = this.props.fertileCities.map((city, index) => {
+			return false
+		})
+
+		openTactics[this.props.tacticIndex] = true
+
+		this.setState({
+			openTactics: openTactics
+		})
+	}
+
+	async setTactic(event){
+		console.log("Tactic ", event.target.dataset.index)
+
+		let id = event.target.dataset.index
+		let openTactics = this.state.openTactics
+
+		if (openTactics[id] === false){
+			openTactics = openTactics.map(openTactic => {return false})
+			openTactics[id] = true
+			this.setState({
+				openTactics: openTactics
+			})
+		} else {
+			openTactics = openTactics.map(openTactic => {return false})
+			this.setState({
+				openTactics: openTactics
+			})
+		}
+	}
+
 	componentDidMount(){
+		this.getTactics()
 		this.loadContent()
 	}
 
@@ -78,11 +120,17 @@ export default class Posts extends React.Component {
 		console.log(content)
 
 		return (
-			<div>
-				<div 
-					dangerouslySetInnerHTML={{__html: content }} 
+			<Layout>
+				<SideBar 
+					cities={this.props.fertileCities}
+					setTactic={this.setTactic}
+					openTactics={this.state.openTactics}
 				/>
-			</div>
+				
+				<MainContent
+					content={content}
+				/>
+			</Layout>
 		)
 	}
 }
