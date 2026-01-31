@@ -38,6 +38,17 @@ a {
   animation: ping 1.8s ease-out infinite;
 }
 
+
+.black-dot-marker {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background: black;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff;
+  pointer-events: auto;
+}
+
 @keyframes ping {
   0% {
     transform: translate(-50%, -50%) scale(1);

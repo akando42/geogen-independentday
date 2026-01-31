@@ -18,12 +18,16 @@ export async function getStaticProps(){
 	const fertileSteps = './public/content/geogen/Expansion'
 	let fertileCities = getSortedCities(fertileSteps)
 
+	const selfharmSteps = './public/content/geogen/Compression'
+	let selfharmCities = getSortedCities(selfharmSteps)
+
 	// console.log("Sorted Dates ", dates)
 	
 	return {
 		props: {
 			dates: dates,
-			cities: fertileCities.cities
+			fertileCities: fertileCities.cities,
+			selfharmCities: selfharmCities.cities
 		}
 	}
 }
@@ -51,6 +55,8 @@ export default class Main extends Component {
 	  	city === "Dayton" ? "Cleveland" :
 	  	city === "Santa Fe" ? "Santa Fe US" :
 	  	city === "Bavaria" ? "Bavaria Germany" :
+	  	city === "Delhi" ? "Delhi India" :
+	  	city === "Vinh" ? "Vinh Vietnam" :
   		city;
 	  
 
@@ -101,9 +107,12 @@ export default class Main extends Component {
 		// })
 
 		// return cities
+		
+		// let chosenArray = Math.random() < 0.5 ? this.props.fertileCities : this.props.selfharmCities
+		let chosenArray = this.props.fertileCities
 
 		const cities = await Promise.all(
-		    this.props.cities.map(async (date) => {
+		    chosenArray.map(async (date) => {
 		      
 		      const coordinate = await this.loadCity(date.city);
 		      if (!coordinate) return null;
@@ -126,11 +135,11 @@ export default class Main extends Component {
 		    })
 		  );
 
-		const filteredCities = cities.filter(Boolean);
+		// const filteredCities = cities.filter(Boolean);
 
-		this.setState({ cities: filteredCities });
+		this.setState({ cities: cities });
 
-		return filteredCities;
+		return cities;
 	}
 
 	async loadMap(){
@@ -149,11 +158,11 @@ export default class Main extends Component {
 	    let cities = await this.getData()
 	    console.log(cities)
 
-	    
-
+	   
 		if (cities.length > 1){
 			cities.map(city => {
-				console.log("Add to Map", city)
+				let sign = city.full_path.split("/")[2]
+				console.log("Add to Map", city, sign)
 
 				const lng = city.lng 
 		    	const lat = city.lat 
@@ -171,7 +180,9 @@ export default class Main extends Component {
 		    			</a>
 		    		`)
 		    	const el = document.createElement('div')
-				el.className = 'red-dot-marker'
+		    	
+
+				el.className = (sign === "Expansion") ? 'red-dot-marker' : 'black-dot-marker'
 				el.innerHTML = '<span class="ping"></span>'
 
 		    	const marker = new mapboxgl
@@ -188,10 +199,33 @@ export default class Main extends Component {
 		    	    .addTo(map)
 			})
 		}
+
+		this.setState({
+			map: map
+		})
 	}
 
 	componentDidMount(){
 		this.loadMap()
+		this.intervalId = setInterval(() => {
+			const city = this.state.cities[
+				Math.floor(Math.random() * this.state.cities.length)
+			]
+
+			console.log("Select City ", city)
+
+			this.state.map.flyTo({
+			  center: [city.lng, city.lat],
+			  zoom: 9,
+			  speed: 1.2,      // animation speed
+			  curve: 1.42,     // flight curvature
+			  essential: true  // respects reduced-motion settings
+			})
+		}, 10000)
+	}
+
+	componentWillUnmount() {
+  		clearInterval(this.intervalId)
 	}
   
   	render(){
