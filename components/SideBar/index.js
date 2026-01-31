@@ -4,10 +4,11 @@ export default function SideBar(props) {
 	let cities = props.cities
 	let setTactic = props.setTactic
 
-	console.log(
-		"Tactic Status" ,
-		props.openTactics
-	)
+	// console.log(
+	// 	"Tactic Status" ,
+	// 	props.openTactics
+	// )
+
 
 	return (
 		<div>
@@ -19,7 +20,10 @@ export default function SideBar(props) {
 
 					let status = props.openTactics[index]
 
-					console.log(status)
+					
+					let sign = city.cities[0].path.split("/")[2]
+					console.log("Negative city", city)
+					console.log("Sign ", sign)
 
 					return (
 						<div 
@@ -27,7 +31,9 @@ export default function SideBar(props) {
 							key={index}
 						> 
 							<div
-								className={styles.tactic} 
+								className={`${
+									sign === "Compression" ? styles.negativeTactic : styles.tactic
+								}`} 
 								onClick={setTactic}
 								data-index={index}
 								id={index}
@@ -36,11 +42,15 @@ export default function SideBar(props) {
 							</div>
 							{
 								status
-								?	<div className={styles.cityList}>
+								?	<div 
+										className={`${
+											sign === "Compression" ? styles.negCityList : styles.cityList
+										}`}
+									>
 										{
 											cities.map(c => {
 												let city = c.city.replace(/_/g, ' ')
-												let selectedCity = props.selectedCity.replace(/_/g, ' ')
+												let selectedCity = props.selectedCity ? props.selectedCity.replace(/_/g, ' ') : ""
 
 												let path = c.path + "#"+index
 

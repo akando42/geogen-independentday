@@ -1,17 +1,24 @@
 import { Component } from "react"
 import { getSortedCities } from '../libs/posts'
 
+import SideBar from "@/components/SideBar"
+
 import styles from '../styles/GeoGen.module.css'
 
 export async function getStaticProps(){
 	const fertileSteps = './public/content/geogen/Expansion'
 	let fertileCities = getSortedCities(fertileSteps)
 
+	const selfharmSteps = './public/content/geogen/Compression'
+	let selfharmCities = getSortedCities(selfharmSteps)
+
 	// console.log("Fertile Cities ", fertileCities)
+	// console.log("Selfharm Cities ", selfharmCities)
 
 	return {
 		props: {
 			fertileCities: fertileCities.steps,
+			selfharmCities: selfharmCities.steps,
 			allCities: fertileCities.cities
 		}
 	}
@@ -23,12 +30,15 @@ export default class Text extends Component {
 
 		this.state = {
 			selectedCities: [],
-			openTactics: []
+			openTactics: [],
+			openNegTactics: []
 		}
 
 		this.setCities = this.setCities.bind(this)
 		this.getTactics = this.getTactics.bind(this)
 		this.setTactic = this.setTactic.bind(this)
+
+		this.setNegTactic = this.setNegTactic.bind(this)
 	}
 
 	async setCities(event){
@@ -43,8 +53,13 @@ export default class Text extends Component {
 			return false
 		})
 
+		let openNegTactics = this.props.selfharmCities.map((city, index) => {
+			return false
+		})
+
 		this.setState({
-			openTactics: openTactics
+			openTactics: openTactics,
+			openNegTactics: openNegTactics
 		})
 	}
 
@@ -64,6 +79,26 @@ export default class Text extends Component {
 			openTactics = openTactics.map(openTactic => {return false})
 			this.setState({
 				openTactics: openTactics
+			})
+		}
+	}
+
+	async setNegTactic(event){
+		console.log("Setting Neg Tactic ", event.target.dataset.index)
+
+		let id = event.target.dataset.index
+		let openTactics = this.state.openNegTactics
+
+		if (openTactics[id] === false){
+			openTactics = openTactics.map(openTactic => {return false})
+			openTactics[id] = true
+			this.setState({
+				openNegTactics: openTactics
+			})
+		} else {
+			openTactics = openTactics.map(openTactic => {return false})
+			this.setState({
+				openNegTactics: openTactics
 			})
 		}
 	}
@@ -125,6 +160,14 @@ export default class Text extends Component {
 							)
 						})
 					}
+
+					<SideBar 
+						sign="minus"
+						cities={this.props.selfharmCities}
+						selectedCity={this.props.selectedCity}
+						setTactic={this.setNegTactic}
+						openTactics={this.state.openNegTactics}
+					/>
 				</div>
 
 				<div className={styles.rightPanel}>

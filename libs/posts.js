@@ -130,7 +130,9 @@ export function getSortedCities(cityDirectory){
   const expSteps = fs.readdirSync(cityDirectory)
     .filter(step => (step !== ".DS_Store"))
 
-  // console.log("Exp Steps" ,expSteps)
+  
+  let sign = cityDirectory.split("/")[4]
+  console.log("Steps" , cityDirectory, sign)
 
   let the_cities = []
 
@@ -143,7 +145,7 @@ export function getSortedCities(cityDirectory){
       return {
         city: city_name.replace(/_/g, ' '),
         tactic: tactic,
-        path: "/posts/Expansion/"+step+"/"+city_name
+        path: "/posts/"+sign+"/"+step+"/"+city_name
       }
     })
 

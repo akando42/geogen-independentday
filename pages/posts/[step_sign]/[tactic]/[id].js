@@ -35,12 +35,15 @@ export async function getStaticProps({ params }) {
 	const fertileSteps = './public/content/geogen/Expansion'
 	let fertileCities = getSortedCities(fertileSteps)
 
+	const selfharmSteps = './public/content/geogen/Compression'
+	let selfharmCities = getSortedCities(selfharmSteps)
+
 	return {
 		props: {
 			selectedCity: params.id,
 			tacticIndex: tacticIndex,
 			postData: postData,
-			fertileCities: fertileCities.steps
+			fertileCities: [...fertileCities.steps, ...selfharmCities.steps]
 		}
 	}
 }
@@ -50,7 +53,11 @@ export async function getStaticPaths({}) {
 		'./public/content/geogen/Expansion'
 	)
 
-	let cities = fertileSteps.cities
+	let selfharmSteps = getSortedCities(
+		'./public/content/geogen/Compression'
+	)
+
+	let cities = [...fertileSteps.cities, ...selfharmSteps.cities]
 	// console.log("Cities",fertileSteps.cities)
 
 	let paths = cities.map(city => {
@@ -70,7 +77,8 @@ export default class Posts extends React.Component {
 		this.state = {
 			post: "POST", 
 			postImage: '',
-			openTactics: []
+			openTactics: [],
+			openNegTactics: []
 		}
 
 		this.setTactic = this.setTactic.bind(this)
@@ -85,6 +93,10 @@ export default class Posts extends React.Component {
 		})
 
 		openTactics[this.props.tacticIndex] = true
+
+		// let openNegTactics = this.props.selfharmCities.map((city, index) => {
+		// 	return false
+		// })
 
 		this.setState({
 			openTactics: openTactics
