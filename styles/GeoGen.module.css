@@ -45,10 +45,12 @@
 
 .rightPanel {
 	width: 70vw;
+	max-height: 100vh;
+	overflow: scroll;
 }
 
 .section {
-	background-color: red;
+	/*background-color: red;*/
 	/*padding: 10px;*/
 	margin: 10px 0;
 	font-weight: 700;

@@ -16,6 +16,10 @@
   	scrollbar-width: none;    /* Firefox */
 }
 
+.leftPanel::-webkit-scrollbar {
+	display: none;          
+}
+
 
 .rightPanel {
 	width: 70vw;

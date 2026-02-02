@@ -1,4 +1,11 @@
 .container {
 	padding: 0 30px;
-	height: auto;
+	max-height: 100vh;
+	overflow: auto;
+  	scrollbar-width: none;        /* Firefox */
+  	-ms-overflow-style: none;     /* IE / old Edge */
+}
+
+.container::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari */
 }

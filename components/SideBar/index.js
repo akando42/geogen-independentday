@@ -11,7 +11,7 @@ export default function SideBar(props) {
 
 
 	return (
-		<div>
+		<div >
 			{
 				cities.map((city, index) => {
 
