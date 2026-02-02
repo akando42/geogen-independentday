@@ -21,12 +21,14 @@ export async function getStaticProps(){
 	const selfharmSteps = './public/content/geogen/Compression'
 	let selfharmCities = getSortedCities(selfharmSteps)
 
-	// console.log("Sorted Dates ", dates)
+	console.log("Sorted Dates ", dates)
 	
 	return {
 		props: {
 			dates: dates,
+			fertileSteps: fertileCities.steps,
 			fertileCities: fertileCities.cities,
+			selfharmSteps: selfharmCities.steps,
 			selfharmCities: selfharmCities.cities
 		}
 	}
@@ -45,6 +47,7 @@ export default class Main extends Component {
 
 		this.loadMap = this.loadMap.bind(this)
 		this.getData = this.getData.bind(this)
+		this.selectTactic = this.selectTactic.bind(this)
 
 		this.mapContainer = React.createRef();
 	}	
@@ -84,7 +87,7 @@ export default class Main extends Component {
 	  }
 	}
 
-	async getData(){
+	async getData(chosenCities){
 		// console.log("Getting Data")
 		// let cities = []
 
@@ -109,13 +112,14 @@ export default class Main extends Component {
 		// return cities
 		
 		// let chosenArray = Math.random() < 0.5 ? this.props.fertileCities : this.props.selfharmCities
-		let chosenArray = this.props.fertileCities
+		let chosenArray = chosenCities
 
 		const cities = await Promise.all(
 		    chosenArray.map(async (date) => {
 		      
 		      const coordinate = await this.loadCity(date.city);
 		      if (!coordinate) return null;
+		      console.log("City Coordinate ", coordinate)
 
 		      let full_path = date.full_path ? date.full_path : date.path
 
@@ -142,7 +146,7 @@ export default class Main extends Component {
 		return cities;
 	}
 
-	async loadMap(){
+	async loadMap(chosenCities){
 		const { lng, lat, zoom } = this.state;
 		const  mobileOrNot = window.matchMedia("(max-width: 800px)");
 		const optimalZoom = mobileOrNot.matches && this.state.cities.length > 1 ? 1.2 : zoom ;
@@ -155,11 +159,12 @@ export default class Main extends Component {
 	        zoom: optimalZoom
 	    });
 
-	    let cities = await this.getData()
-	    console.log(cities)
+		console.log("Load Map for ", chosenCities)
+	    let cities = await this.getData(chosenCities)
+	    console.log("Cities adding to Map", cities)
 
 	   
-		if (cities.length > 1){
+		if (cities.length > 0){
 			cities.map(city => {
 				let sign = city.full_path.split("/")[2]
 				console.log("Add to Map", city, sign)
@@ -205,23 +210,42 @@ export default class Main extends Component {
 		})
 	}
 
+	async selectTactic(event){
+		let tactic = event.target.dataset.tactic.slice(3)
+		let sign = event.target.dataset.sign
+
+		if (sign === "Expansion"){
+			let cities = this.props.fertileCities.filter(city => city.tactic === tactic)
+			console.log("Select tactic ", tactic)
+			console.log("Cities ", cities)
+			this.loadMap(cities)
+			
+		} else {
+			let cities = this.props.selfharmCities.filter(city => city.tactic === tactic)
+			console.log("Select tactic ", tactic)
+			console.log("Cities ", cities)
+			this.loadMap(cities)
+		}
+	}
+		
+
 	componentDidMount(){
-		this.loadMap()
-		this.intervalId = setInterval(() => {
-			const city = this.state.cities[
-				Math.floor(Math.random() * this.state.cities.length)
-			]
+		this.loadMap(this.props.fertileCities)
+		// this.intervalId = setInterval(() => {
+		// 	const city = this.state.cities[
+		// 		Math.floor(Math.random() * this.state.cities.length)
+		// 	]
 
-			console.log("Select City ", city)
+		// 	console.log("Select City ", city)
 
-			this.state.map.flyTo({
-			  center: [city.lng, city.lat],
-			  zoom: 9,
-			  speed: 1.2,      // animation speed
-			  curve: 1.42,     // flight curvature
-			  essential: true  // respects reduced-motion settings
-			})
-		}, 10000)
+		// 	this.state.map.flyTo({
+		// 	  center: [city.lng, city.lat],
+		// 	  zoom: 9,
+		// 	  speed: 1.2,      // animation speed
+		// 	  curve: 1.42,     // flight curvature
+		// 	  essential: true  // respects reduced-motion settings
+		// 	})
+		// }, 10000)
 	}
 
 	componentWillUnmount() {
@@ -229,7 +253,7 @@ export default class Main extends Component {
 	}
   
   	render(){
-  		// console.log("Dates",this.props.dates)
+  		console.log("Steps",this.props.fertileSteps)
 
   		return (
   			<div>
@@ -245,6 +269,44 @@ export default class Main extends Component {
 	  				className={styles.map} 
 					ref={this.mapContainer}
 	  			>
+	  			</div>
+
+	  			<div className={styles.slides}>
+	  				
+	  				{
+	  					this.props.fertileSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						console.log("tactic ", tactic)
+	  						return (
+	  							<div 
+	  								className={styles.step}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Expansion"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+	  				}
+
+	  				{
+	  					this.props.selfharmSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						// console.log("tactic ", tactic)
+	  						return (
+	  							<div 
+	  								className={styles.selfharmStep}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Compression"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+	  				}
+	  				
 	  			</div>
 
 

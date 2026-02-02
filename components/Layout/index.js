@@ -22,6 +22,13 @@ export default class Layout extends Component {
 				<div className={styles.rightPanel}>
 					{right}
 				</div>
+
+				<a 
+  					className={styles.map}
+  					href="/"
+  				> 
+  					GeoGen
+  				</a>
 			</div>
 		)
 	}

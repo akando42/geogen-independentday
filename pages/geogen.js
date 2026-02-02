@@ -181,6 +181,12 @@ export default class Text extends Component {
 						)
 					}
 				</div>
+				<a 
+  					className={styles.map}
+  					href="/"
+  				> 
+  					GeoGen
+  				</a>
 			</div>
 		)
 	}
