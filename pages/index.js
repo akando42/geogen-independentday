@@ -40,7 +40,7 @@ export default class Main extends Component {
 
 		this.state = {
 			lat: 21,
-      		lng: 105,
+      		lng: 150,
       		zoom: 2,
       		cities: []
 		}
