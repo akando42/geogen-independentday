@@ -18,4 +18,5 @@ During WW2, another enemy of Britain, Nazi Germany also had to accept defeats to
 The Nazi Germany officers gained land rights, can store their family members safely in Argentina and some even married the local Argentinian women. These Nazi German soldiers and engineers later on helped to develop Argentina Arm Force into the strongest in South America.
 The formal Nazi Military officers even tried to launch a naval war against the Britain during the Falkland Island operation but still have to accepted another defeats again Margaret Thatcher and the British Aircraft Carrier fleet. 
 Modern Argentina is a land of best looking females you can find in the world with the extreme diverse sets of mixed people from different corners of the world. Argentinians are fun loving people but not very good at wars and economics. 
+
 Argentina Hyper Inflations resulted in easy games for the males from stronger currency nations like United States, Britain, Switzerland or Germany. While the Yen is one of the strongest currency in Asia, historically they were not every welcomed by the Spanish Fathers In Law of Argentina but got shoot at instead. 
