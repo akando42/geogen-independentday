@@ -272,7 +272,7 @@ export default class Main extends Component {
 	  			</div>
 
 	  			<div className={styles.slides}>
-	  				
+	  				<div className={styles.track}>
 	  				{
 	  					this.props.fertileSteps.map(step => {
 	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
@@ -306,6 +306,41 @@ export default class Main extends Component {
 	  						)
 	  					})
 	  				}
+
+	  				{
+	  					this.props.fertileSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						console.log("tactic ", tactic)
+	  						return (
+	  							<div 
+	  								className={styles.step}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Expansion"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+	  				}
+
+	  				{
+	  					this.props.selfharmSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						// console.log("tactic ", tactic)
+	  						return (
+	  							<div 
+	  								className={styles.selfharmStep}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Compression"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+	  				}
+	  				</div>
 	  				
 	  			</div>
 
