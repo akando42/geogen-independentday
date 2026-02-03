@@ -63,6 +63,19 @@ a {
   }
 }
 
+.expansion {
+  color: red;
+  width: 100%;
+  font-weight: 700;
+}
+
+.compression {
+  color: black;
+  width: 100%;
+  font-weight: 700;
+  background: red;
+}
+
 
 @media (prefers-color-scheme: dark) {
   html {

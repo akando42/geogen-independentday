@@ -42,12 +42,16 @@ export default class Main extends Component {
 			lat: 21,
       		lng: 150,
       		zoom: 2,
-      		cities: []
+      		cities: [], 
+      		uniqueCities: []
 		}
 
 		this.loadMap = this.loadMap.bind(this)
 		this.getData = this.getData.bind(this)
 		this.selectTactic = this.selectTactic.bind(this)
+
+		this.mapMode = this.mapMode.bind(this)
+		this.flyTo = this.flyTo.bind(this)
 
 		this.mapContainer = React.createRef();
 	}	
@@ -146,6 +150,43 @@ export default class Main extends Component {
 		return cities;
 	}
 
+	async getGeoGenData(chosenCities){
+		let chosenArray = chosenCities
+
+		const cities = await Promise.all(
+		    chosenArray.map(async (city) => {
+
+		      const coordinate = await this.loadCity(city.city);
+		      if (!coordinate) return null;
+		      // console.log("City Coordinate ", coordinate)
+		      // let full_path = date.full_path ? date.full_path : date.path
+		      // let tactic_path = full_path.split("/")[3]
+		      // let tactic_index = parseInt(tactic_path.split("_")[0])-1
+		      // full_path = full_path + "#" + tactic_index
+		      // console.log("Date ", tactic_path, tactic_index)
+		      console.log("CITY ",city)
+
+		      return {
+		        city: city.city,
+		        lat: coordinate[1],
+		        lng: coordinate[0], 
+		        tactics: city.tactics,
+		        full_path: "/"
+		        
+		        // // tactic: date.tactic,
+		        // independent_date: date.independent_date,
+		        // full_path: full_path
+		      };
+		    })
+		  );
+
+		// const filteredCities = cities.filter(Boolean);
+
+		this.setState({ uniqueCities: cities });
+
+		return cities;
+	}
+
 	async loadMap(chosenCities){
 		const { lng, lat, zoom } = this.state;
 		const  mobileOrNot = window.matchMedia("(max-width: 800px)");
@@ -209,6 +250,81 @@ export default class Main extends Component {
 		})
 	}
 
+	async loadGeoGenMap(chosenCities){
+		const { lng, lat, zoom } = this.state;
+		const  mobileOrNot = window.matchMedia("(max-width: 800px)");
+
+		const optimalZoom = mobileOrNot.matches && this.state.uniqueCities.length > 1 ? 1.2 : zoom ;
+
+		const map = new mapboxgl.Map({
+	        container: this.mapContainer.current,
+	        style: 'mapbox://styles/hillodesign/clb95v8zd000v15nudmodao0i',
+	        center: [lng, lat],
+	        projection: 'mercator',
+	        zoom: optimalZoom
+	    });
+
+	    let cities = await this.getGeoGenData(chosenCities)
+
+	    console.log("Cities ", cities)
+
+	    if (cities.length > 0){
+			cities.map(city => {
+				// let sign = city.full_path.split("/")[2]
+				let sign = "Expansion"
+
+				// console.log("Add to Map", city, sign)
+
+				const lng = city.lng 
+		    	const lat = city.lat 
+
+		    	const tactics = city.tactics
+		    	console.log("Tactics ", tactics)
+
+		    	const html = tactics
+					.map(tactic => `
+						<a 
+							href=${tactic.path}
+							class="${tactic.sign === 'Expansion' ? 'expansion' : 'compression'}"
+						>
+							<h3>${tactic.tactic}</h3>
+						</a>
+						`)
+					.join("")
+
+		    	const popup = new mapboxgl
+		    		.Popup({ 
+		    			anchor: 'left', 
+		    			offset: 0, 
+		    			closeOnClick: true
+		    		})
+		    		.setMaxWidth('360px')
+		    		.setHTML(html)
+
+		    	const el = document.createElement('div')
+				el.className = (sign === "Expansion") ? 'red-dot-marker' : 'black-dot-marker'
+				el.innerHTML = '<span class="ping"></span>'
+
+		    	const marker = new mapboxgl
+		    	    // .Marker({
+		    	    // 	color: `red`,
+		    	    // 	occludedOpacity: 0.1
+		    	    // })
+		    		.Marker({
+					  element: el,
+					  anchor: 'center'
+					})
+		    	    .setLngLat([lng,lat])
+		    	    .setPopup(popup)
+		    	    .addTo(map)
+			})
+		}
+
+		this.setState({
+			map: map
+		})
+	}
+
 	async selectTactic(event){
 		let tactic = event.target.dataset.tactic.slice(3)
 		let sign = event.target.dataset.sign
@@ -228,10 +344,11 @@ export default class Main extends Component {
 	}
 
 	async selectCity(event){
-
 	}
 
 	async flyTo(event){
+		// this.mapMode()
+		
 		const lng = event.target.dataset.lng
    		const lat = event.target.dataset.lat
 		
@@ -242,37 +359,14 @@ export default class Main extends Component {
 
         map.flyTo({
         	center: [lng, lat],
-        	zoom: 4,
+        	zoom: 6,
         })
-	}
-		
 
-	componentDidMount(){
-		this.loadMap(this.props.fertileCities)
 
-		// this.intervalId = setInterval(() => {
-		// 	const city = this.state.cities[
-		// 		Math.floor(Math.random() * this.state.cities.length)
-		// 	]
-
-		// 	console.log("Select City ", city)
-
-		// 	this.state.map.flyTo({
-		// 	  center: [city.lng, city.lat],
-		// 	  zoom: 9,
-		// 	  speed: 1.2,      // animation speed
-		// 	  curve: 1.42,     // flight curvature
-		// 	  essential: true  // respects reduced-motion settings
-		// 	})
-		// }, 10000)
 	}
 
-	componentWillUnmount() {
-  		clearInterval(this.intervalId)
-	}
-  
-  	render(){
-  		// console.log("Steps",this.props.fertileSteps)
+	async mapMode(){
+		// console.log("Steps",this.props.fertileSteps)
   		// console.log("Fertile Cities ", this.props.fertileCities)
   		// console.log("Selfharm Cities", this.props.selfharmCities)
 
@@ -366,6 +460,38 @@ export default class Main extends Component {
   			uniqueCities: uniqueCities
   		})
 
+  		this.loadGeoGenMap(uniqueCities)
+	}
+		
+	componentDidMount(){
+		this.mapMode()
+
+		// this.loadMap(this.props.fertileCities)
+
+		// this.intervalId = setInterval(() => {
+		// 	const city = this.state.cities[
+		// 		Math.floor(Math.random() * this.state.cities.length)
+		// 	]
+
+		// 	console.log("Select City ", city)
+
+		// 	this.state.map.flyTo({
+		// 	  center: [city.lng, city.lat],
+		// 	  zoom: 9,
+		// 	  speed: 1.2,      // animation speed
+		// 	  curve: 1.42,     // flight curvature
+		// 	  essential: true  // respects reduced-motion settings
+		// 	})
+		// }, 10000)
+	}
+
+	componentWillUnmount() {
+  		clearInterval(this.intervalId)
+	}
+  
+  	render(){
+  		
+
   		// this.loadMap(uniqueCities)
 
   		return (
@@ -384,15 +510,18 @@ export default class Main extends Component {
 	  			>
 	  			</div>
 
-	  			{/**
+	  			
 	  			<div className={styles.citySlides}>
 	  				<div className={styles.track}>
 	  					{	
-	  						uniqueCities.map(city => {
+	  						this.state.uniqueCities.map(city => {
 	  							return (
 	  								<div 
-	  									className={styles.step}
+	  									className={styles.city}
 	  									KEY={city.city}
+	  									onClick={this.flyTo}
+	  									data-lng={city.lng}
+	  									data-lat={city.lat}
 	  								>
 	  									{city.city}
 	  								</div>
@@ -401,8 +530,7 @@ export default class Main extends Component {
 	  					}
 	  				</div>
 	  			</div>
-				**/}
-	  			
+
 	  			<div className={styles.slides}>
 	  				<div className={styles.track}>
 	  				{
@@ -475,6 +603,7 @@ export default class Main extends Component {
 	  				}
 	  				</div>
 	  			</div>
+	  			
 	  			
 
   				{/**

@@ -47,6 +47,19 @@
 	right: 0;
 }
 
+.city {
+	width: auto;
+	white-space: nowrap;
+	background-color: white;
+	color: red;
+	border-radius: 10px;
+	border: 2px solid white;
+	width: auto;
+	height: auto;
+	padding: 10px;
+	margin: 0 10px;
+}
+
 .step, .selfharmStep {
 	width: auto;
 	white-space: nowrap;
@@ -83,7 +96,7 @@
 	/*overflow-x: scroll;*/
 	overflow: hidden;
 	position: fixed;
-	bottom: 0;
+	bottom: 6vh;
 	left: 0;
 	right: 0;
 }
