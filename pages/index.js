@@ -360,7 +360,7 @@ export default class Main extends Component {
   				})
   			}
   		})
-  		
+
   		console.log("UNIQUE CITIES", uniqueCities)
   		this.setState({
   			uniqueCities: uniqueCities
@@ -384,7 +384,7 @@ export default class Main extends Component {
 	  			>
 	  			</div>
 
-
+	  			{/**
 	  			<div className={styles.citySlides}>
 	  				<div className={styles.track}>
 	  					{	
@@ -401,8 +401,8 @@ export default class Main extends Component {
 	  					}
 	  				</div>
 	  			</div>
-
-	  			{/**
+				**/}
+	  			
 	  			<div className={styles.slides}>
 	  				<div className={styles.track}>
 	  				{
@@ -475,7 +475,7 @@ export default class Main extends Component {
 	  				}
 	  				</div>
 	  			</div>
-	  			**/}
+	  			
 
   				{/**
 	  			<div>GeoGenetics</div>
