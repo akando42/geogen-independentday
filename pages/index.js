@@ -21,7 +21,7 @@ export async function getStaticProps(){
 	const selfharmSteps = './public/content/geogen/Compression'
 	let selfharmCities = getSortedCities(selfharmSteps)
 
-	console.log("Sorted Dates ", dates)
+	// console.log("Sorted Dates ", dates)
 	
 	return {
 		props: {
@@ -119,14 +119,14 @@ export default class Main extends Component {
 		      
 		      const coordinate = await this.loadCity(date.city);
 		      if (!coordinate) return null;
-		      console.log("City Coordinate ", coordinate)
+		      // console.log("City Coordinate ", coordinate)
 
 		      let full_path = date.full_path ? date.full_path : date.path
 
 		      let tactic_path = full_path.split("/")[3]
 		      let tactic_index = parseInt(tactic_path.split("_")[0])-1
 		      full_path = full_path + "#" + tactic_index
-		      console.log("Date ", tactic_path, tactic_index)
+		      // console.log("Date ", tactic_path, tactic_index)
 
 		      return {
 		        city: date.city,
@@ -158,16 +158,15 @@ export default class Main extends Component {
 	        projection: 'mercator',
 	        zoom: optimalZoom
 	    });
+		// console.log("Load Map for ", chosenCities)
 
-		console.log("Load Map for ", chosenCities)
 	    let cities = await this.getData(chosenCities)
-	    console.log("Cities adding to Map", cities)
+	    // console.log("Cities adding to Map", cities)
 
-	   
 		if (cities.length > 0){
 			cities.map(city => {
 				let sign = city.full_path.split("/")[2]
-				console.log("Add to Map", city, sign)
+				// console.log("Add to Map", city, sign)
 
 				const lng = city.lng 
 		    	const lat = city.lat 
@@ -216,21 +215,41 @@ export default class Main extends Component {
 
 		if (sign === "Expansion"){
 			let cities = this.props.fertileCities.filter(city => city.tactic === tactic)
-			console.log("Select tactic ", tactic)
-			console.log("Cities ", cities)
+			// console.log("Select tactic ", tactic)
+			// console.log("Cities ", cities)
 			this.loadMap(cities)
 			
 		} else {
 			let cities = this.props.selfharmCities.filter(city => city.tactic === tactic)
-			console.log("Select tactic ", tactic)
-			console.log("Cities ", cities)
+			// console.log("Select tactic ", tactic)
+			// console.log("Cities ", cities)
 			this.loadMap(cities)
 		}
+	}
+
+	async selectCity(event){
+
+	}
+
+	async flyTo(event){
+		const lng = event.target.dataset.lng
+   		const lat = event.target.dataset.lat
+		
+		console.log(
+			"Triggered", lng, lat, this.state.zoom
+		)
+		const map = this.state.map
+
+        map.flyTo({
+        	center: [lng, lat],
+        	zoom: 4,
+        })
 	}
 		
 
 	componentDidMount(){
 		this.loadMap(this.props.fertileCities)
+
 		// this.intervalId = setInterval(() => {
 		// 	const city = this.state.cities[
 		// 		Math.floor(Math.random() * this.state.cities.length)
@@ -253,7 +272,101 @@ export default class Main extends Component {
 	}
   
   	render(){
-  		console.log("Steps",this.props.fertileSteps)
+  		// console.log("Steps",this.props.fertileSteps)
+  		// console.log("Fertile Cities ", this.props.fertileCities)
+  		// console.log("Selfharm Cities", this.props.selfharmCities)
+
+  		let allCities = [...this.props.fertileCities, ...this.props.selfharmCities]
+  		console.log("Cities ", allCities)
+
+  		// CHATGPT SOLUTION
+  		// const cities = Object.values(
+		//   allCities.reduce((cityAcc, item) => {
+		//     const { city, tactic, path } = item
+
+		//     // derive sign from URL
+		//     const sign = path.split("/")[2] // Expansion | Compression
+
+		//     // 1. City level
+		//     if (!cityAcc[city]) {
+		//       cityAcc[city] = {
+		//         city,
+		//         tactics: {}
+		//       }
+		//     }
+
+		//     // 2. Tactic level
+		//     if (!cityAcc[city].tactics[tactic]) {
+		//       cityAcc[city].tactics[tactic] = {
+		//         name: tactic,
+		//         entries: []
+		//       }
+		//     }
+
+		//     // 3. Entry level (avoid duplicate signs)
+		//     const exists = cityAcc[city].tactics[tactic].entries.some(
+		//       e => e.sign === sign
+		//     )
+
+		//     if (!exists) {
+		//       cityAcc[city].tactics[tactic].entries.push({
+		//         sign,
+		//         path
+		//       })
+		//     }
+
+		//     return cityAcc
+		//   }, {})
+		// ).map(city => ({
+		//   ...city,
+		//   tactics: Object.values(city.tactics)
+		// }))
+		// console.log("CITIES ", cities)
+
+
+  		// HUMAN SOLUTION
+  		let uniqueCities = []
+  		allCities.map(city => {
+  			const exist = uniqueCities.some(
+  				item => item.city === city.city
+  			) 
+
+  			if (exist){
+  				// console.log(exist, city)
+  				uniqueCities = uniqueCities.map(item => 
+  					item.city === city.city
+  					? 	{
+  							city: item.city, 
+  							tactics: [
+  								...item.tactics, 
+  								{
+  									tactic: city.tactic,
+  									path: city.path,
+  									sign: city.path.split("/")[2]
+  								}
+  							] 
+  						}
+  					: 	item
+  				)
+  			} else {
+  				// console.log(exist, city)
+  				uniqueCities.push({
+  					city: city.city, 
+  					tactics: [{
+  						tactic: city.tactic,
+  						path: city.path,
+  						sign: city.path.split("/")[2]
+  					}]
+  				})
+  			}
+  		})
+  		
+  		console.log("UNIQUE CITIES", uniqueCities)
+  		this.setState({
+  			uniqueCities: uniqueCities
+  		})
+
+  		// this.loadMap(uniqueCities)
 
   		return (
   			<div>
@@ -271,12 +384,32 @@ export default class Main extends Component {
 	  			>
 	  			</div>
 
+
+	  			<div className={styles.citySlides}>
+	  				<div className={styles.track}>
+	  					{	
+	  						uniqueCities.map(city => {
+	  							return (
+	  								<div 
+	  									className={styles.step}
+	  									KEY={city.city}
+	  								>
+	  									{city.city}
+	  								</div>
+	  							)
+	  						})
+	  					}
+	  				</div>
+	  			</div>
+
+	  			{/**
 	  			<div className={styles.slides}>
 	  				<div className={styles.track}>
 	  				{
 	  					this.props.fertileSteps.map(step => {
 	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						console.log("tactic ", tactic)
+	  						// console.log("tactic ", tactic)
+
 	  						return (
 	  							<div 
 	  								className={styles.step}
@@ -310,7 +443,7 @@ export default class Main extends Component {
 	  				{
 	  					this.props.fertileSteps.map(step => {
 	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						console.log("tactic ", tactic)
+	  						// console.log("tactic ", tactic)
 	  						return (
 	  							<div 
 	  								className={styles.step}
@@ -341,10 +474,8 @@ export default class Main extends Component {
 	  					})
 	  				}
 	  				</div>
-	  				
 	  			</div>
-
-
+	  			**/}
 
   				{/**
 	  			<div>GeoGenetics</div>

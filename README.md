@@ -1,3 +1,29 @@
 ### GEOGEN Independent Days
 
+Users visit GeoGen Indepdendent Days to see 
 
+Which cities is Controlling all the Nanobot and which cities is being controlled by the Nanobots?
+
+==> Look at different city states  
+
+==> Observe their Possitive Steps and Negative Steps resulting in the Expansion or Compression of the Citizen Genetis Footprints and Well Being.
+
+==> Click on Story and read about Positive and Negative step story.
+City Steps making it Easier or Harder to 
++ mate with high quality mate
++ have high quality life with access to lot of fun spaces
++ make babies and raise the baby healthily
+Cities with many negative steps Citizens Have the tendency to fly to better cities 
+Cities with many positive steps Receive a lot of longterm residences and flights from other cities
+
+==> Display of People picture from that cities 
+==> Display of Architecture from that cities
+==> Display of Food from that cities 
+==> Maybe Display some Economics Data, Weather Data
+
+==> Display Current Date and Upcoming Indepdendent Days 
+
+### TODOs
+[X] Process Data into City-based format with steps each city taken
+[ ] Click on City to Zoom in on it
+[ ] Display Different Story on the Marker
