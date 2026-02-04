@@ -43,7 +43,9 @@ export default class Main extends Component {
       		lng: 150,
       		zoom: 2,
       		cities: [], 
-      		uniqueCities: []
+      		uniqueCities: [],
+      		sign: "Expansion",
+      		headLine: "GeoGenetics"
 		}
 
 		this.loadMap = this.loadMap.bind(this)
@@ -52,6 +54,9 @@ export default class Main extends Component {
 
 		this.mapMode = this.mapMode.bind(this)
 		this.flyTo = this.flyTo.bind(this)
+
+		this.loadFertileCities = this.loadFertileCities.bind(this)
+		this.loadSelfharmCities = this.loadSelfharmCities.bind(this)
 
 		this.mapContainer = React.createRef();
 	}	
@@ -187,7 +192,7 @@ export default class Main extends Component {
 		return cities;
 	}
 
-	async loadMap(chosenCities){
+	async loadMap(chosenCities, stepSelection){
 		const { lng, lat, zoom } = this.state;
 		const  mobileOrNot = window.matchMedia("(max-width: 800px)");
 		const optimalZoom = mobileOrNot.matches && this.state.cities.length > 1 ? 1.2 : zoom ;
@@ -214,7 +219,7 @@ export default class Main extends Component {
 
 		    	const popup = new mapboxgl
 		    		.Popup({ 
-		    			anchor: 'bottom', 
+		    			anchor: 'top', 
 		    			offset: 0, 
 		    			closeOnClick: true
 		    		})
@@ -225,7 +230,6 @@ export default class Main extends Component {
 		    			</a>
 		    		`)
 		    	const el = document.createElement('div')
-		    	
 
 				el.className = (sign === "Expansion") ? 'red-dot-marker' : 'black-dot-marker'
 				el.innerHTML = '<span class="ping"></span>'
@@ -242,6 +246,11 @@ export default class Main extends Component {
 		    	    .setLngLat([lng,lat])
 		    	    .setPopup(popup)
 		    	    .addTo(map)
+
+		    	if (stepSelection){
+		    		marker.togglePopup();	
+		    	}
+		    	
 			})
 		}
 
@@ -329,17 +338,21 @@ export default class Main extends Component {
 		let tactic = event.target.dataset.tactic.slice(3)
 		let sign = event.target.dataset.sign
 
+		this.setState({
+			headLine: tactic.replace(/_/g, ' ')
+		})
+
 		if (sign === "Expansion"){
 			let cities = this.props.fertileCities.filter(city => city.tactic === tactic)
 			// console.log("Select tactic ", tactic)
 			// console.log("Cities ", cities)
-			this.loadMap(cities)
+			this.loadMap(cities, true)
 			
 		} else {
 			let cities = this.props.selfharmCities.filter(city => city.tactic === tactic)
 			// console.log("Select tactic ", tactic)
 			// console.log("Cities ", cities)
-			this.loadMap(cities)
+			this.loadMap(cities, true)
 		}
 	}
 
@@ -361,8 +374,6 @@ export default class Main extends Component {
         	center: [lng, lat],
         	zoom: 6,
         })
-
-
 	}
 
 	async mapMode(){
@@ -462,11 +473,27 @@ export default class Main extends Component {
 
   		this.loadGeoGenMap(uniqueCities)
 	}
+
+	async loadFertileCities(){
+		this.loadMap(this.props.fertileCities)
+		this.setState({
+			sign: "Expansion"
+		})
+	}
+
+	async loadSelfharmCities(){
+		this.loadMap(this.props.selfharmCities)
+		this.setState({
+			sign: "Compression"
+		})
+	}
 		
 	componentDidMount(){
-		this.mapMode()
+		// Display all Cities and showing each Cities steps
+		// this.mapMode()
 
-		// this.loadMap(this.props.fertileCities)
+		// Showing Expansion and Compression Steps
+		this.loadMap(this.props.fertileCities)
 
 		// this.intervalId = setInterval(() => {
 		// 	const city = this.state.cities[
@@ -511,6 +538,25 @@ export default class Main extends Component {
 	  			</div>
 
 	  			
+	  			<div className={styles.stepSelection}>
+	  				<div 
+	  					className={`${styles.stepSelector} ${styles.expansion}`}
+	  					onClick={this.loadFertileCities}
+	  				> 
+	  					Expansion 
+	  				</div>
+	  				<div 
+	  					className={`${styles.stepSelector} ${styles.compression}`}
+	  					onClick={this.loadSelfharmCities}
+	  				>  
+	  					Compression 
+	  				</div>
+	  			</div>
+
+	  			<div className={styles.headLine}>
+	  				{this.state.headLine}
+	  			</div>
+
 	  			<div className={styles.citySlides}>
 	  				<div className={styles.track}>
 	  					{	
@@ -534,78 +580,87 @@ export default class Main extends Component {
 	  			<div className={styles.slides}>
 	  				<div className={styles.track}>
 	  				{
-	  					this.props.fertileSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
+	  					this.state.sign === "Expansion"
+	  					? 	this.props.fertileSteps.map(step => {
+		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+		  						// console.log("tactic ", tactic)
 
-	  						return (
-	  							<div 
-	  								className={styles.step}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Expansion"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
+		  						return (
+		  							<div 
+		  								className={styles.step}
+		  								onClick={this.selectTactic}
+		  								data-tactic={step.tactic}
+		  								data-sign="Expansion"
+		  							>
+		  								{tactic}
+		  							</div>
+		  						)
+		  					})
+			  			: 	null
+
 	  				}
 
 	  				{
-	  					this.props.selfharmSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
-	  						return (
-	  							<div 
-	  								className={styles.selfharmStep}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Compression"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
+	  					this.state.sign === "Compression"
+	  					?	this.props.selfharmSteps.map(step => {
+		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+		  						// console.log("tactic ", tactic)
+		  						return (
+		  							<div 
+		  								className={styles.selfharmStep}
+		  								onClick={this.selectTactic}
+		  								data-tactic={step.tactic}
+		  								data-sign="Compression"
+		  							>
+		  								{tactic}
+		  							</div>
+		  						)
+		  					})
+	  					:   null
 	  				}
 
 	  				{
-	  					this.props.fertileSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
-	  						return (
-	  							<div 
-	  								className={styles.step}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Expansion"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
+	  					this.state.sign === "Expansion"
+	  					? 	this.props.fertileSteps.map(step => {
+		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+		  						// console.log("tactic ", tactic)
+
+		  						return (
+		  							<div 
+		  								className={styles.step}
+		  								onClick={this.selectTactic}
+		  								data-tactic={step.tactic}
+		  								data-sign="Expansion"
+		  							>
+		  								{tactic}
+		  							</div>
+		  						)
+		  					})
+			  			: 	null
+
 	  				}
 
 	  				{
-	  					this.props.selfharmSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
-	  						return (
-	  							<div 
-	  								className={styles.selfharmStep}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Compression"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
+	  					this.state.sign === "Compression"
+	  					?	this.props.selfharmSteps.map(step => {
+		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+		  						// console.log("tactic ", tactic)
+		  						return (
+		  							<div 
+		  								className={styles.selfharmStep}
+		  								onClick={this.selectTactic}
+		  								data-tactic={step.tactic}
+		  								data-sign="Compression"
+		  							>
+		  								{tactic}
+		  							</div>
+		  						)
+		  					})
+	  					:   null
 	  				}
 	  				</div>
 	  			</div>
 	  			
-	  			
-
   				{/**
 	  			<div>GeoGenetics</div>
 	  			<div>Independent Dates Fun </div>

@@ -86,7 +86,6 @@
 	color: red;
 }
 
-
 .citySlides {
 	height: auto;
 	z-index: 3;
@@ -109,6 +108,51 @@
 	animation: scroll-left 210s linear infinite;
 	font-weight: 700;
 
+}
+
+.stepSelection {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 8vh;
+	display: flex;
+	flex-direction: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.stepSelector {
+	padding: 10px;
+	border-radius: 20px;
+	font-weight: 700;
+	margin: 0 10px;
+}
+
+.expansion {
+	background-color: red;
+	color: white;
+}
+
+.compression {
+	background-color: black;
+	color: red;
+}
+
+.headLine {
+	position: fixed;
+	top: 8vh;
+	left: 0;
+	right: 0;
+	font-size: 31px;
+	font-weight: 700;
+	height: 4vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	color: black;
 }
 
 @keyframes scroll-left {

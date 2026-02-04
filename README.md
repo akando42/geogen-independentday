@@ -27,3 +27,5 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 [X] Process Data into City-based format with steps each city taken
 [X] Click on City to Zoom in on it
 [X] Display Different Story on the Marker
+
+[ ] Expansion and Compression button to display different cities on the Map
