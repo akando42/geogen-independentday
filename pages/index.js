@@ -45,7 +45,16 @@ export default class Main extends Component {
       		cities: [], 
       		uniqueCities: [],
       		sign: "Expansion",
-      		headLine: "GeoGenetics"
+      		headLine: "GeoGenetics",
+      		showingDates: true,
+      		showingCity: false, 
+      		sortedRange: [],
+      		activeCity: {
+      			city: "wtf",
+      			tactics: [
+      				{}
+      			]
+      		}
 		}
 
 		this.loadMap = this.loadMap.bind(this)
@@ -58,6 +67,13 @@ export default class Main extends Component {
 		this.loadFertileCities = this.loadFertileCities.bind(this)
 		this.loadSelfharmCities = this.loadSelfharmCities.bind(this)
 
+		this.loadUniqueCities = this.loadUniqueCities.bind(this)
+
+		this.showCity = this.showCity.bind(this)
+		this.showDate = this.showDate.bind(this)
+
+		this.showDateRange = this.showDateRange.bind(this)
+
 		this.mapContainer = React.createRef();
 	}	
 
@@ -69,6 +85,8 @@ export default class Main extends Component {
 	  	city === "Bavaria" ? "Bavaria Germany" :
 	  	city === "Delhi" ? "Delhi India" :
 	  	city === "Vinh" ? "Vinh Vietnam" :
+	  	city === "Athen" ? "Athen Greece" :
+	  	city === "Bikini Atoll" ? "Marshall Islands" :
   		city;
 	  
 
@@ -192,6 +210,24 @@ export default class Main extends Component {
 		return cities;
 	}
 
+	async showCity(city){
+		let cityData = this.state.uniqueCities
+			.filter(uniqueCity => uniqueCity.city === city)
+
+		console.log(cityData)
+
+		this.setState({
+			showingCity: !this.state.showingCity, 
+			activeCity: cityData[0]
+		})
+
+		console.log(
+			city, 
+			cityData, 
+			this.state.activeCity
+		)
+	}
+
 	async loadMap(chosenCities, stepSelection){
 		const { lng, lat, zoom } = this.state;
 		const  mobileOrNot = window.matchMedia("(max-width: 800px)");
@@ -225,7 +261,7 @@ export default class Main extends Component {
 		    		})
 		    		.setMaxWidth('360px')
 		    		.setHTML(`
-		    			<a href=${city.full_path}>
+		    			<a class="city-card" href=${city.full_path}>
 		    				<h3> ${city.city} </h3>
 		    			</a>
 		    		`)
@@ -233,6 +269,13 @@ export default class Main extends Component {
 
 				el.className = (sign === "Expansion") ? 'red-dot-marker' : 'black-dot-marker'
 				el.innerHTML = '<span class="ping"></span>'
+
+				el.addEventListener('click', (e) => {
+					// e.stopPropagation() 
+					// optional: prevent map click events
+					this.showCity(city.city)
+					console.log('Marker clicked', { lng, lat })
+				})
 
 		    	const marker = new mapboxgl
 		    	    // .Marker({
@@ -244,7 +287,7 @@ export default class Main extends Component {
 					  anchor: 'center'
 					})
 		    	    .setLngLat([lng,lat])
-		    	    .setPopup(popup)
+		    	    // .setPopup(popup)
 		    	    .addTo(map)
 
 		    	if (stepSelection){
@@ -487,13 +530,109 @@ export default class Main extends Component {
 			sign: "Compression"
 		})
 	}
-		
+
+	async loadUniqueCities(){
+		let allCities = [...this.props.fertileCities, ...this.props.selfharmCities]
+  		console.log("Cities ", allCities)
+
+  		// HUMAN SOLUTION
+  		let uniqueCities = []
+  		allCities.map(city => {
+  			const exist = uniqueCities.some(
+  				item => item.city === city.city
+  			) 
+
+  			if (exist){
+  				// console.log(exist, city)
+  				uniqueCities = uniqueCities.map(item => 
+  					item.city === city.city
+  					? 	{
+  							city: item.city, 
+  							tactics: [
+  								...item.tactics, 
+  								{
+  									tactic: city.tactic,
+  									path: city.path,
+  									sign: city.path.split("/")[2]
+  								}
+  							] 
+  						}
+  					: 	item
+  				)
+  			} else {
+  				// console.log(exist, city)
+  				uniqueCities.push({
+  					city: city.city, 
+  					tactics: [{
+  						tactic: city.tactic,
+  						path: city.path,
+  						sign: city.path.split("/")[2]
+  					}]
+  				})
+  			}
+  		})
+
+  		console.log("UNIQUE CITIES", uniqueCities)
+  		this.setState({
+  			uniqueCities: uniqueCities
+  		})
+	}
+
+	async showDate(){
+		const today = new Date()
+		console.log(today.toDateString())
+
+		const this_year = today.getFullYear()
+		let dates = this.props.dates
+
+		let datesRange = dates.map(date => {
+			let next_date = date.independent_date + "-" + this_year
+
+			const [month, day, year] = next_date.split('-').map(Number)
+			const targetDate = new Date(year, month - 1, day)
+
+			today.setHours(0, 0, 0, 0)
+			targetDate.setHours(0, 0, 0, 0)
+			const diffMs = targetDate - today
+			const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24))
+
+			return {
+				date: date.independent_date,
+				next_date: next_date,
+				city: date.city,
+				range: diffDays
+			}
+		})
+
+		let sortedRange = datesRange
+			.filter(date => date.range > 0)
+			.sort((a, b) => a.range - b.range)
+
+		console.log(sortedRange[0])
+
+		this.setState({
+			today: today.toDateString(),
+			sortedRange: sortedRange,
+			showingDates: false,
+			nextNation: sortedRange[0].city,
+			nextDate: sortedRange[0].date
+		})
+	}
+
+	async showDateRange(){
+		this.setState({
+			showingDates: !this.state.showingDates
+		})
+	}
+
 	componentDidMount(){
 		// Display all Cities and showing each Cities steps
 		// this.mapMode()
 
 		// Showing Expansion and Compression Steps
 		this.loadMap(this.props.fertileCities)
+		this.loadUniqueCities()
+		this.showDate()
 
 		// this.intervalId = setInterval(() => {
 		// 	const city = this.state.cities[
@@ -517,9 +656,8 @@ export default class Main extends Component {
 	}
   
   	render(){
+  	
   		
-
-  		// this.loadMap(uniqueCities)
 
   		return (
   			<div>
@@ -536,6 +674,39 @@ export default class Main extends Component {
 					ref={this.mapContainer}
 	  			>
 	  			</div>
+
+	  			<div className={styles.timePanel}>
+	  				<div className={styles.clock}>
+	  					{this.state.today} 
+	  				</div>
+
+	  				<div className={styles.independentDate}>
+	  					<div 
+	  						className={styles.inButton}
+	  						onClick={this.showDateRange}
+	  					>
+	  						Upcoming Independent Day
+	  					</div>
+	  				</div>
+
+	  				{
+	  					this.state.showingDates 
+	  					?	<div className={styles.dateRange}>
+	  							{	
+	  								this.state.sortedRange.map(date => {
+	  									return (
+	  										<div className={styles.nextDate}>
+							  					<div>{date.city}</div>
+							  					<div>{date.date}</div>
+							  				</div>
+	  									)
+	  								})
+	  							}
+	  						</div>
+	  					:   <div> Date Range </div>
+	  				}
+	  			</div>
+
 
 	  			
 	  			<div className={styles.stepSelection}>
@@ -557,6 +728,7 @@ export default class Main extends Component {
 	  				{this.state.headLine}
 	  			</div>
 
+	  			{/* 
 	  			<div className={styles.citySlides}>
 	  				<div className={styles.track}>
 	  					{	
@@ -576,6 +748,43 @@ export default class Main extends Component {
 	  					}
 	  				</div>
 	  			</div>
+	  			*/}
+
+	  			{
+	  				this.state.showingCity && this.state.activeCity
+	  				? 	<div 
+	  						className={styles.cityStories}
+	  					>
+	  						<img
+	  							className={styles.cityImage} 
+	  							src="https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no" 
+	  						/>
+	  						<div className={styles.cityName}>
+	  							{this.state.activeCity.city}
+	  						</div>
+	  						{
+	  							this.state.activeCity.tactics.map(tactic => {
+
+	  								let selectedTactic = tactic.tactic.replace(/_/g, ' ')
+	  								let sign = tactic.path.split("/")[2]
+	  								
+	  								return (
+	  									<a 
+	  										className={
+												sign === "Expansion"
+											  	? styles.tacticLink
+											  	: styles.negTacticLink
+											}
+	  										href={tactic.path}
+	  									>
+	  										{selectedTactic}
+	  									</a>
+	  								)
+	  							})
+	  						}
+	  					</div>
+	  				: 	null
+	  			}
 
 	  			<div className={styles.slides}>
 	  				<div className={styles.track}>

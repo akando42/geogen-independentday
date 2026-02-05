@@ -27,5 +27,20 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 [X] Process Data into City-based format with steps each city taken
 [X] Click on City to Zoom in on it
 [X] Display Different Story on the Marker
+[X] Expansion and Compression button to display different cities on the Map
 
-[ ] Expansion and Compression button to display different cities on the Map
+[X] Display City Name on Right Panel with related Stories
+
+[ ] Display Current Date on Left Panel
+[ ] Display Upcoming Independent Date 
+[ ] Display Current Cookie Location
+
+[ ] Display Trading Economics Data 
+[ ] Display Airfare Data
+[ ] Display Weather Data
+
+[ ] Show Images of People from the City (Instagram)
+[ ] Show Images of Food from the City (Yelp)
+[ ] Show Images of Architecture from the City (Google Map)
+
+

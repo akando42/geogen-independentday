@@ -155,6 +155,102 @@
 	color: black;
 }
 
+.timePanel {
+	position: fixed;
+	z-index: 3;
+	left: 20px;
+	top: 20px;
+	/*background-color: red;*/
+	text-align: center;
+}
+
+.independentDate {
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.inButton {
+	width: auto;
+	background-color: white;
+	padding: 3px;
+	margin-top: -15px;
+}
+
+.nextDate {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	padding: 10px 10px;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: 700;
+	background-color: white;
+	margin: 3px;
+}
+
+.dateRange {
+	display: flex;
+	flex-direction: column;
+	height: auto;
+	width: 100%;
+	height: auto;
+}
+
+.clock {
+	padding: 10px;
+	font-weight: 700;
+	font-size: 21px;
+	background-color: red;
+}
+
+.cityStories {
+	width: 20vw;
+	height: 100vh;
+	/*background-color: red;*/
+	position: fixed;
+	top: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	background-color: white;
+}
+
+.cityImage {
+	width: 100%;
+}
+
+.cityName {
+	padding: 20px;
+	font-weight: 700;
+	font-size: 21px;
+}
+
+.tacticLink, .negTacticLink {
+	margin: 10px 0;
+	padding: 10px;
+	background-color: red;
+	color: white;
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	wrap: flex-wrap;
+	font-weight: 700;
+}
+
+.negTacticLink {
+	background-color: black;
+	color: red;
+}
+
+
 @keyframes scroll-left {
 	from {
 		transform: translateX(0);
