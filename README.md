@@ -31,12 +31,18 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Display City Name on Right Panel with related Stories
 
-[ ] Display Current Date on Left Panel
-[ ] Display Upcoming Independent Date 
-[ ] Display Current Cookie Location
+[X] Display Current Date on Left Panel
+[X] Display Upcoming Independent Date 
 
-[ ] Display Trading Economics Data 
+[X] Mobile Layout
+[X] Display Current Cookie Location
+
+[X] Coordinate to Nation ReverseGeocode
+
+[X] Show AIRPORT IATA CODE from Booking.Com
 [ ] Display Airfare Data
+
+[ ] Display Trading Economics Average Income amd Population Data
 [ ] Display Weather Data
 
 [ ] Show Images of People from the City (Instagram)

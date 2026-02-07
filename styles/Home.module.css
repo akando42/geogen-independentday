@@ -7,12 +7,23 @@
 	background-color: red;
 }
 
+.locationStripe {
+	text-align: center;
+	padding: 6px;
+	font-weight: 700;
+	font-size: 16px;
+}
+
+.userData {
+	display: flex;
+	flex-direction: column;
+}
+
 .map {
 	width: 100vw;
 	height: 100vh;
 	background-color: red;
 }
-
 
 .text {
 	position: fixed;
@@ -117,7 +128,7 @@
 	right: 0;
 	height: 8vh;
 	display: flex;
-	flex-direction: center;
+	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 }
@@ -127,6 +138,12 @@
 	border-radius: 20px;
 	font-weight: 700;
 	margin: 0 10px;
+
+}
+
+.stepSelector:active {
+	transform: scale(0.96);
+	/*background-color: blue;*/
 }
 
 .expansion {
@@ -250,6 +267,81 @@
 	color: red;
 }
 
+.userMobileLocation {
+	display: none;
+}
+
+@media (min-width:431px) and (max-width: 1024px) {
+	.timePanel {
+		display: none;
+	}
+
+	.userMobileLocation {
+		width: 100vw;
+		height: auto;
+		position: fixed;
+		top: 0vh;
+		text-align: center;
+		padding: 5px 0;
+		font-weight: 700;
+		display: block;
+	}
+
+	.stepSelection {
+		top: 20px;
+	}
+}
+
+@media (max-width: 430px) {
+	.timePanel {
+		display: none;
+	}
+
+	.headLine {
+		display: none;
+	}
+
+	.text {
+		height: 60px;
+		width: 60px;
+		right: 10px;
+		top: 30px;
+	}
+
+	.stepSelection {
+		top: 20px;
+		padding: 0 20px;
+		display: flex;
+		height: 80px;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	.stepSelector {
+		border-radius: 0;
+		height: 6vh;
+		width: 30vw;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		font-size: 4vw;
+	}
+
+	.userMobileLocation {
+		display: block;
+		width: 100vw;
+		height: auto;
+		position: fixed;
+		top: 0vh;
+		text-align: center;
+		padding: 5px 0;
+		font-weight: 700;
+
+	}
+
+}
 
 @keyframes scroll-left {
 	from {

@@ -10,6 +10,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from '!mapbox-gl';
 import React from 'react'
 
+import axios from 'axios'
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';
 
 export async function getStaticProps(){
@@ -71,6 +73,8 @@ export default class Main extends Component {
 
 		this.showCity = this.showCity.bind(this)
 		this.showDate = this.showDate.bind(this)
+
+		this.getDistance = this.getDistance.bind(this)
 
 		this.showDateRange = this.showDateRange.bind(this)
 
@@ -210,15 +214,83 @@ export default class Main extends Component {
 		return cities;
 	}
 
-	async showCity(city){
+	async getCityPopulation(cityName){
+		const options = {
+			method: 'GET',
+			url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/cities',
+			params: {
+				namePrefix: cityName
+			},
+			headers: {
+				'X-RapidAPI-Key': '0723996e51mshf188c3b5271df8ep163c94jsna1d1ebb9bc9a',
+				'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
+			}
+		};
+
+		axios.request(options)
+			.then(response => {
+				console.log("City Population", cityName, response.data);
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	}
+
+	async getAirportId(city) {
+		const res = await axios.get(
+			'https://booking-com15.p.rapidapi.com/api/v1/flights/searchDestination',
+			{
+				params: {
+					query: city
+				},
+				headers: {
+					'X-RapidAPI-Key': '0723996e51mshf188c3b5271df8ep163c94jsna1d1ebb9bc9a',
+					'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
+				}
+			}
+		);
+
+		console.log("Booking.Com Airport API", res.data.data)
+
+		// Find the main airport
+		const airport = res.data.data.find(
+			item => item.type === 'AIRPORT'
+		);
+
+		if (airport){
+			console.log("Airport CODE ", airport.code)	
+		}
+		
+		return {
+			name: airport?.name,
+			iata: airport?.code,          // e.g. "HAN"
+			id: airport?.id               // e.g. "HAN.AIRPORT"
+		};
+	}
+
+	async showCity(city, nation){
 		let cityData = this.state.uniqueCities
 			.filter(uniqueCity => uniqueCity.city === city)
 
-		console.log(cityData)
+		console.log("Showing", cityData[0])
+		console.log("Trading Economics", nation)
+
+		let population = await this.getCityPopulation(cityData[0].city)
+
+		let airport = null;
+		try {
+		  airport = await this.getAirportId(cityData[0].city);
+		  console.log('AIRPORT', airport);
+		} catch (err) {
+		  console.error(err.message);
+		}
+		
 
 		this.setState({
 			showingCity: !this.state.showingCity, 
-			activeCity: cityData[0]
+			activeCity: cityData[0],
+			activeNation: nation,
+			activeAirport: airport ? airport.iata : "N/A"
 		})
 
 		console.log(
@@ -226,6 +298,35 @@ export default class Main extends Component {
 			cityData, 
 			this.state.activeCity
 		)
+	}
+
+	async getPlaceName(lat, lng) {
+		const accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';;
+		// const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${accessToken}`;
+
+		const url =`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json` +`?types=place&limit=1&access_token=${accessToken}`;
+		
+		return await axios.get(url).then(res => {
+
+			let data = res.data
+			// console.log("Mapbox Data", data)	
+
+			let place_name = data.features[0].text
+			let place = data.features[0].place_name
+
+			let nation = place.split(',').pop().trim();
+			// console.log("Nation ", nation)
+
+			this.setState({
+				userPlace: place_name,
+				nation: nation
+			})
+
+			return {
+				city: place_name, 
+				nation: nation
+			}
+		});
 	}
 
 	async loadMap(chosenCities, stepSelection){
@@ -246,12 +347,15 @@ export default class Main extends Component {
 	    // console.log("Cities adding to Map", cities)
 
 		if (cities.length > 0){
-			cities.map(city => {
+			cities.map(async(city) => {
 				let sign = city.full_path.split("/")[2]
 				// console.log("Add to Map", city, sign)
 
 				const lng = city.lng 
-		    	const lat = city.lat 
+		    	const lat = city.lat
+
+		    	let locData = await this.getPlaceName(lat,lng)
+		    	// console.log("Get Loc Data", locData)
 
 		    	const popup = new mapboxgl
 		    		.Popup({ 
@@ -273,7 +377,8 @@ export default class Main extends Component {
 				el.addEventListener('click', (e) => {
 					// e.stopPropagation() 
 					// optional: prevent map click events
-					this.showCity(city.city)
+					this.showCity(city.city, locData.nation)
+
 					console.log('Marker clicked', { lng, lat })
 				})
 
@@ -625,14 +730,85 @@ export default class Main extends Component {
 		})
 	}
 
+	async getDistance(lat1, lon1, lat2, lon2) {
+		const R = 6371e3; // Earth radius in meters
+		const φ1 = lat1 * Math.PI / 180;
+		const φ2 = lat2 * Math.PI / 180;
+		const Δφ = (lat2 - lat1) * Math.PI / 180;
+		const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+		const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) *Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+		return R * c; // distance in meters
+	}
+
+	async getUserLocation(){
+		console.log("Getting User Location")
+
+		if (!navigator.geolocation) {
+	      console.log("No Location Service Avail")
+	      return;
+	    }
+
+	    navigator.geolocation.getCurrentPosition(
+			async(pos) => {
+				const loc = {
+					lat: pos.coords.latitude,
+					lng: pos.coords.longitude
+				};
+
+				console.log("User Location", loc)
+				this.setState({
+					userLat: loc.lat,
+					userLng: loc.lng
+				})
+
+				//////////////////////////////////////////
+				// Coordinate to Location Name
+				//////////////////////////////////////////
+				let userLocData = await this.getPlaceName(loc.lat, loc.lng)
+				console.log("User Place", userLocData)
+
+				this.setState({
+					place_name: userLocData.city
+				})
+
+			
+				//////////////////////////////////////////
+				// MEASURE DISTANCE BETWEEN 2 Coordinates
+				//////////////////////////////////////////
+
+				// const distanceMeters = await this.getDistance(
+				// 	loc.lat, loc.lng, // User Location
+				// 	this.state.lat, this.state.lng  // Other Cities
+				// );
+				// console.log("Distance", distanceMeters/1000, " KM")
+			},
+
+			err => {
+				console.warn("Geolocation denied", err);
+			},
+
+			{
+				enableHighAccuracy: false,
+				timeout: 5000
+			}
+	    );
+	}
+
 	componentDidMount(){
+		this.getUserLocation()
 		// Display all Cities and showing each Cities steps
 		// this.mapMode()
+
 
 		// Showing Expansion and Compression Steps
 		this.loadMap(this.props.fertileCities)
 		this.loadUniqueCities()
 		this.showDate()
+
+		
 
 		// this.intervalId = setInterval(() => {
 		// 	const city = this.state.cities[
@@ -661,7 +837,6 @@ export default class Main extends Component {
 
   		return (
   			<div>
-
   				<a 
   					className={styles.text}
   					href="/geogen"
@@ -676,6 +851,10 @@ export default class Main extends Component {
 	  			</div>
 
 	  			<div className={styles.timePanel}>
+	  				<div className={styles.locationStripe}>
+						User Location: {this.state.place_name}
+					</div>
+
 	  				<div className={styles.clock}>
 	  					{this.state.today} 
 	  				</div>
@@ -703,13 +882,11 @@ export default class Main extends Component {
 	  								})
 	  							}
 	  						</div>
-	  					:   <div> Date Range </div>
+	  					:   null
 	  				}
 	  			</div>
-
-
-	  			
-	  			<div className={styles.stepSelection}>
+	  				
+  				<div className={styles.stepSelection}>
 	  				<div 
 	  					className={`${styles.stepSelector} ${styles.expansion}`}
 	  					onClick={this.loadFertileCities}
@@ -722,7 +899,11 @@ export default class Main extends Component {
 	  				>  
 	  					Compression 
 	  				</div>
-	  			</div>
+  				</div>
+
+  				<div className={styles.userMobileLocation}>
+  					User Location: {this.state.place_name}
+  				</div>
 
 	  			<div className={styles.headLine}>
 	  				{this.state.headLine}
@@ -760,7 +941,7 @@ export default class Main extends Component {
 	  							src="https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no" 
 	  						/>
 	  						<div className={styles.cityName}>
-	  							{this.state.activeCity.city}
+	  							{this.state.activeCity.city} ({this.state.activeAirport})
 	  						</div>
 	  						{
 	  							this.state.activeCity.tactics.map(tactic => {
