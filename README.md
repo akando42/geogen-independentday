@@ -40,7 +40,10 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 [X] Coordinate to Nation ReverseGeocode
 
 [X] Show AIRPORT IATA CODE from Booking.Com
-[ ] Display Airfare Data
+
+[ ] Display Airfare Data From and To Global Airports basing current user locations
+
+[ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
 
 [ ] Display Trading Economics Average Income amd Population Data
 [ ] Display Weather Data
