@@ -1,4 +1,212 @@
-# The Red Sun Japanese Gene Pool Trapping In a Compacted 30 Million New York Style Metropolitan
+## GEOGEN Checklist
+[ ] Terrain via Mountain, Delta, Desert, Coastline, Ocean
+[ ] Weather Pattern via Wind, Rain and Temperature
+[ ] Major River, Water Reserve Lakes 
+
+[ ] Genetics Flow via Emigration, Immigration and Invasion. 
+[ ] The GeoGen Area major Gene Groups with their Common and Different features.
+
+[ ] Present and Past National Border
+[ ] Major Outputs via Exports, Needs for Import
+[ ] Trade Network via Sea Ports, Highway, Railways and AirFreight
+
+[ ] Internet Cable Port, News Sites, TV Anchors and Social Media Influencers
+[ ] Information Influences of the GeoGen Area to the outside World
+[ ] Secured Genetics Settlements outside of GeoGen Center
+
+## Terrain via Mountain, Delta, Desert, Coastline, Ocean
+
+- Mountainous terrain on the Western facing side of the Island of Japan
+
+- Two largest delta are Kyoto delta near Osaka port and Edo Delta near the Tokyo port city
+
+- Edo delta of Tokyo host more than 30 mililion Japanese like a Highly compacted CPU for maximum connections and connection speed. 
+
+- Westside of Japanese island is the Yellow Sea connecting to China and the Japanese sea connecting to Korea and Russia. 
+
+- Islandic Geography like England, Australia or The America allows Gene Island Fortress mode. Only the American Navy was able to alter Japanese genetics pool after WW2. 
+
+- Capital Tokyo and the EDO delta Sunrise East Facing results in tendency to project power toward the Pacifics with the Pearl Harbor campaign, battle of Midway and the High Tech investment in Silicon Valley. 
+
+- 4 main islands making up the countries: Kyushu, Shikoku, Honshu and Hokkaido. 
+
+- Kyoto and Tokyo is on the largest island of Honshu.
+
+- Kyushu island has the Western facing port of Fukuoka resulted in high Han Chinese influences as well as regular trade with Korea and China. 
+
+- Nagasaki of Kyushu and southern most city of Hiroshima on Honshu island was the two target for Nuclear strike by American bombers from Southern Island chain.
+
+- Japanese island is the Northern most islands among the Island chain connecting North East China toward South America that the Pacifics Islanders used to Island Hopping toward the America continent with their premative sailboats.  
+
+- Japanese Imperial Navy used the same islands chain to Island Hopping toward Australia but stopped the at battle of Coral Sea and battle of Midway.
+
+- American navy used the same Island chain to reverse-island-hopping from Australia and Hawaii toward the Japanese main island of Honshu.
+
+## Weather Pattern via Wind, Rain and Temperature
+
+- Experience Arctics climate with Hokkaido Northern most territorial in the same Climate Zone as Vladivostov, Moscow and other European cities. 
+
+- The Winter NorthEast SouthWest seasonal wind allowed Japanese traders to reach Vietnamese coastline just like the Chinese traders from Shanghai. 
+
+- Hokkaido island do not experience the Monsoon Raining season while three Southern Islands of Honshu, Kyushu and Shikoku experiences the Monsoon Raining season during Summmer resulting the same Wet Rice agriculture techniques finds common in China, South East Asia and Korea. 
+
+- Cold climate adaptation allowed the Japanese Army to have successful Winter campaigns against Korean, Manchu Chinese and Russian army during the Korean war and World War 2. 
+
+## Major River, Water Reserve Lakes 
+
+- Tone River like Ton Ngo Khong or WASHING-TON, is the Largest River flowing through the City of Tokyo and the Edo delta. 
+
+- Probably is the reason why most of Japanese population concerntrates on this Delta. 
+
+- Nagoya and Kyoto are two smaller deltas with small rivers draining from nearby mountain ranges toward the deltas. 
+
+- Edo delta area is 14,800 km2 larger than all of other deltas in Japanese islands combined but much smaller than the 580,000 km2 Yellow Yangzte delta. 
+
+- Tokyo Edo delta is much smaller in size and population than Yellow Yangzte delta but with More Connections in Shorter Distances resulted in comparable domestic product to Yellow Yangzte delta. 
+
+- Overworked population of Tokyo Edo delta with American military bases outside of Tokyo though is resulting in Lower Birth Rate and Aging population.
+
+- Maybe American or Russian surveilance and policing around Tokyo always can result in Food and Water Supply disruption. 
+
+## Genetics Flow via Emigration, Immigration and Invasion. 
+
+- Migrations from Western High Mountain range of Yunnan, Kunming could be the original Ancesters of both Yellow Yangzte delta and Japanese founder population. 
+
+- Ton Ngo Khong of Yunnan and Tone River Edo delta population could have highly similiar Genetics sequences. 
+
+- The ocean distance between Chinese coastal town near Shanghai and Honshu island of Japan resulted in Similiar but quite Different appearance and culture between Japan and China. 
+
+- After the EDO period in the 1600, Tokyo delta quickly industrialized with Western imported technology resulted in Reverse-migration from Honshu island back toward Korean Peninsula, Manchuria and Yellow Yangzte. 
+
+- Quantum leap updates in Industrial output and War capability allows Japanese army to quickly overrun Southeast Asian nations of Vietnam, Thailand, Taiwan and Philippine results in Japanese gene introduction toward these nations. 
+
+- After the American Yorktown Aircraft Carrier class defeated Japanese navy and dropped two bombs on 2 small cities of Hiroshima and Nagasaki, Japanese eggs were exported to America as well as new Japanese American babies being born on the Island of Japan following the War. 
+
+- After WW2, Japanese industrial advances allows Japanese to continue export Motorcycle, Cars, Water Pumps, Fridges as well as Genes toward South East Asian nations. 
+
+- After the Vietnam War, the Vietnamese victorious soldiers was also rewarded with new Japanese eggs and Bicycles made with Japanese tech.  
+
+- The Vietnamese Nguyen aka Ngu-Yen could be Mixed Japanese 
+
+- Taiwan is the Island with many mixed Chinese Japanese babies. 
+
+- Japanese of Hokkaido is highly similiar to Yarkut, Eskimo and Greenland and Canadian Inuit. 
+
+- Japanese of Honshu is highly simliar to Korean and Chinese.
+
+- Mongol failed Naval Invasion of Japan did not result in Mongol gene introduction on the Island of Japan. 
+
+## Present and Past National Border
+
+- Highly fragmented warring states between 3 largest delta of Edo Tokyo, Osaka Kyoto, Nagoya and other smaller islands. 
+
+- Fully United behind the largest EDO Tokyo delta in 16 century
+
+- Captured the Korean Peninsula, Manchuria and Taiwan during WW2. 
+
+- Captured Indochina peninsula and Indonesia during WW2. 
+
+- Failed to control the Pacifics or Siberia during WW2 because of the lack of Men power and Energy. 
+
+- Determined to Fugaku because of the population count awareness leading the potential WW3 of 2019.
+
+## Major Outputs via Exports, Needs for Import
+
+- Largest Export markets are US, China, South Korea and Indochina. 
+
+- Largest Export categories are Vehicles, Industrial Machines, Electrical and Electronics products. 
+
+- Largest Import partners are China, US, Australia, United Arab Emirate, Saudi Arabia, South Korea, Indochina and Indonesia. 
+
+- Largest Import Categories are Raw Minerals , Distilled Refined Energy products of Oil, Gas and others, Electrical components and Industrial machines. 
+
+- Lack of large Energy or Mineral deposits within Japanese islands and its surrouding water
+==> Need Energy from Indonesia, UAE and Saudi Arabia
+==> Need Minerals from China, Indochina and Australia
+==> Could get Rare Earth and Mineral blockage ==> Not able to produce High tech Electronics and Batteries
+==> Could get Oil and Gas blockage ==> Not able to have fuel to power cars, farming and industrial machines. 
+
+- Lack of Large Farming area ==> Low Carb High Seafood diet resuling in Skinnier Small Muscle Mass built in both Men and Women
+
+- Lack of Flatland for large human seattlement development, resulted in Highly compacted metro, high cost of housing ==> Japanese 21 century tendency to migrate abroad to Indochina for cheaper housing.
+
+## Trade Network via Sea Ports, Highway, Railways and AirFreight
+
+- Largest Seaports are Tokyo, Osaka and Nagoya
+
+- Highspeed 200 kilometer railways connecting NorthEast SouthWest Japanese major cities 
+
+- Narita Tokyo is the most famous International Airport connecting American West Coast cities and East Asian cities. 
+
+- Other major airports are Haneda of Tokyo and Osaka Kansai Internaional Airport
+
+- Fuel tankers travelling in predictable routes from the Middle East through the Persian Gulf, Indian Ocean, Trait of Mallaca to South Korean refineries and Japanese main island. 
+
+- Raw Material and Fuel tankers normally enter port of Osaka first, going through the Heavy Industry processing factories here. 
+
+- Heavy Industry processing factories outputs then get transfered via rails and ocean container to the port of Nagoya for Mass Manufacturing with Toyota largest factories here. 
+
+- Product research, design, engineering and well as Sales, Marketing and Financial planning happens in Tokyo metro. Only critical high precision high value components and parts would be manufactured around Tokyo. 
+
+- Largest manufacturers of Motorcycles like Yamaha and Kawasaki have their factories around Tokyo and export Motorcycles to international buyers via the port of Tokyo. 
+
+- Tokyo port with Japanese largest metro nearby is the largest Import hub for Consumer products. 
+
+- So Tokyo is the largest Import PORT for Consumer products, Osaka is the largest Import PORT for Raw Material and Nagoya is export PORT and domestic transfer PORT. 
+
+- Port of Osaka and Tokyo is more IN-dependable for foreign Sellers and Manufacturers.
+
+- Japanese females in Tokyo and Kyoto buying Food, Smartphones, Laptops, Productivity and Entertainment Softwares and Contents, Gasoline and High Tech Industrial machines from Foreign Sellers and Makers.  
+
+## Internet Cable Port, News Sites, TV Anchors and Social Media Influencers
+
+- Two largest Fiber Optics cable hubs of Japan are around Nagoya and Tokyo. 
+
+- Nagoya probably have more males than females internet users 
+- Tokyo probably have more females than males internet users
+
+- Port of Nagoya has direct connections with American military islands in Northern Mariana where they launched the Nuclear Bombers during WW2 so Males in Nagoya probably has lower Life Expectancy than males in Tokyo. 
+
+- Nagoya == NA-GOI-A ==> American turns Japanese into Sea Food here. 
+
+- Softbank is the largest Internet company in Japan, major investors in Yahoo, ARM, AirBNB, Uber, WeWork and other Silicon Valley unicorns. Its HQ is in Tokyo like other largest Japanese Engineering firms. 
+
+- Cars, Motorcycles, Planes and other advanced engineering projects designs and engineers in Tokyo, get send via Internet to Nagoya for Manufacturing.
+
+- Japanese Prime Minister Shinzo Abe born in Tokyo, his name means Shinzo Abe === Xin-Cho An-Bam, assasinated by American assasin maybe.
+
+- Japanese Prime Minister Fumio Kishida born in Hisoshima, his name means Fumio Kishida === Fuck-Me-Oi Ki-Sida. ==> Governing Japan while Japanese population got infected with HIV in large number.  
+
+- Current JP PM name is Sanae Takaichi == So-Ne Ta-Cai-Chi
+==> Future Japanese Monetary policy probably Higher Interest Rate and Stricter borrowing standard. 
+
+- Maybe Japanese do not control their Bedroom policies either or naming of their Babies ?
+
+- All Japanese probably always under Strict Surveilance from US via their Mobile Phone, Internet usage, TV usages and Book purchases, Library reading list and University education. 
+
+- Japanese do not have secrets in Japan, have to keep secrets abroad.
+
+## Information Influences of the GeoGen Area to the outside World
+
+- Teaching of Japanese languages to labors and students from Indochina and Indonesia. 
+
+- Readers of Japanese Manga and Cartoon movies in Europe and United States learn Japanese and travels to Japan. 
+
+- Aoki is the most famous East Asian Music DJ in Las Vegas. 
+
+- Japanese actors dominates Porn Movie Industry in California.  
+
+- Japanese probably has highest probability of success with White girls among East Asian in modern era. 
+
+## Secured Genetics Settlements outside of GeoGen Center 
+
+- Japan town in San Francisco and large Japanese population in California. 
+
+- Japanese high income and tech advances initially allows Japanese to have secured long-term residents in Hanoi. 
+
+- With Chinese and Russian expansion of influences in Red River delta, secured housing in Hanoi for Japanese has become super-spreading hub for HIV and Skin diceases. 
+
+- With NHK offices in Bangkok, Japanese probably can have easy longterm residences in Bangkok.  
 
 ## Research
 
@@ -95,7 +303,8 @@
 - Burke class destroyers are only defensive system that can intercept ballistic missiles like DF21 targeting Aircraft Carrier.
 
 - If China transfered DF21 to IRAN then they will have a chance to damage US Carrier Battlegroups but risked getting the Fuel Tankers intercepted by US NAVY. 
-Fuels from IRAN and RUSSIA will then needs to be transfered via land route to China. 
+
+- Fuels from IRAN and RUSSIA will then needs to be transfered via land route to China. 
 
 - Besides Japanese Navy, no Army or Navy in the world ever scratch an Aircraft Carrier. 
 
@@ -106,26 +315,6 @@ Fuels from IRAN and RUSSIA will then needs to be transfered via land route to Ch
 - HikVision cameras (made in China with Russian assistance) in Hanoi seems to give a lot of Japanese HIV and Starvation.  
 
 - Xi JinPing in Vietnamese translation is Binh Can Tap or "Army Needs More Real War Experiences"
-
-
-
-
-## GEOGEN Checklist
-[ ] Terrain via Mountain, Delta, Desert, Coastline, Ocean
-[ ] Weather Pattern via Wind, Rain and Temperature
-[ ] Major River, Water Reserve Lakes 
-
-[ ] Genetics Flow via Emigration, Immigration and Invasion. 
-[ ] The GeoGen Area major Gene Groups with their Common and Different features.
-[ ] Genetics flow of the GeoGen Area via migrations and invasions.
-
-[ ] Present and Past National Border
-[ ] Major Outputs via Exports, Needs for Import
-[ ] Trade Network via Sea Ports, Highway, Railways and AirFreight
-
-[ ] Internet Cable Port, News Sites, TV Anchors and Social Media Influencers
-[ ] Information Influences of the GeoGen Area to the outside World
-[ ] Secured Genetics Settlements outside of GeoGen Center
 
 
 ## Japan - Nation That Tips The Scale of Future World Order
