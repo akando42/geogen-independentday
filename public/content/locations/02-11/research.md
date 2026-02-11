@@ -58,6 +58,8 @@
 
 - Probably is the reason why most of Japanese population concerntrates on this Delta. 
 
+- Native American looks somewhat like Ton Ngo Khong or Tone River native maybe. 
+
 - Nagoya and Kyoto are two smaller deltas with small rivers draining from nearby mountain ranges toward the deltas. 
 
 - Edo delta area is 14,800 km2 larger than all of other deltas in Japanese islands combined but much smaller than the 580,000 km2 Yellow Yangzte delta. 
@@ -84,7 +86,7 @@
 
 - After WW2, Japanese industrial advances allows Japanese to continue export Motorcycle, Cars, Water Pumps, Fridges as well as Genes toward South East Asian nations. 
 
-- After the Vietnam War, the Vietnamese victorious soldiers was also rewarded with new Japanese eggs and Bicycles made with Japanese tech.  
+- After the Vietnam War, the Vietnamese victorious soldiers was also rewarded with new Japanese eggs and Thong Nhat Bicycles made with Japanese tech.  
 
 - The Vietnamese Nguyen aka Ngu-Yen could be Mixed Japanese 
 
