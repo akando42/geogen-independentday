@@ -41,6 +41,14 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Show AIRPORT IATA CODE from Booking.Com
 
+[X] Get Pricing Data from Hanoi to Places and From Places to Hanoi 3 months from Today. 
+
+[X] Display Flight In and Flight Out Cost from User Location 
+
+[ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
+
+[ ] Find Airport Near Current User Location
+
 [ ] Display Airfare Data From and To Global Airports basing current user locations
 
 [ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html

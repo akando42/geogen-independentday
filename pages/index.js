@@ -12,6 +12,8 @@ import React from 'react'
 
 import axios from 'axios'
 
+import CountUp from "@/components/CountUp"
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';
 
 export async function getStaticProps(){
@@ -56,7 +58,9 @@ export default class Main extends Component {
       			tactics: [
       				{}
       			]
-      		}
+      		},
+      		activeCityFlightIn: 0, 
+      		activeCityFlightOut: 0,
 		}
 
 		this.loadMap = this.loadMap.bind(this)
@@ -268,6 +272,97 @@ export default class Main extends Component {
 		};
 	}
 
+	async searchFlights(fromAirport, toAirport){
+		console.log("From AIRPORT ", fromAirport)
+		console.log("To AIRPORT", toAirport)
+
+		const startDate = new Date(this.state.today);
+		startDate.setMonth(startDate.getMonth() + 3);
+
+		let bookingDate = startDate.toISOString().split('T')[0];
+
+		console.log(
+			"Booking Fight For Date ", 
+			bookingDate
+		)
+
+		// Getting Flight In Data
+		await axios.get(
+          "https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice",
+          {
+            params: {
+              fromId: fromAirport,
+              toId: toAirport,
+              departDate: bookingDate,
+              cabinClass: "ECONOMY",
+              currency_code: "USD",
+            },
+            headers: {
+              "x-rapidapi-key": "0723996e51mshf188c3b5271df8ep163c94jsna1d1ebb9bc9a",
+              "x-rapidapi-host": "booking-com15.p.rapidapi.com",
+            },
+            withCredentials: true,
+          }
+        ).then(res => {
+        	let availFlights = res.data.data
+        	console.log("Avail Flights", availFlights)
+
+        	let flightIn = parseInt(
+        		availFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/availFlights.length
+        	)
+
+        	console.log(
+        		fromAirport, 
+        		toAirport,
+        		"Flight In in USD ", 
+        		flightIn
+        	)
+
+        	this.setState({
+        		activeCityFlightIn: flightIn
+        	})
+        });
+
+        // Getting Flight Out Data
+        await axios.get(
+          "https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice",
+          {
+            params: {
+              fromId: toAirport,
+              toId: fromAirport,
+              departDate: bookingDate,
+              cabinClass: "ECONOMY",
+              currency_code: "USD",
+            },
+            headers: {
+              "x-rapidapi-key": "0723996e51mshf188c3b5271df8ep163c94jsna1d1ebb9bc9a",
+              "x-rapidapi-host": "booking-com15.p.rapidapi.com",
+            },
+            withCredentials: true,
+          }
+        ).then(res => {
+        	let availFlights = res.data.data
+        	console.log("Avail Flights", availFlights)
+
+        	let flightOut = parseInt(
+        		availFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/availFlights.length
+        	)
+
+        	console.log(
+        		fromAirport, 
+        		toAirport,
+        		"Flight Out in USD ", 
+        		flightOut
+        	)
+
+        	console.log("Flight Out in USD ", flightOut)
+
+        	this.setState({
+        		activeCityFlightOut: flightOut
+        	})
+        });
+	}
+
 	async showCity(city, nation){
 		let cityData = this.state.uniqueCities
 			.filter(uniqueCity => uniqueCity.city === city)
@@ -276,13 +371,25 @@ export default class Main extends Component {
 		console.log("Trading Economics", nation)
 
 		let population = await this.getCityPopulation(cityData[0].city)
-
 		let airport = null;
+
 		try {
-		  airport = await this.getAirportId(cityData[0].city);
-		  console.log('AIRPORT', airport);
+			airport = await this.getAirportId(cityData[0].city);
+			// console.log('AIRPORT', airport);
+			// console.log('POPULATION', population);
+
+			let airportCode = airport.id
+			let hanoiCode = "HAN.AIRPORT"
+
+			// this.setState({
+	        // 	activeCityFlightIn: 0,
+	        // 	activeCityFlightOut: 0
+	        // })
+
+		  	this.searchFlights(airportCode, hanoiCode)
+
 		} catch (err) {
-		  console.error(err.message);
+		  	console.error(err.message);
 		}
 		
 
@@ -844,6 +951,7 @@ export default class Main extends Component {
   					GeoGen
   				</a>
 
+
 	  			<div
 	  				className={styles.map} 
 					ref={this.mapContainer}
@@ -940,9 +1048,39 @@ export default class Main extends Component {
 	  							className={styles.cityImage} 
 	  							src="https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no" 
 	  						/>
+
+	  						<div className={styles.cityFlightInfo}>
+	  							<div className={styles.flightCost}>
+	  								<img 
+	  									src="/Landing.png" 
+	  									className={styles.flightIcon}
+	  								/>
+	  								<div className={styles.flightExpense}>
+	  									<CountUp end={this.state.activeCityFlightIn} />
+	  								</div>
+	  								<div className={`${styles.currency} ${styles.currencyLeft}`}>
+	  									USD
+	  								</div>
+	  							</div>
+
+	  							<div className={styles.flightCost}>
+	  								<img 
+	  									src="/Takeoff.png" 
+	  									className={styles.flightIcon}
+	  								/>
+	  								<div className={styles.flightExpense}>
+	  									<CountUp end={this.state.activeCityFlightOut} />
+	  								</div>
+	  								<div className={`${styles.currency} ${styles.currencyRight}`}>
+	  									USD
+	  								</div>
+	  							</div>
+	  						</div>
+
 	  						<div className={styles.cityName}>
 	  							{this.state.activeCity.city} ({this.state.activeAirport})
 	  						</div>
+
 	  						{
 	  							this.state.activeCity.tactics.map(tactic => {
 

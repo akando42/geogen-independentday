@@ -242,6 +242,66 @@
 	width: 100%;
 }
 
+.cityFlightInfo {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: auto;
+	margin: 30px 30px;
+}
+
+.flightCost {
+	margin: 0 20px;
+	width: 30%;
+	height: 100%;
+	border-radius: 20px;
+	border: 2px solid red;
+	padding: 10px 0 0 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.currency {
+	position: absolute;
+	background-color: red;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	z-index: 3;
+	
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.currencyLeft {
+	bottom: -20px;
+	left: -10px;
+}
+
+.currencyRight {
+	bottom: -20px;
+	right: -10px;
+}
+
+.flightIcon {
+	width: 60%;
+	/*background-color: red;*/
+}
+
+.flightExpense {
+	padding: 10px 0;
+	font-size: 30px;
+}
+
 .cityName {
 	padding: 20px;
 	font-weight: 700;
