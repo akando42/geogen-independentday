@@ -47,13 +47,14 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
 
-[ ] Find Airport Near Current User Location
+[ ] Find Airport Near Current User Location or Ask User to Select
 
 [ ] Display Airfare Data From and To Global Airports basing current user locations
 
 [ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
 
-[ ] Display Trading Economics Average Income amd Population Data
+[ ] Display Average Income 
+[ ] Display Import Export Items from Trading Economics
 [ ] Display Weather Data
 
 [ ] Show Images of People from the City (Instagram)

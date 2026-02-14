@@ -277,90 +277,66 @@ export default class Main extends Component {
 		console.log("To AIRPORT", toAirport)
 
 		const startDate = new Date(this.state.today);
-		startDate.setMonth(startDate.getMonth() + 3);
-
+		startDate.setMonth(startDate.getMonth() + 3)
 		let bookingDate = startDate.toISOString().split('T')[0];
 
-		console.log(
-			"Booking Fight For Date ", 
-			bookingDate
-		)
+		// const nextDate = new Date(
+		//   new Date(bookingDate).setDate(new Date(bookingDate).getDate() + 1)
+		// ).toISOString().split('T')[0];
+
+		// console.log(
+		// 	"Booking Fight For Date ", 
+		// 	bookingDate,
+		// 	nextDate
+		// )
 
 		// Getting Flight In Data
-		await axios.get(
-          "https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice",
-          {
-            params: {
-              fromId: fromAirport,
-              toId: toAirport,
-              departDate: bookingDate,
-              cabinClass: "ECONOMY",
-              currency_code: "USD",
-            },
-            headers: {
-              "x-rapidapi-key": "0723996e51mshf188c3b5271df8ep163c94jsna1d1ebb9bc9a",
-              "x-rapidapi-host": "booking-com15.p.rapidapi.com",
-            },
-            withCredentials: true,
-          }
-        ).then(res => {
-        	let availFlights = res.data.data
-        	console.log("Avail Flights", availFlights)
+		let payloadIn =  {
+      fromId: fromAirport,
+      toId: toAirport,
+      departDate: bookingDate,
+      cabinClass: "ECONOMY",
+      currency_code: "USD",
+    }
 
-        	let flightIn = parseInt(
-        		availFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/availFlights.length
-        	)
+    let inFlights = await axios.post(
+    	"/api/searchFlights",
+    	payloadIn
+    ).then(res => {
+    	console.log("FLIGHT IN DATA ", bookingDate, res.data.flights)
+    	return res.data.flights
+    })    
 
-        	console.log(
-        		fromAirport, 
-        		toAirport,
-        		"Flight In in USD ", 
-        		flightIn
-        	)
+  	let flightIn = parseInt(
+  		inFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/inFlights.length
+  	)
 
-        	this.setState({
-        		activeCityFlightIn: flightIn
-        	})
-        });
+  	console.log(fromAirport, toAirport,"Flight In in USD ", flightIn)
+  	this.setState({ activeCityFlightIn: flightIn})
 
-        // Getting Flight Out Data
-        await axios.get(
-          "https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice",
-          {
-            params: {
-              fromId: toAirport,
-              toId: fromAirport,
-              departDate: bookingDate,
-              cabinClass: "ECONOMY",
-              currency_code: "USD",
-            },
-            headers: {
-              "x-rapidapi-key": "0723996e51mshf188c3b5271df8ep163c94jsna1d1ebb9bc9a",
-              "x-rapidapi-host": "booking-com15.p.rapidapi.com",
-            },
-            withCredentials: true,
-          }
-        ).then(res => {
-        	let availFlights = res.data.data
-        	console.log("Avail Flights", availFlights)
+  	// Getting Flight Out Data
+  	let payloadOut =  {
+      fromId: toAirport,
+      toId: fromAirport,
+      departDate: bookingDate,
+      cabinClass: "ECONOMY",
+      currency_code: "USD",
+    }
 
-        	let flightOut = parseInt(
-        		availFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/availFlights.length
-        	)
+    let outFlights = await axios.post(
+    	"/api/searchFlights",
+    	payloadOut
+    ).then(res => {
+    	console.log("FLIGHT OUT DATA ", bookingDate, res.data.flights)
+    	return res.data.flights
+    })
 
-        	console.log(
-        		fromAirport, 
-        		toAirport,
-        		"Flight Out in USD ", 
-        		flightOut
-        	)
+  	let flightOut = parseInt(
+  		outFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/outFlights.length
+  	)
 
-        	console.log("Flight Out in USD ", flightOut)
-
-        	this.setState({
-        		activeCityFlightOut: flightOut
-        	})
-        });
+  	console.log(toAirport, fromAirport,"Flight Out in USD ", flightOut)
+  	this.setState({ activeCityFlightOut: flightOut })
 	}
 
 	async showCity(city, nation){
@@ -370,26 +346,20 @@ export default class Main extends Component {
 		console.log("Showing", cityData[0])
 		console.log("Trading Economics", nation)
 
-		let population = await this.getCityPopulation(cityData[0].city)
+		// let population = await this.getCityPopulation(cityData[0].city)
+		// console.log('POPULATION', population);
 		let airport = null;
 
 		try {
 			airport = await this.getAirportId(cityData[0].city);
 			// console.log('AIRPORT', airport);
-			// console.log('POPULATION', population);
-
+			
 			let airportCode = airport.id
 			let hanoiCode = "HAN.AIRPORT"
-
-			// this.setState({
-	        // 	activeCityFlightIn: 0,
-	        // 	activeCityFlightOut: 0
-	        // })
-
-		  	this.searchFlights(airportCode, hanoiCode)
+		  await this.searchFlights(hanoiCode, airportCode)
 
 		} catch (err) {
-		  	console.error(err.message);
+		  console.error(err.message);
 		}
 		
 
@@ -938,272 +908,269 @@ export default class Main extends Component {
   		clearInterval(this.intervalId)
 	}
   
-  	render(){
-  	
-  		
-
-  		return (
-  			<div>
-  				<a 
-  					className={styles.text}
-  					href="/geogen"
-  				> 
-  					GeoGen
-  				</a>
+	render(){
+		return (
+			<div>
+				<a 
+					className={styles.text}
+					href="/geogen"
+				> 
+					GeoGen
+				</a>
 
 
-	  			<div
-	  				className={styles.map} 
-					ref={this.mapContainer}
-	  			>
-	  			</div>
-
-	  			<div className={styles.timePanel}>
-	  				<div className={styles.locationStripe}>
-						User Location: {this.state.place_name}
-					</div>
-
-	  				<div className={styles.clock}>
-	  					{this.state.today} 
-	  				</div>
-
-	  				<div className={styles.independentDate}>
-	  					<div 
-	  						className={styles.inButton}
-	  						onClick={this.showDateRange}
-	  					>
-	  						Upcoming Independent Day
-	  					</div>
-	  				</div>
-
-	  				{
-	  					this.state.showingDates 
-	  					?	<div className={styles.dateRange}>
-	  							{	
-	  								this.state.sortedRange.map(date => {
-	  									return (
-	  										<div className={styles.nextDate}>
-							  					<div>{date.city}</div>
-							  					<div>{date.date}</div>
-							  				</div>
-	  									)
-	  								})
-	  							}
-	  						</div>
-	  					:   null
-	  				}
-	  			</div>
-	  				
-  				<div className={styles.stepSelection}>
-	  				<div 
-	  					className={`${styles.stepSelector} ${styles.expansion}`}
-	  					onClick={this.loadFertileCities}
-	  				> 
-	  					Expansion 
-	  				</div>
-	  				<div 
-	  					className={`${styles.stepSelector} ${styles.compression}`}
-	  					onClick={this.loadSelfharmCities}
-	  				>  
-	  					Compression 
-	  				</div>
-  				</div>
-
-  				<div className={styles.userMobileLocation}>
-  					User Location: {this.state.place_name}
-  				</div>
-
-	  			<div className={styles.headLine}>
-	  				{this.state.headLine}
-	  			</div>
-
-	  			{/* 
-	  			<div className={styles.citySlides}>
-	  				<div className={styles.track}>
-	  					{	
-	  						this.state.uniqueCities.map(city => {
-	  							return (
-	  								<div 
-	  									className={styles.city}
-	  									KEY={city.city}
-	  									onClick={this.flyTo}
-	  									data-lng={city.lng}
-	  									data-lat={city.lat}
-	  								>
-	  									{city.city}
-	  								</div>
-	  							)
-	  						})
-	  					}
-	  				</div>
-	  			</div>
-	  			*/}
-
-	  			{
-	  				this.state.showingCity && this.state.activeCity
-	  				? 	<div 
-	  						className={styles.cityStories}
-	  					>
-	  						<img
-	  							className={styles.cityImage} 
-	  							src="https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no" 
-	  						/>
-
-	  						<div className={styles.cityFlightInfo}>
-	  							<div className={styles.flightCost}>
-	  								<img 
-	  									src="/Landing.png" 
-	  									className={styles.flightIcon}
-	  								/>
-	  								<div className={styles.flightExpense}>
-	  									<CountUp end={this.state.activeCityFlightIn} />
-	  								</div>
-	  								<div className={`${styles.currency} ${styles.currencyLeft}`}>
-	  									USD
-	  								</div>
-	  							</div>
-
-	  							<div className={styles.flightCost}>
-	  								<img 
-	  									src="/Takeoff.png" 
-	  									className={styles.flightIcon}
-	  								/>
-	  								<div className={styles.flightExpense}>
-	  									<CountUp end={this.state.activeCityFlightOut} />
-	  								</div>
-	  								<div className={`${styles.currency} ${styles.currencyRight}`}>
-	  									USD
-	  								</div>
-	  							</div>
-	  						</div>
-
-	  						<div className={styles.cityName}>
-	  							{this.state.activeCity.city} ({this.state.activeAirport})
-	  						</div>
-
-	  						{
-	  							this.state.activeCity.tactics.map(tactic => {
-
-	  								let selectedTactic = tactic.tactic.replace(/_/g, ' ')
-	  								let sign = tactic.path.split("/")[2]
-	  								
-	  								return (
-	  									<a 
-	  										className={
-												sign === "Expansion"
-											  	? styles.tacticLink
-											  	: styles.negTacticLink
-											}
-	  										href={tactic.path}
-	  									>
-	  										{selectedTactic}
-	  									</a>
-	  								)
-	  							})
-	  						}
-	  					</div>
-	  				: 	null
-	  			}
-
-	  			<div className={styles.slides}>
-	  				<div className={styles.track}>
-	  				{
-	  					this.state.sign === "Expansion"
-	  					? 	this.props.fertileSteps.map(step => {
-		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-		  						// console.log("tactic ", tactic)
-
-		  						return (
-		  							<div 
-		  								className={styles.step}
-		  								onClick={this.selectTactic}
-		  								data-tactic={step.tactic}
-		  								data-sign="Expansion"
-		  							>
-		  								{tactic}
-		  							</div>
-		  						)
-		  					})
-			  			: 	null
-
-	  				}
-
-	  				{
-	  					this.state.sign === "Compression"
-	  					?	this.props.selfharmSteps.map(step => {
-		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-		  						// console.log("tactic ", tactic)
-		  						return (
-		  							<div 
-		  								className={styles.selfharmStep}
-		  								onClick={this.selectTactic}
-		  								data-tactic={step.tactic}
-		  								data-sign="Compression"
-		  							>
-		  								{tactic}
-		  							</div>
-		  						)
-		  					})
-	  					:   null
-	  				}
-
-	  				{
-	  					this.state.sign === "Expansion"
-	  					? 	this.props.fertileSteps.map(step => {
-		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-		  						// console.log("tactic ", tactic)
-
-		  						return (
-		  							<div 
-		  								className={styles.step}
-		  								onClick={this.selectTactic}
-		  								data-tactic={step.tactic}
-		  								data-sign="Expansion"
-		  							>
-		  								{tactic}
-		  							</div>
-		  						)
-		  					})
-			  			: 	null
-
-	  				}
-
-	  				{
-	  					this.state.sign === "Compression"
-	  					?	this.props.selfharmSteps.map(step => {
-		  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-		  						// console.log("tactic ", tactic)
-		  						return (
-		  							<div 
-		  								className={styles.selfharmStep}
-		  								onClick={this.selectTactic}
-		  								data-tactic={step.tactic}
-		  								data-sign="Compression"
-		  							>
-		  								{tactic}
-		  							</div>
-		  						)
-		  					})
-	  					:   null
-	  				}
-	  				</div>
-	  			</div>
-	  			
-  				{/**
-	  			<div>GeoGenetics</div>
-	  			<div>Independent Dates Fun </div>
-	  			{	 
-	  				this.props.dates.map(date => {
-	  					return ( 
-	  						<div className={styles.dateCard}> 
-	  							<div>{date.independent_date}</div>
-	  							<div>{date.city}</div>
-	  						</div> 
-	  					)
-	  				})
-	  			}
-	  			 **/}
+  			<div
+  				className={styles.map} 
+				ref={this.mapContainer}
+  			>
   			</div>
-  		)
-  	}
+
+  			<div className={styles.timePanel}>
+  				<div className={styles.locationStripe}>
+					User Location: {this.state.place_name}
+				</div>
+
+  				<div className={styles.clock}>
+  					{this.state.today} 
+  				</div>
+
+  				<div className={styles.independentDate}>
+  					<div 
+  						className={styles.inButton}
+  						onClick={this.showDateRange}
+  					>
+  						Upcoming Independent Day
+  					</div>
+  				</div>
+
+  				{
+  					this.state.showingDates 
+  					?	<div className={styles.dateRange}>
+  							{	
+  								this.state.sortedRange.map(date => {
+  									return (
+  										<div className={styles.nextDate}>
+						  					<div>{date.city}</div>
+						  					<div>{date.date}</div>
+						  				</div>
+  									)
+  								})
+  							}
+  						</div>
+  					:   null
+  				}
+  			</div>
+  				
+				<div className={styles.stepSelection}>
+  				<div 
+  					className={`${styles.stepSelector} ${styles.expansion}`}
+  					onClick={this.loadFertileCities}
+  				> 
+  					Expansion 
+  				</div>
+  				<div 
+  					className={`${styles.stepSelector} ${styles.compression}`}
+  					onClick={this.loadSelfharmCities}
+  				>  
+  					Compression 
+  				</div>
+				</div>
+
+				<div className={styles.userMobileLocation}>
+					User Location: {this.state.place_name}
+				</div>
+
+  			<div className={styles.headLine}>
+  				{this.state.headLine}
+  			</div>
+
+  			{/* 
+  			<div className={styles.citySlides}>
+  				<div className={styles.track}>
+  					{	
+  						this.state.uniqueCities.map(city => {
+  							return (
+  								<div 
+  									className={styles.city}
+  									KEY={city.city}
+  									onClick={this.flyTo}
+  									data-lng={city.lng}
+  									data-lat={city.lat}
+  								>
+  									{city.city}
+  								</div>
+  							)
+  						})
+  					}
+  				</div>
+  			</div>
+  			*/}
+
+  			{
+  				this.state.showingCity && this.state.activeCity
+  				? 	<div 
+  						className={styles.cityStories}
+  					>
+  						<img
+  							className={styles.cityImage} 
+  							src="https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no" 
+  						/>
+
+  						<div className={styles.cityFlightInfo}>
+  							<div className={styles.flightCost}>
+  								<img 
+  									src="/Landing.png" 
+  									className={styles.flightIcon}
+  								/>
+  								<div className={styles.flightExpense}>
+  									<CountUp end={this.state.activeCityFlightIn} />
+  								</div>
+  								<div className={`${styles.currency} ${styles.currencyLeft}`}>
+  									USD
+  								</div>
+  							</div>
+
+  							<div className={styles.flightCost}>
+  								<img 
+  									src="/Takeoff.png" 
+  									className={styles.flightIcon}
+  								/>
+  								<div className={styles.flightExpense}>
+  									<CountUp end={this.state.activeCityFlightOut} />
+  								</div>
+  								<div className={`${styles.currency} ${styles.currencyRight}`}>
+  									USD
+  								</div>
+  							</div>
+  						</div>
+
+  						<div className={styles.cityName}>
+  							{this.state.activeCity.city} ({this.state.activeAirport})
+  						</div>
+
+  						{
+  							this.state.activeCity.tactics.map(tactic => {
+
+  								let selectedTactic = tactic.tactic.replace(/_/g, ' ')
+  								let sign = tactic.path.split("/")[2]
+  								
+  								return (
+  									<a 
+  										className={
+											sign === "Expansion"
+										  	? styles.tacticLink
+										  	: styles.negTacticLink
+										}
+  										href={tactic.path}
+  									>
+  										{selectedTactic}
+  									</a>
+  								)
+  							})
+  						}
+  					</div>
+  				: 	null
+  			}
+
+  			<div className={styles.slides}>
+  				<div className={styles.track}>
+  				{
+  					this.state.sign === "Expansion"
+  					? 	this.props.fertileSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						// console.log("tactic ", tactic)
+
+	  						return (
+	  							<div 
+	  								className={styles.step}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Expansion"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+		  			: 	null
+
+  				}
+
+  				{
+  					this.state.sign === "Compression"
+  					?	this.props.selfharmSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						// console.log("tactic ", tactic)
+	  						return (
+	  							<div 
+	  								className={styles.selfharmStep}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Compression"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+  					:   null
+  				}
+
+  				{
+  					this.state.sign === "Expansion"
+  					? 	this.props.fertileSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						// console.log("tactic ", tactic)
+
+	  						return (
+	  							<div 
+	  								className={styles.step}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Expansion"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+		  			: 	null
+
+  				}
+
+  				{
+  					this.state.sign === "Compression"
+  					?	this.props.selfharmSteps.map(step => {
+	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+	  						// console.log("tactic ", tactic)
+	  						return (
+	  							<div 
+	  								className={styles.selfharmStep}
+	  								onClick={this.selectTactic}
+	  								data-tactic={step.tactic}
+	  								data-sign="Compression"
+	  							>
+	  								{tactic}
+	  							</div>
+	  						)
+	  					})
+  					:   null
+  				}
+  				</div>
+  			</div>
+  			
+				{/**
+  			<div>GeoGenetics</div>
+  			<div>Independent Dates Fun </div>
+  			{	 
+  				this.props.dates.map(date => {
+  					return ( 
+  						<div className={styles.dateCard}> 
+  							<div>{date.independent_date}</div>
+  							<div>{date.city}</div>
+  						</div> 
+  					)
+  				})
+  			}
+  			 **/}
+			</div>
+		)
+	}
 }
