@@ -45,20 +45,27 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Display Flight In and Flight Out Cost from User Location 
 
+[ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
+
+[ ] Display Import Export Items from Trading Economics
+[ ] Display Average Income 
+
+[ ] Show Images of People from the City (Instagram)
+[ ] Show Images of Food from the City (Yelp)
+[ ] Show Images of Architecture from the City (Google Map)
+
 [ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
 
 [ ] Find Airport Near Current User Location or Ask User to Select
 
 [ ] Display Airfare Data From and To Global Airports basing current user locations
 
-[ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
 
-[ ] Display Average Income 
-[ ] Display Import Export Items from Trading Economics
+
+
+
 [ ] Display Weather Data
 
-[ ] Show Images of People from the City (Instagram)
-[ ] Show Images of Food from the City (Yelp)
-[ ] Show Images of Architecture from the City (Google Map)
+
 
 

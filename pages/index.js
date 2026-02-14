@@ -449,7 +449,7 @@ export default class Main extends Component {
 		    	const el = document.createElement('div')
 
 				el.className = (sign === "Expansion") ? 'red-dot-marker' : 'black-dot-marker'
-				el.innerHTML = '<span class="ping"></span>'
+				el.innerHTML = '<div class="dot"><span class="ping"></span></div>'
 
 				el.addEventListener('click', (e) => {
 					// e.stopPropagation() 

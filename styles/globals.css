@@ -38,6 +38,25 @@ a {
   animation: ping 1.8s ease-out infinite;
 }
 
+.red-dot-marker .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: red;
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+
+.red-dot-marker:hover .dot {
+  transform: scale(2.1);
+  border: 2px solid white;
+}
+
+.red-dot-marker:active .dot {
+  transform: scale(0.9);
+  border: 2px solid white;
+}
+
 
 .black-dot-marker {
   position: relative;
@@ -47,6 +66,37 @@ a {
   border-radius: 50%;
   box-shadow: 0 0 0 2px #fff;
   pointer-events: auto;
+}
+
+.black-dot-marker .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: black;
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+
+.black-dot-marker:hover .dot {
+  transform: scale(2.1);
+  border: 2px solid white;
+}
+
+.black-dot-marker:active .dot {
+  transform: scale(0.9);
+  border: 2px solid white;
+}
+
+.black-dot-marker .ping {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ping 1.8s ease-out infinite;
 }
 
 @keyframes ping {
