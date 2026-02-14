@@ -364,7 +364,7 @@ export default class Main extends Component {
 		
 
 		this.setState({
-			showingCity: !this.state.showingCity, 
+			showingCity: true, 
 			activeCity: cityData[0],
 			activeNation: nation,
 			activeAirport: airport ? airport.iata : "N/A"
@@ -478,6 +478,13 @@ export default class Main extends Component {
 		    	
 			})
 		}
+
+		map.on("click", (e) => {
+			console.log("Clicking on Map")
+			this.setState({
+				showingCity: false
+			})
+		})
 
 		this.setState({
 			map: map
@@ -885,8 +892,6 @@ export default class Main extends Component {
 		this.loadUniqueCities()
 		this.showDate()
 
-		
-
 		// this.intervalId = setInterval(() => {
 		// 	const city = this.state.cities[
 		// 		Math.floor(Math.random() * this.state.cities.length)
@@ -1018,29 +1023,67 @@ export default class Main extends Component {
 
   						<div className={styles.cityFlightInfo}>
   							<div className={styles.flightCost}>
-  								<img 
-  									src="/Landing.png" 
-  									className={styles.flightIcon}
-  								/>
+  								
+  								<div className={styles.iconContainer}>
+	  								<img 
+	  									src="/Landing.png" 
+	  									className={styles.flightIcon}
+	  								/>
+	  							</div>
+
   								<div className={styles.flightExpense}>
-  									<CountUp end={this.state.activeCityFlightIn} />
+  									$<CountUp end={this.state.activeCityFlightIn} />
   								</div>
+  								
+  								<div className={styles.statsTitle}> 
+  									Flight In 
+  								</div>
+  								{/*
   								<div className={`${styles.currency} ${styles.currencyLeft}`}>
   									USD
   								</div>
+  								*/}
   							</div>
 
   							<div className={styles.flightCost}>
-  								<img 
-  									src="/Takeoff.png" 
-  									className={styles.flightIcon}
-  								/>
+
+  								<div className={styles.iconContainer}>
+	  								<img 
+	  									src="/Takeoff.png" 
+	  									className={styles.flightIcon}
+	  								/>
+	  							</div>
+
   								<div className={styles.flightExpense}>
-  									<CountUp end={this.state.activeCityFlightOut} />
+  									$<CountUp end={this.state.activeCityFlightOut} />
   								</div>
+
+  								<div className={styles.statsTitle}> 
+  									Flight Out 
+  								</div>
+  								
+  								{/*
   								<div className={`${styles.currency} ${styles.currencyRight}`}>
   									USD
   								</div>
+  								*/}
+  							</div>
+
+  							<div className={styles.flightCost}>
+  								<div className={styles.iconContainer}>
+	  								<img 
+	  									src="/Avg_Monthy_Income.svg" 
+	  									className={styles.flightIcon}
+	  								/>
+	  							</div>
+
+	  							<div className={styles.flightExpense}>
+	  								$<CountUp end="3200" />
+	  							</div>
+
+	  							<div className={styles.statsTitle}> 
+	  								Avg Month Income 
+	  							</div>
   							</div>
   						</div>
 

@@ -249,21 +249,21 @@
 	justify-content: center;
 	width: 100%;
 	height: auto;
-	margin: 30px 30px;
+	margin: 30px 10px;
 }
 
 .flightCost {
-	margin: 0 20px;
+	margin: 0 5px;
+	height: 16vh;
 	width: 30%;
-	height: 100%;
 	border-radius: 20px;
-	border: 2px solid red;
 	padding: 10px 0 0 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 	position: relative;
+	font-size: 12px;
 }
 
 .currency {
@@ -292,14 +292,31 @@
 	right: -10px;
 }
 
+
+.iconContainer {
+	width: 4vw;
+	height: 4vw;
+	border: 3px solid red;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 .flightIcon {
-	width: 60%;
-	/*background-color: red;*/
+	width: 80%;
 }
 
 .flightExpense {
 	padding: 10px 0;
-	font-size: 30px;
+	font-size: 21px;
+	height: 4vh;
+	font-weight: 700;
+}
+
+.statsTitle {
+	font-weight: 700;
 }
 
 .cityName {
