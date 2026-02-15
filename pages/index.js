@@ -972,7 +972,6 @@ export default class Main extends Component {
 					User Location: {this.state.place_name}
 				</div>
 
-				{/* 
 				<div className={styles.clock}>
 					{this.state.today} 
 				</div>
@@ -985,7 +984,6 @@ export default class Main extends Component {
 						Upcoming Independent Day
 					</div>
 				</div>
-				*/}
 
 				{
 					this.state.showingDates 
