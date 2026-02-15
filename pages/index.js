@@ -61,6 +61,7 @@ export default class Main extends Component {
       		},
       		activeCityFlightIn: 0, 
       		activeCityFlightOut: 0,
+      		activeCityImport: ''
 		}
 
 		this.loadMap = this.loadMap.bind(this)
@@ -273,8 +274,8 @@ export default class Main extends Component {
 	}
 
 	async searchFlights(fromAirport, toAirport){
-		console.log("From AIRPORT ", fromAirport)
-		console.log("To AIRPORT", toAirport)
+		// console.log("From AIRPORT ", fromAirport)
+		// console.log("To AIRPORT", toAirport)
 
 		const startDate = new Date(this.state.today);
 		startDate.setMonth(startDate.getMonth() + 3)
@@ -303,7 +304,7 @@ export default class Main extends Component {
     	"/api/searchFlights",
     	payloadIn
     ).then(res => {
-    	console.log("FLIGHT IN DATA ", bookingDate, res.data.flights)
+    	// console.log("FLIGHT IN DATA ", bookingDate, res.data.flights)
     	return res.data.flights
     })    
 
@@ -311,7 +312,7 @@ export default class Main extends Component {
   		inFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/inFlights.length
   	)
 
-  	console.log(fromAirport, toAirport,"Flight In in USD ", flightIn)
+  	// console.log(fromAirport, toAirport,"Flight In in USD ", flightIn)
   	this.setState({ activeCityFlightIn: flightIn})
 
   	// Getting Flight Out Data
@@ -327,7 +328,7 @@ export default class Main extends Component {
     	"/api/searchFlights",
     	payloadOut
     ).then(res => {
-    	console.log("FLIGHT OUT DATA ", bookingDate, res.data.flights)
+    	// console.log("FLIGHT OUT DATA ", bookingDate, res.data.flights)
     	return res.data.flights
     })
 
@@ -335,16 +336,40 @@ export default class Main extends Component {
   		outFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/outFlights.length
   	)
 
-  	console.log(toAirport, fromAirport,"Flight Out in USD ", flightOut)
+  	// console.log(toAirport, fromAirport,"Flight Out in USD ", flightOut)
   	this.setState({ activeCityFlightOut: flightOut })
 	}
 
+	async importExport(nation){
+
+		let exportCategories = await axios.get(`/api/export?country=${nation}`)
+		let exportData = exportCategories.data.sort((a,b) => (a - b))
+		console.log("Export ", nation, exportData)
+
+		let importCategories = await axios.get(`/api/import?country=${nation}`)
+		let importData = importCategories.data.sort((a,b) => (a - b))
+		console.log("Import ", nation, importData)
+
+		return {
+			exportData: exportData.slice(0,3),
+			importData: importData.slice(0,3)
+		}
+
+	}
+
 	async showCity(city, nation){
+
 		let cityData = this.state.uniqueCities
 			.filter(uniqueCity => uniqueCity.city === city)
 
+		// this.setState({
+		// 	activeCity: cityData[0],
+		// 	showingCity: true
+		// })
+
 		console.log("Showing", cityData[0])
 		console.log("Trading Economics", nation)
+		console.log("Showing City",this.state.showingCity)
 
 		// let population = await this.getCityPopulation(cityData[0].city)
 		// console.log('POPULATION', population);
@@ -353,16 +378,25 @@ export default class Main extends Component {
 		try {
 			airport = await this.getAirportId(cityData[0].city);
 			// console.log('AIRPORT', airport);
-			
 			let airportCode = airport.id
 			let hanoiCode = "HAN.AIRPORT"
 		  await this.searchFlights(hanoiCode, airportCode)
-
 		} catch (err) {
 		  console.error(err.message);
 		}
-		
 
+		try {
+			let importExport = await this.importExport(nation)
+			console.log(importExport)
+
+			this.setState({
+				activeCityImport: importExport.importData
+			})
+
+		} catch (err){
+			console.error(err.message)
+		}
+		
 		this.setState({
 			showingCity: true, 
 			activeCity: cityData[0],
@@ -370,11 +404,13 @@ export default class Main extends Component {
 			activeAirport: airport ? airport.iata : "N/A"
 		})
 
-		console.log(
-			city, 
-			cityData, 
-			this.state.activeCity
-		)
+		
+
+		// console.log(
+		// 	city, 
+		// 	cityData, 
+		// 	this.state.activeCity
+		// )
 	}
 
 	async getPlaceName(lat, lng) {
@@ -412,16 +448,16 @@ export default class Main extends Component {
 		const optimalZoom = mobileOrNot.matches && this.state.cities.length > 1 ? 1.2 : zoom ;
 
 		const map = new mapboxgl.Map({
-	        container: this.mapContainer.current,
-	        style: 'mapbox://styles/hillodesign/clb95v8zd000v15nudmodao0i',
-	        center: [lng, lat],
-	        projection: 'mercator',
-	        zoom: optimalZoom
-	    });
+        container: this.mapContainer.current,
+        style: 'mapbox://styles/hillodesign/clb95v8zd000v15nudmodao0i',
+        center: [lng, lat],
+        projection: 'mercator',
+        zoom: optimalZoom
+    });
 		// console.log("Load Map for ", chosenCities)
 
-	    let cities = await this.getData(chosenCities)
-	    // console.log("Cities adding to Map", cities)
+	  let cities = await this.getData(chosenCities)
+	  // console.log("Cities adding to Map", cities)
 
 		if (cities.length > 0){
 			cities.map(async(city) => {
@@ -429,24 +465,24 @@ export default class Main extends Component {
 				// console.log("Add to Map", city, sign)
 
 				const lng = city.lng 
-		    	const lat = city.lat
+	    	const lat = city.lat
 
-		    	let locData = await this.getPlaceName(lat,lng)
-		    	// console.log("Get Loc Data", locData)
+	    	let locData = await this.getPlaceName(lat,lng)
+	    	// console.log("Get Loc Data", locData)
 
-		    	const popup = new mapboxgl
-		    		.Popup({ 
-		    			anchor: 'top', 
-		    			offset: 0, 
-		    			closeOnClick: true
-		    		})
-		    		.setMaxWidth('360px')
-		    		.setHTML(`
-		    			<a class="city-card" href=${city.full_path}>
-		    				<h3> ${city.city} </h3>
-		    			</a>
-		    		`)
-		    	const el = document.createElement('div')
+	    	const popup = new mapboxgl
+	    		.Popup({ 
+	    			anchor: 'top', 
+	    			offset: 0, 
+	    			closeOnClick: true
+	    		})
+	    		.setMaxWidth('360px')
+	    		.setHTML(`
+	    			<a class="city-card" href=${city.full_path}>
+	    				<h3> ${city.city} </h3>
+	    			</a>
+	    		`)
+	    	const el = document.createElement('div')
 
 				el.className = (sign === "Expansion") ? 'red-dot-marker' : 'black-dot-marker'
 				el.innerHTML = '<div class="dot"><span class="ping"></span></div>'
@@ -456,31 +492,31 @@ export default class Main extends Component {
 					// optional: prevent map click events
 					this.showCity(city.city, locData.nation)
 
-					console.log('Marker clicked', { lng, lat })
+					// console.log('Marker clicked', { lng, lat })
 				})
 
-		    	const marker = new mapboxgl
-		    	    // .Marker({
-		    	    // 	color: `red`,
-		    	    // 	occludedOpacity: 0.1
-		    	    // })
-		    		.Marker({
-					  element: el,
-					  anchor: 'center'
-					})
-		    	    .setLngLat([lng,lat])
-		    	    // .setPopup(popup)
-		    	    .addTo(map)
+	    	const marker = new mapboxgl
+	    	    // .Marker({
+	    	    // 	color: `red`,
+	    	    // 	occludedOpacity: 0.1
+	    	    // })
+	    		.Marker({
+				  element: el,
+				  anchor: 'center'
+				})
+    	    .setLngLat([lng,lat])
+    	    // .setPopup(popup)
+    	    .addTo(map)
 
-		    	if (stepSelection){
-		    		marker.togglePopup();	
-		    	}
+	    	if (stepSelection){
+	    		marker.togglePopup();	
+	    	}
 		    	
 			})
 		}
 
 		map.on("click", (e) => {
-			console.log("Clicking on Map")
+			// console.log("Clicking on Map")
 			this.setState({
 				showingCity: false
 			})
@@ -507,8 +543,7 @@ export default class Main extends Component {
 
 	    let cities = await this.getGeoGenData(chosenCities)
 
-	    console.log("Cities ", cities)
-
+	    // console.log("Cities ", cities)
 	    if (cities.length > 0){
 			cities.map(city => {
 				// let sign = city.full_path.split("/")[2]
@@ -517,47 +552,47 @@ export default class Main extends Component {
 				// console.log("Add to Map", city, sign)
 
 				const lng = city.lng 
-		    	const lat = city.lat 
+	    	const lat = city.lat 
 
-		    	const tactics = city.tactics
-		    	console.log("Tactics ", tactics)
+	    	const tactics = city.tactics
+		    	// console.log("Tactics ", tactics)
 
-		    	const html = tactics
+	    	const html = tactics
 					.map(tactic => `
-						<a 
-							href=${tactic.path}
-							class="${tactic.sign === 'Expansion' ? 'expansion' : 'compression'}"
-						>
-							<h3>${tactic.tactic}</h3>
-						</a>
-						`)
+					<a 
+						href=${tactic.path}
+						class="${tactic.sign === 'Expansion' ? 'expansion' : 'compression'}"
+					>
+						<h3>${tactic.tactic}</h3>
+					</a>
+					`)
 					.join("")
 
-		    	const popup = new mapboxgl
-		    		.Popup({ 
-		    			anchor: 'left', 
-		    			offset: 0, 
-		    			closeOnClick: true
-		    		})
-		    		.setMaxWidth('360px')
-		    		.setHTML(html)
+	    	const popup = new mapboxgl
+	    		.Popup({ 
+	    			anchor: 'left', 
+	    			offset: 0, 
+	    			closeOnClick: true
+	    		})
+	    		.setMaxWidth('360px')
+	    		.setHTML(html)
 
-		    	const el = document.createElement('div')
+		    const el = document.createElement('div')
 				el.className = (sign === "Expansion") ? 'red-dot-marker' : 'black-dot-marker'
 				el.innerHTML = '<span class="ping"></span>'
 
-		    	const marker = new mapboxgl
-		    	    // .Marker({
-		    	    // 	color: `red`,
-		    	    // 	occludedOpacity: 0.1
-		    	    // })
-		    		.Marker({
-					  element: el,
-					  anchor: 'center'
-					})
-		    	    .setLngLat([lng,lat])
-		    	    .setPopup(popup)
-		    	    .addTo(map)
+	    	const marker = new mapboxgl
+	    	    // .Marker({
+	    	    // 	color: `red`,
+	    	    // 	occludedOpacity: 0.1
+	    	    // })
+	    		.Marker({
+				  element: el,
+				  anchor: 'center'
+				})
+	    	    .setLngLat([lng,lat])
+	    	    .setPopup(popup)
+	    	    .addTo(map)
 			})
 		}
 
@@ -597,9 +632,9 @@ export default class Main extends Component {
 		const lng = event.target.dataset.lng
    		const lat = event.target.dataset.lat
 		
-		console.log(
-			"Triggered", lng, lat, this.state.zoom
-		)
+		// console.log(
+		// 	"Triggered", lng, lat, this.state.zoom
+		// )
 		const map = this.state.map
 
         map.flyTo({
@@ -610,14 +645,14 @@ export default class Main extends Component {
 
 	async mapMode(){
 		// console.log("Steps",this.props.fertileSteps)
-  		// console.log("Fertile Cities ", this.props.fertileCities)
-  		// console.log("Selfharm Cities", this.props.selfharmCities)
+		// console.log("Fertile Cities ", this.props.fertileCities)
+		// console.log("Selfharm Cities", this.props.selfharmCities)
 
-  		let allCities = [...this.props.fertileCities, ...this.props.selfharmCities]
-  		console.log("Cities ", allCities)
+  	let allCities = [...this.props.fertileCities, ...this.props.selfharmCities]
+  	// console.log("Cities ", allCities)
 
-  		// CHATGPT SOLUTION
-  		// const cities = Object.values(
+  	// CHATGPT SOLUTION
+  	// const cities = Object.values(
 		//   allCities.reduce((cityAcc, item) => {
 		//     const { city, tactic, path } = item
 
@@ -661,49 +696,51 @@ export default class Main extends Component {
 		// console.log("CITIES ", cities)
 
 
-  		// HUMAN SOLUTION
-  		let uniqueCities = []
-  		allCities.map(city => {
-  			const exist = uniqueCities.some(
-  				item => item.city === city.city
-  			) 
+		// HUMAN SOLUTION
+		let uniqueCities = []
+		allCities.map(city => {
+			const exist = uniqueCities.some(
+				item => item.city === city.city
+			) 
 
-  			if (exist){
-  				// console.log(exist, city)
-  				uniqueCities = uniqueCities.map(item => 
-  					item.city === city.city
-  					? 	{
-  							city: item.city, 
-  							tactics: [
-  								...item.tactics, 
-  								{
-  									tactic: city.tactic,
-  									path: city.path,
-  									sign: city.path.split("/")[2]
-  								}
-  							] 
-  						}
-  					: 	item
-  				)
-  			} else {
-  				// console.log(exist, city)
-  				uniqueCities.push({
-  					city: city.city, 
-  					tactics: [{
-  						tactic: city.tactic,
-  						path: city.path,
-  						sign: city.path.split("/")[2]
-  					}]
-  				})
-  			}
-  		})
+			if (exist){
+				// console.log(exist, city)
+				uniqueCities = uniqueCities.map(item => 
+					item.city === city.city
+					? 	{
+							city: item.city, 
+							tactics: [
+								...item.tactics, 
+								{
+									tactic: city.tactic,
+									path: city.path,
+									sign: city.path.split("/")[2]
+								}
+							] 
+						}
+					: 	item
+				)
+			} else {
+				// console.log(exist, city)
+				uniqueCities.push({
+					city: city.city, 
+					tactics: [{
+						tactic: city.tactic,
+						path: city.path,
+						sign: city.path.split("/")[2]
+					}]
+				})
+			}
+		})
 
-  		console.log("UNIQUE CITIES", uniqueCities)
-  		this.setState({
-  			uniqueCities: uniqueCities
-  		})
+		// console.log("UNIQUE CITIES", uniqueCities)
+		console.log("UNIQUE CITIES")
 
-  		this.loadGeoGenMap(uniqueCities)
+		this.setState({
+			uniqueCities: uniqueCities
+		})
+
+		this.loadGeoGenMap(uniqueCities)
 	}
 
 	async loadFertileCities(){
@@ -722,7 +759,7 @@ export default class Main extends Component {
 
 	async loadUniqueCities(){
 		let allCities = [...this.props.fertileCities, ...this.props.selfharmCities]
-  		console.log("Cities ", allCities)
+  		// console.log("Cities ", allCities)
 
   		// HUMAN SOLUTION
   		let uniqueCities = []
@@ -761,7 +798,7 @@ export default class Main extends Component {
   			}
   		})
 
-  		console.log("UNIQUE CITIES", uniqueCities)
+  		// console.log("UNIQUE CITIES", uniqueCities)
   		this.setState({
   			uniqueCities: uniqueCities
   		})
@@ -769,7 +806,7 @@ export default class Main extends Component {
 
 	async showDate(){
 		const today = new Date()
-		console.log(today.toDateString())
+		// console.log(today.toDateString())
 
 		const this_year = today.getFullYear()
 		let dates = this.props.dates
@@ -828,7 +865,7 @@ export default class Main extends Component {
 	}
 
 	async getUserLocation(){
-		console.log("Getting User Location")
+		// console.log("Getting User Location")
 
 		if (!navigator.geolocation) {
 	      console.log("No Location Service Avail")
@@ -842,7 +879,7 @@ export default class Main extends Component {
 					lng: pos.coords.longitude
 				};
 
-				console.log("User Location", loc)
+				// console.log("User Location", loc)
 				this.setState({
 					userLat: loc.lat,
 					userLng: loc.lng
@@ -852,7 +889,7 @@ export default class Main extends Component {
 				// Coordinate to Location Name
 				//////////////////////////////////////////
 				let userLocData = await this.getPlaceName(loc.lat, loc.lng)
-				console.log("User Place", userLocData)
+				// console.log("User Place", userLocData)
 
 				this.setState({
 					place_name: userLocData.city
@@ -935,35 +972,37 @@ export default class Main extends Component {
 					User Location: {this.state.place_name}
 				</div>
 
-  				<div className={styles.clock}>
-  					{this.state.today} 
-  				</div>
+				{/* 
+				<div className={styles.clock}>
+					{this.state.today} 
+				</div>
+				
+				<div className={styles.independentDate}>
+					<div 
+						className={styles.inButton}
+						onClick={this.showDateRange}
+					>
+						Upcoming Independent Day
+					</div>
+				</div>
+				*/}
 
-  				<div className={styles.independentDate}>
-  					<div 
-  						className={styles.inButton}
-  						onClick={this.showDateRange}
-  					>
-  						Upcoming Independent Day
-  					</div>
-  				</div>
-
-  				{
-  					this.state.showingDates 
-  					?	<div className={styles.dateRange}>
-  							{	
-  								this.state.sortedRange.map(date => {
-  									return (
-  										<div className={styles.nextDate}>
-						  					<div>{date.city}</div>
-						  					<div>{date.date}</div>
-						  				</div>
-  									)
-  								})
-  							}
-  						</div>
-  					:   null
-  				}
+				{
+					this.state.showingDates 
+					?	<div className={styles.dateRange}>
+							{	
+								this.state.sortedRange.map(date => {
+									return (
+										<div className={styles.nextDate}>
+					  					<div>{date.city}</div>
+					  					<div>{date.date}</div>
+					  				</div>
+									)
+								})
+							}
+						</div>
+					:   null
+				}
   			</div>
   				
 				<div className={styles.stepSelection}>
@@ -1013,8 +1052,8 @@ export default class Main extends Component {
 
   			{
   				this.state.showingCity && this.state.activeCity
-  				? 	<div 
-  						className={styles.cityStories}
+  				? <div 
+  							className={styles.cityStories}
   					>
   						<img
   							className={styles.cityImage} 
@@ -1111,8 +1150,27 @@ export default class Main extends Component {
   								)
   							})
   						}
+
+  						<div className={styles.topImport}>
+  							<div className={styles.highlight}>
+  								Top Import
+  							</div>
+  							<div className={styles.importCategory}> 
+	  							{
+	  								this.state.activeCityImport.map(cityImport => {
+	  									return (
+	  										<div > 
+	  											{cityImport.category} 
+	  										</div>
+	  									)
+	  								})
+	  							} 
+  							</div>
+  						</div>
+
+  						
   					</div>
-  				: 	null
+  				: null
   			}
 
   			<div className={styles.slides}>

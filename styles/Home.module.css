@@ -348,6 +348,37 @@
 	display: none;
 }
 
+.topImport {
+	background-color: red;
+	margin: 10px 0;
+	background-color: white;
+	border: 1px solid red;
+	width: 90%;
+	text-align: center;
+}
+
+.importList {
+	background-color: red;
+	width: 90%;
+}
+
+.highlight {
+	padding: 10px ;
+	color: white;
+	font-weight: 700;
+	background-color: red;
+}
+
+.importCategory {
+	background-color: red;
+	margin: 10px 0;
+	padding: 10px;
+	background-color: white;
+	text-align: center;
+}
+
+
+
 @media (min-width:431px) and (max-width: 1024px) {
 	.timePanel {
 		display: none;

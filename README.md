@@ -60,10 +60,6 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [ ] Display Airfare Data From and To Global Airports basing current user locations
 
-
-
-
-
 [ ] Display Weather Data
 
 
