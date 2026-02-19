@@ -45,14 +45,17 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Display Flight In and Flight Out Cost from User Location 
 
+[ ] Show Images of Architecture from the City (Google Place Photo API)
+
 [ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
 
-[ ] Display Import Export Items from Trading Economics
-[ ] Display Average Income 
+[X] Display Import Items from Trading Economics
+
+[ ] Display Export Items from Trading Economics
+[ ] Firebase Average Income for Nations from Trading Economics 
 
 [ ] Show Images of People from the City (Instagram)
 [ ] Show Images of Food from the City (Yelp)
-[ ] Show Images of Architecture from the City (Google Map)
 
 [ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
 

@@ -61,7 +61,8 @@ export default class Main extends Component {
       		},
       		activeCityFlightIn: 0, 
       		activeCityFlightOut: 0,
-      		activeCityImport: ''
+      		activeCityImport: '',
+      		activeCityImage: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no"
 		}
 
 		this.loadMap = this.loadMap.bind(this)
@@ -82,6 +83,7 @@ export default class Main extends Component {
 		this.getDistance = this.getDistance.bind(this)
 
 		this.showDateRange = this.showDateRange.bind(this)
+		this.getCityImage = this.getCityImage.bind(this)
 
 		this.mapContainer = React.createRef();
 	}	
@@ -255,7 +257,7 @@ export default class Main extends Component {
 			}
 		);
 
-		console.log("Booking.Com Airport API", res.data.data)
+		// console.log("Booking.Com Airport API", res.data.data)
 
 		// Find the main airport
 		const airport = res.data.data.find(
@@ -304,7 +306,7 @@ export default class Main extends Component {
     	"/api/searchFlights",
     	payloadIn
     ).then(res => {
-    	// console.log("FLIGHT IN DATA ", bookingDate, res.data.flights)
+    	console.log("FLIGHT IN DATA ", bookingDate, res.data.flights)
     	return res.data.flights
     })    
 
@@ -328,7 +330,7 @@ export default class Main extends Component {
     	"/api/searchFlights",
     	payloadOut
     ).then(res => {
-    	// console.log("FLIGHT OUT DATA ", bookingDate, res.data.flights)
+    	console.log("FLIGHT OUT DATA ", bookingDate, res.data.flights)
     	return res.data.flights
     })
 
@@ -354,7 +356,21 @@ export default class Main extends Component {
 			exportData: exportData.slice(0,3),
 			importData: importData.slice(0,3)
 		}
+	}
 
+	async placeImage(city){
+		console.log("Loading image from city ", city)	
+	}
+
+	async getCityImage(city){
+		await axios.get(`/api/place?city=${city}`).then(res => {
+			console.log("City Image response", res.data.imageURL)
+			if(res.data.imageURL){
+				this.setState({
+					activeCityImage: res.data.imageURL
+				})
+			}
+		})
 	}
 
 	async showCity(city, nation){
@@ -381,6 +397,7 @@ export default class Main extends Component {
 			let airportCode = airport.id
 			let hanoiCode = "HAN.AIRPORT"
 		  await this.searchFlights(hanoiCode, airportCode)
+
 		} catch (err) {
 		  console.error(err.message);
 		}
@@ -396,6 +413,11 @@ export default class Main extends Component {
 		} catch (err){
 			console.error(err.message)
 		}
+
+
+		this.placeImage(city)
+
+		this.getCityImage(city)
 		
 		this.setState({
 			showingCity: true, 
@@ -1055,7 +1077,7 @@ export default class Main extends Component {
   					>
   						<img
   							className={styles.cityImage} 
-  							src="https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no" 
+  							src={this.state.activeCityImage}
   						/>
 
   						<div className={styles.cityFlightInfo}>
