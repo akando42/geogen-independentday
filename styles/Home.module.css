@@ -363,12 +363,17 @@
 	font-size: 21px;
 }
 
+.activeCityTactics {
+	display: flex;
+	flex-direction: column;
+}
+
 .tacticLink, .negTacticLink {
 	margin: 10px 0;
 	padding: 10px;
 	background-color: red;
 	color: white;
-	width: 90%;
+	width: 90% !important;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -485,6 +490,50 @@
 		padding: 5px 0;
 		font-weight: 700;
 
+	}
+
+	.cityStories { 
+		width: 90vw;
+	}
+
+	.cityFlightInfo {
+		margin: 0;
+		height: auto;
+		padding: 0 10px;
+	}
+
+	.statsTitle {
+		font-size: 10px;
+	}
+
+	.activeCityTactics { 
+		display: flex;
+		flex-direction: row;
+		padding: 10px;
+		overflow-x: auto;        /* horizontal scroll only */
+		width: 90%;
+		/* Firefox */
+	    scrollbar-width: none;
+
+	    /* IE / Edge (legacy) */
+	    -ms-overflow-style: none;
+	    align-items: center;
+	    justify-content: flex-start;
+	}
+
+	/* Chrome, Safari, Opera */
+	.activeCityTactics::-webkit-scrollbar {
+	    display: none;
+	}
+
+	.tacticLink, .negTacticLink {
+		margin: 0 3px;
+		min-width: 40%;
+		min-height: 90px;
+		/*flex: 0 0 100px;  */
+		text-align: center;
+		font-size: 12px;
+		padding: 10px;
 	}
 
 }

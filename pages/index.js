@@ -1254,7 +1254,7 @@ export default class Main extends Component {
   						<div className={styles.cityName}>
   							{this.state.activeCity.city} ({this.state.activeAirport})
   						</div>
-
+  						<div className={styles.activeCityTactics}>
   						{
   							this.state.activeCity.tactics.map(tactic => {
 
@@ -1275,6 +1275,7 @@ export default class Main extends Component {
   								)
   							})
   						}
+  						</div>
 
 
   						
