@@ -12,9 +12,15 @@
 	height: 100vh;
 	padding: 20px;
 	overflow: auto;           /* or scroll */
-  	-ms-overflow-style: none; /* IE + Edge (legacy) */
-  	scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none; /* IE + Edge (legacy) */
+  scrollbar-width: none;    /* Firefox */
+
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
+
+
 
 .leftPanel::-webkit-scrollbar {
 	display: none;          
@@ -30,6 +36,15 @@
 
 .rightPanel::-webkit-scrollbar {
   display: none;            /* Chrome, Safari, Opera */
+}
+
+.open {
+    transform: translateX(0);
+}
+
+/* when hidden */
+.closed {
+    transform: translateX(-100%);
 }
 
 .map {
@@ -49,4 +64,21 @@
 	color: white;
 	font-weight: 700;
 	border: 3px solid white;
+}
+
+@media (max-width: 430px) {
+	.container {
+		flex-direction: row;
+		position: relative;
+	}
+
+	.leftPanel {
+		position: absolute;
+		width: 90vw;
+		z-index: 3;
+	}
+
+	.rightPanel {
+		width: 100vw;
+	}
 }

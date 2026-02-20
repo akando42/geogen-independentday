@@ -51,4 +51,11 @@
 	width: 70vw;
 }
 
+@media (max-width: 430px) {
+	.sideBarContainer {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
 

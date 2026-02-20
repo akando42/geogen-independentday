@@ -4,6 +4,10 @@ import styles from "./layout.module.css";
 export default class Layout extends Component {
 	constructor(props){
 		super(props)
+
+		this.state = {
+			showSidebar: true
+		}
 	}
 
 	componentDidMount(){
@@ -15,7 +19,12 @@ export default class Layout extends Component {
 
 		return (
 			<div className={styles.container}>
-				<div className={styles.leftPanel}>
+			
+				<div
+			        className={`${styles.leftPanel} ${
+			            this.props.sideBarStatus ? styles.open : styles.closed
+			        }`}
+			    >
 					{left}
 				</div>
 
@@ -30,6 +39,7 @@ export default class Layout extends Component {
   					GeoGen
   				</a>
 			</div>
+			
 		)
 	}
 }

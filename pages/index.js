@@ -1248,36 +1248,31 @@ export default class Main extends Component {
   							: <div></div>
   						}
 
-
-  						
-
   						<div className={styles.cityName}>
   							{this.state.activeCity.city} ({this.state.activeAirport})
   						</div>
   						<div className={styles.activeCityTactics}>
-  						{
-  							this.state.activeCity.tactics.map(tactic => {
+	  						{
+	  							this.state.activeCity.tactics.map(tactic => {
 
-  								let selectedTactic = tactic.tactic.replace(/_/g, ' ')
-  								let sign = tactic.path.split("/")[2]
-  								
-  								return (
-  									<a 
-  										className={
-											sign === "Expansion"
-										  	? styles.tacticLink
-										  	: styles.negTacticLink
-										}
-  										href={tactic.path}
-  									>
-  										{selectedTactic}
-  									</a>
-  								)
-  							})
-  						}
+	  								let selectedTactic = tactic.tactic.replace(/_/g, ' ')
+	  								let sign = tactic.path.split("/")[2]
+	  								
+	  								return (
+	  									<a 
+	  										className={
+												sign === "Expansion"
+											  	? styles.tacticLink
+											  	: styles.negTacticLink
+											}
+	  										href={tactic.path}
+	  									>
+	  										{selectedTactic}
+	  									</a>
+	  								)
+	  							})
+	  						}
   						</div>
-
-
   						
   					</div>
   				: null
@@ -1343,7 +1338,6 @@ export default class Main extends Component {
 	  						)
 	  					})
 		  			: 	null
-
   				}
 
   				{

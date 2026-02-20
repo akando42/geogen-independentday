@@ -11,7 +11,7 @@ export default function SideBar(props) {
 
 
 	return (
-		<div >
+		<div className={styles.sideBarContainer}>
 			{
 				cities.map((city, index) => {
 

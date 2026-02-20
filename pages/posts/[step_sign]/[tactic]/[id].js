@@ -78,10 +78,12 @@ export default class Posts extends React.Component {
 			post: "POST", 
 			postImage: '',
 			openTactics: [],
-			openNegTactics: []
+			openNegTactics: [],
+			showingSidebar: false,
 		}
 
 		this.setTactic = this.setTactic.bind(this)
+		this.toggleSidebar = this.toggleSidebar.bind(this)
 	}
 
 	async loadContent(){
@@ -123,6 +125,12 @@ export default class Posts extends React.Component {
 		}
 	}
 
+	async toggleSidebar(){
+		this.setState({
+			showingSidebar: !this.state.showingSidebar
+		})
+	}
+
 	componentDidMount(){
 		this.getTactics()
 		this.loadContent()
@@ -133,16 +141,23 @@ export default class Posts extends React.Component {
 		console.log(content)
 
 		return (
-			<Layout>
-				<SideBar 
-					cities={this.props.fertileCities}
-					selectedCity={this.props.selectedCity}
-					setTactic={this.setTactic}
-					openTactics={this.state.openTactics}
-				/>
+			<Layout
+				sideBarStatus={this.state.showingSidebar}
+			>
+				{
+					this.state.showingSidebar 
+					?	<SideBar 
+							cities={this.props.fertileCities}
+							selectedCity={this.props.selectedCity}
+							setTactic={this.setTactic}
+							openTactics={this.state.openTactics}
+						/>
+					:   <div></div>
+				}
 				
 				<MainContent
 					content={content}
+					toggleSidebar={this.toggleSidebar}
 				/>
 			</Layout>
 		)
