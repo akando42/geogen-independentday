@@ -59,6 +59,9 @@ export default class Main extends Component {
       				{}
       			]
       		},
+      		showingCityIncome: true,
+      		showingCityImport: false, 
+      		showingCityExport: false,
       		activeCityFlightIn: 0, 
       		activeCityFlightOut: 0,
       		activeCityImport: '',
@@ -79,6 +82,10 @@ export default class Main extends Component {
 
 		this.showCity = this.showCity.bind(this)
 		this.showDate = this.showDate.bind(this)
+
+		this.showCityIncome = this.showCityIncome.bind(this)
+		this.showCityImport = this.showCityImport.bind(this)
+		this.showCityExport = this.showCityExport.bind(this)
 
 		this.getDistance = this.getDistance.bind(this)
 
@@ -404,16 +411,19 @@ export default class Main extends Component {
 
 		try {
 			let importExport = await this.importExport(nation)
-			console.log(importExport)
+			console.log(
+				"Import Export ", 
+				importExport
+			)
 
 			this.setState({
-				activeCityImport: importExport.importData
+				activeCityImport: importExport.importData,
+				activeCityExport: importExport.exportData
 			})
 
 		} catch (err){
 			console.error(err.message)
 		}
-
 
 		this.placeImage(city)
 
@@ -433,6 +443,30 @@ export default class Main extends Component {
 		// 	cityData, 
 		// 	this.state.activeCity
 		// )
+	}
+
+	async showCityImport(){
+		this.setState({
+			showingCityIncome: false,
+      showingCityImport: true, 
+     	showingCityExport: false,
+		})
+	}
+
+	async showCityExport(){
+		this.setState({
+			showingCityIncome: false,
+      showingCityImport: false, 
+     	showingCityExport: true,
+		})
+	}
+
+	async showCityIncome(){
+		this.setState({
+			showingCityIncome: true,
+      showingCityImport: false, 
+     	showingCityExport: false,
+		})
 	}
 
 	async getPlaceName(lat, lng) {
@@ -1080,71 +1114,142 @@ export default class Main extends Component {
   							src={this.state.activeCityImage}
   						/>
 
-  						<div className={styles.cityFlightInfo}>
-  							<div className={styles.flightCost}>
-  								
-  								<div className={styles.iconContainer}>
-	  								<img 
-	  									src="/Landing.png" 
-	  									className={styles.flightIcon}
-	  								/>
-	  							</div>
-
-  								<div className={styles.flightExpense}>
-  									$<CountUp end={this.state.activeCityFlightIn} />
-  								</div>
-  								
-  								<div className={styles.statsTitle}> 
-  									Flight In 
-  								</div>
-  								{/*
-  								<div className={`${styles.currency} ${styles.currencyLeft}`}>
-  									USD
-  								</div>
-  								*/}
+  						<div className={styles.tabList}>
+  							<div 
+  								className={styles.tabSelector}
+  								onClick={this.showCityIncome}
+  							> 
+  								Income Stats 
   							</div>
+  							<div 
+  								className={styles.tabSelector}
+  								onClick={this.showCityImport}
+  							> 
+  								Import Items 
+  							</div> 
 
-  							<div className={styles.flightCost}>
+  							<div 
+  								className={styles.tabSelector}
+  								onClick={this.showCityExport}
+  							> 
+  								Export Items 
+  							</div> 
 
-  								<div className={styles.iconContainer}>
-	  								<img 
-	  									src="/Takeoff.png" 
-	  									className={styles.flightIcon}
-	  								/>
-	  							</div>
+  						</div> 
+  						{
+  							this.state.showingCityIncome 
+  							?	<div className={styles.cityFlightInfo}>
+		  							<div className={styles.flightCost}>
+		  								
+		  								<div className={styles.iconContainer}>
+			  								<img 
+			  									src="/Landing.png" 
+			  									className={styles.flightIcon}
+			  								/>
+			  							</div>
 
-  								<div className={styles.flightExpense}>
-  									$<CountUp end={this.state.activeCityFlightOut} />
-  								</div>
+		  								<div className={styles.flightExpense}>
+		  									$<CountUp end={this.state.activeCityFlightIn} />
+		  								</div>
+		  								
+		  								<div className={styles.statsTitle}> 
+		  									Flight In 
+		  								</div>
+		  								{/*
+		  								<div className={`${styles.currency} ${styles.currencyLeft}`}>
+		  									USD
+		  								</div>
+		  								*/}
+		  							</div>
 
-  								<div className={styles.statsTitle}> 
-  									Flight Out 
-  								</div>
-  								
-  								{/*
-  								<div className={`${styles.currency} ${styles.currencyRight}`}>
-  									USD
-  								</div>
-  								*/}
-  							</div>
+		  							<div className={styles.flightCost}>
 
-  							<div className={styles.flightCost}>
-  								<div className={styles.iconContainer}>
-	  								<img 
-	  									src="/Avg_Monthy_Income.svg" 
-	  									className={styles.flightIcon}
-	  								/>
-	  							</div>
+		  								<div className={styles.iconContainer}>
+			  								<img 
+			  									src="/Takeoff.png" 
+			  									className={styles.flightIcon}
+			  								/>
+			  							</div>
 
-	  							<div className={styles.flightExpense}>
-	  								$<CountUp end="3200" />
-	  							</div>
+		  								<div className={styles.flightExpense}>
+		  									$<CountUp end={this.state.activeCityFlightOut} />
+		  								</div>
 
-	  							<div className={styles.statsTitle}> 
-	  								Avg Month Income 
-	  							</div>
-  							</div>
-  						</div>
+		  								<div className={styles.statsTitle}> 
+		  									Flight Out 
+		  								</div>
+		  								
+		  								{/*
+		  								<div className={`${styles.currency} ${styles.currencyRight}`}>
+		  									USD
+		  								</div>
+		  								*/}
+		  							</div>
+
+		  							<div className={styles.flightCost}>
+		  								<div className={styles.iconContainer}>
+			  								<img 
+			  									src="/Avg_Monthy_Income.svg" 
+			  									className={styles.flightIcon}
+			  								/>
+			  							</div>
+
+			  							<div className={styles.flightExpense}>
+			  								$<CountUp end="3200" />
+			  							</div>
+
+			  							<div className={styles.statsTitle}> 
+			  								Avg Month Income 
+			  							</div>
+		  							</div>
+		  						</div>	
+  							: <div></div>
+  						}
+
+  						{
+  							this.state.showingCityImport 
+  							? <div className={styles.topImport}>
+		  							<div className={styles.highlight}>
+		  								Top Import
+		  							</div>
+		  							<div className={styles.importCategory}> 
+			  							{
+			  								this.state.activeCityImport.map(cityImport => {
+			  									return (
+			  										<div > 
+			  											{cityImport.category} 
+			  										</div>
+			  									)
+			  								})
+			  							} 
+		  							</div>
+		  						</div>
+  							: <div></div>
+  						}
+
+  						{
+  							this.state.showingCityExport
+  							? <div className={styles.topImport}>
+		  							<div className={styles.highlight}>
+		  								Top Export
+		  							</div>
+		  							<div className={styles.importCategory}> 
+			  							{
+			  								this.state.activeCityExport.map(cityExport => {
+			  									return (
+			  										<div > 
+			  											{cityExport.category} 
+			  										</div>
+			  									)
+			  								})
+			  							} 
+		  							</div>
+		  						</div>
+  							: <div></div>
+  						}
+
+
+  						
 
   						<div className={styles.cityName}>
   							{this.state.activeCity.city} ({this.state.activeAirport})
@@ -1171,22 +1276,6 @@ export default class Main extends Component {
   							})
   						}
 
-  						<div className={styles.topImport}>
-  							<div className={styles.highlight}>
-  								Top Import
-  							</div>
-  							<div className={styles.importCategory}> 
-	  							{
-	  								this.state.activeCityImport.map(cityImport => {
-	  									return (
-	  										<div > 
-	  											{cityImport.category} 
-	  										</div>
-	  									)
-	  								})
-	  							} 
-  							</div>
-  						</div>
 
   						
   					</div>

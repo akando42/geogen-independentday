@@ -242,6 +242,30 @@
 	width: 100%;
 }
 
+.tabList {
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+}
+
+.tabSelector {
+	font-size: 12px;
+	background-color: white;
+	padding: 3px;
+	font-weight: 700;
+	border-bottom: 2px solid red;
+}
+
+.tabSelector:hover {
+	background-color: red;
+	color: white;
+}
+
+
 .cityFlightInfo {
 	display: flex;
 	flex-direction: row;
@@ -249,7 +273,8 @@
 	justify-content: center;
 	width: 100%;
 	height: auto;
-	margin: 30px 10px;
+	margin: 0px 10px;
+	padding: 10px 0;
 }
 
 .flightCost {
@@ -294,28 +319,41 @@
 
 
 .iconContainer {
-	width: 4vw;
-	height: 4vw;
+	width: 60px;
+	height: 60px;
 	border: 3px solid red;
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	margin: 0 0 10px 0;
 }
 
 .flightIcon {
 	width: 80%;
+	/*height: 4vw;*/
+	padding: 10px 0;
+	/*background-color: red;*/
+}
+
+.flightCost {
+	height: auto;
 }
 
 .flightExpense {
-	padding: 10px 0;
 	font-size: 21px;
 	height: 4vh;
 	font-weight: 700;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 
 .statsTitle {
+	margin: 0;
+	padding: 5px 0;
 	font-weight: 700;
 }
 

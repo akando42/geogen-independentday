@@ -25,16 +25,21 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 ### TODOs
 [X] Process Data into City-based format with steps each city taken
+
 [X] Click on City to Zoom in on it
+
 [X] Display Different Story on the Marker
+
 [X] Expansion and Compression button to display different cities on the Map
 
 [X] Display City Name on Right Panel with related Stories
 
 [X] Display Current Date on Left Panel
+
 [X] Display Upcoming Independent Date 
 
 [X] Mobile Layout
+
 [X] Display Current Cookie Location
 
 [X] Coordinate to Nation ReverseGeocode
@@ -45,23 +50,27 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Display Flight In and Flight Out Cost from User Location 
 
-[ ] Show Images of Architecture from the City (Google Place Photo API)
+[X] Show Images of Architecture from the City (Google Place Photo API)
 
-[ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
+[X] Display Airfare Data From and To Global Airports basing current user locations
 
 [X] Display Import Items from Trading Economics
 
 [ ] Display Export Items from Trading Economics
-[ ] Firebase Average Income for Nations from Trading Economics 
 
-[ ] Show Images of People from the City (Instagram)
-[ ] Show Images of Food from the City (Yelp)
-
-[ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
+[ ] Layout Design for Import Export Top Items
 
 [ ] Find Airport Near Current User Location or Ask User to Select
 
-[ ] Display Airfare Data From and To Global Airports basing current user locations
+[ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
+
+[ ] Firebase Average Income for Nations from Trading Economics 
+
+[ ] Show Images of People from the City (Instagram)
+
+[ ] Show Images of Food from the City (Yelp)
+
+[ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
 
 [ ] Display Weather Data
 
