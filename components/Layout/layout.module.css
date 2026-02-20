@@ -28,7 +28,7 @@
 
 
 .rightPanel {
-	width: 70vw;
+	flex: 1;
 	overflow: auto;
   	scrollbar-width: none;        /* Firefox */
   	-ms-overflow-style: none;

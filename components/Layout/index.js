@@ -5,9 +5,6 @@ export default class Layout extends Component {
 	constructor(props){
 		super(props)
 
-		this.state = {
-			showSidebar: true
-		}
 	}
 
 	componentDidMount(){

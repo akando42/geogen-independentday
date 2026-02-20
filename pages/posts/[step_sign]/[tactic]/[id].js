@@ -79,7 +79,7 @@ export default class Posts extends React.Component {
 			postImage: '',
 			openTactics: [],
 			openNegTactics: [],
-			showingSidebar: false,
+			showingSidebar: true,
 		}
 
 		this.setTactic = this.setTactic.bind(this)
@@ -87,6 +87,17 @@ export default class Posts extends React.Component {
 	}
 
 	async loadContent(){
+		const isMobile = window.innerWidth <= 768;
+		console.log("IS MOBILE ", isMobile)
+		if (isMobile){
+			this.setState({
+				showingSidebar: false
+			})
+		} else {
+			this.setState({
+				showingSidebar: true
+			})
+		}
 	}	
 
 	async getTactics(){
