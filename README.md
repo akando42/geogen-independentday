@@ -56,15 +56,19 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Display Import Items from Trading Economics
 
-[ ] Display Export Items from Trading Economics
+[X] Display Export Items from Trading Economics
 
-[ ] Layout Design for Import Export Top Items
+[X] Layout Design for Import Export Top Items
+
+[X] Improve showcity() Load Function
+
+[ ] Log Flight Cost Estimation in Database
+
+[ ] Firebase Average Income for Nations from Trading Economics 
 
 [ ] Find Airport Near Current User Location or Ask User to Select
 
 [ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
-
-[ ] Firebase Average Income for Nations from Trading Economics 
 
 [ ] Show Images of People from the City (Instagram)
 

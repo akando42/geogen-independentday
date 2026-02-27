@@ -365,10 +365,6 @@ export default class Main extends Component {
 		}
 	}
 
-	async placeImage(city){
-		console.log("Loading image from city ", city)	
-	}
-
 	async getCityImage(city){
 		await axios.get(`/api/place?city=${city}`).then(res => {
 			console.log("City Image response", res.data.imageURL)
@@ -381,6 +377,7 @@ export default class Main extends Component {
 	}
 
 	async showCity(city, nation){
+		await this.getCityImage(city)
 
 		let cityData = this.state.uniqueCities
 			.filter(uniqueCity => uniqueCity.city === city)
@@ -397,9 +394,16 @@ export default class Main extends Component {
 		// let population = await this.getCityPopulation(cityData[0].city)
 		// console.log('POPULATION', population);
 		let airport = null;
+		airport = await this.getAirportId(cityData[0].city);
+
+		this.setState({
+			showingCity: true, 
+			activeCity: cityData[0],
+			activeNation: nation,
+			activeAirport: airport ? airport.iata : "N/A"
+		})
 
 		try {
-			airport = await this.getAirportId(cityData[0].city);
 			// console.log('AIRPORT', airport);
 			let airportCode = airport.id
 			let hanoiCode = "HAN.AIRPORT"
@@ -425,25 +429,62 @@ export default class Main extends Component {
 			console.error(err.message)
 		}
 
-		this.placeImage(city)
-
-		this.getCityImage(city)
-		
-		this.setState({
-			showingCity: true, 
-			activeCity: cityData[0],
-			activeNation: nation,
-			activeAirport: airport ? airport.iata : "N/A"
-		})
-
-		
-
 		// console.log(
 		// 	city, 
 		// 	cityData, 
 		// 	this.state.activeCity
 		// )
 	}
+
+	// async showCity(city, nation) {
+	//   // 🔹 Start async tasks immediately (do not await yet)
+	//   const cityImagePromise = this.getCityImage(city);
+
+	//   const cityData = this.state.uniqueCities.find(
+	//     uniqueCity => uniqueCity.city === city
+	//   );
+
+	//   if (!cityData) return;
+
+	//   // 🔹 Update UI immediately (fast render)
+	//   this.setState({
+	//     activeCity: cityData,
+	//     activeNation: nation,
+	//     activeAirport: "Loading...",
+	//     showingCity: true,
+	//   });
+
+	//   try {
+	//     // 🔹 Run independent async tasks in parallel
+	//     const [
+	//       airport,
+	//       importExport
+	//     ] = await Promise.all([
+	//       this.getAirportId(cityData.city),
+	//       this.importExport(nation)
+	//     ]);
+
+	//     // 🔹 Update state once (avoid multiple re-renders)
+	//     this.setState({
+	//       activeAirport: airport?.iata ?? "N/A",
+	//       activeCityImport: importExport?.importData,
+	//       activeCityExport: importExport?.exportData
+	//     });
+
+	//     // 🔹 Fire & forget (do NOT block UI)
+	//     if (airport?.id) {
+	//       this.searchFlights("HAN.AIRPORT", airport.id)
+	//         .catch(err => console.error("Flight search error", err));
+	//     }
+	//   } catch (err) {
+	//     console.error(err);
+	//   }
+
+	//   // 🔹 Background task (no await)
+	//   cityImagePromise.catch(err =>
+	//     console.error("City image error", err)
+	//   );
+	// }
 
 	async showCityImport(){
 		this.setState({
@@ -1114,6 +1155,10 @@ export default class Main extends Component {
   							src={this.state.activeCityImage}
   						/>
 
+  						<div className={styles.cityName}>
+  							{this.state.activeCity.city} ({this.state.activeAirport})
+  						</div>
+
   						<div className={styles.tabList}>
   							<div 
   								className={styles.tabSelector}
@@ -1134,8 +1179,8 @@ export default class Main extends Component {
   							> 
   								Export Items 
   							</div> 
-
   						</div> 
+  						
   						{
   							this.state.showingCityIncome 
   							?	<div className={styles.cityFlightInfo}>
@@ -1248,9 +1293,7 @@ export default class Main extends Component {
   							: <div></div>
   						}
 
-  						<div className={styles.cityName}>
-  							{this.state.activeCity.city} ({this.state.activeAirport})
-  						</div>
+  						
   						<div className={styles.activeCityTactics}>
 	  						{
 	  							this.state.activeCity.tactics.map(tactic => {
