@@ -44,28 +44,28 @@ export default class Main extends Component {
 
 		this.state = {
 			lat: 21,
-      		lng: 150,
-      		zoom: 2,
-      		cities: [], 
-      		uniqueCities: [],
-      		sign: "Expansion",
-      		headLine: "GeoGenetics",
-      		showingDates: true,
-      		showingCity: false, 
-      		sortedRange: [],
-      		activeCity: {
-      			city: "wtf",
-      			tactics: [
-      				{}
-      			]
-      		},
-      		showingCityIncome: true,
-      		showingCityImport: false, 
-      		showingCityExport: false,
-      		activeCityFlightIn: 0, 
-      		activeCityFlightOut: 0,
-      		activeCityImport: '',
-      		activeCityImage: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no"
+  		lng: 150,
+  		zoom: 2,
+  		cities: [], 
+  		uniqueCities: [],
+  		sign: "Expansion",
+  		headLine: "GeoGenetics",
+  		showingDates: true,
+  		showingCity: false, 
+  		sortedRange: [],
+  		activeCity: {
+  			city: "wtf",
+  			tactics: [
+  				{}
+  			]
+  		},
+  		showingCityIncome: true,
+  		showingCityImport: false, 
+  		showingCityExport: false,
+  		activeCityFlightIn: 0, 
+  		activeCityFlightOut: 0,
+  		activeCityImport: '',
+  		activeCityImage: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no"
 		}
 
 		this.loadMap = this.loadMap.bind(this)

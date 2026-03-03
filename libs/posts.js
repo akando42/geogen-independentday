@@ -4,7 +4,6 @@ import matter from 'gray-matter'
 import remark from 'remark'
 import html from 'remark-html'
 
-
 export function getSortedPostsData(postsDirectory) {
   // console.log("parsing Markdown post from", postsDirectory)
   
