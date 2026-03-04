@@ -53,6 +53,9 @@ export default class Airport extends Component {
 		this.setEmail = this.setEmail.bind(this)
 		this.setPassword = this.setPassword.bind(this)
 		this.authenticateAdmin = this.authenticateAdmin.bind(this)
+
+		this.getAirportId = this.getAirportId.bind(this)
+		this.updateCity = this.updateCity.bind(this)
 	}
 
 	async getAirportId(city) {
@@ -127,6 +130,27 @@ export default class Airport extends Component {
 		})
 	}
 
+	async updateCity(e){
+		console.log(
+			"Updating city",
+			e.target.dataset.city
+		)
+
+		let city = e.target.dataset.city
+		let airportCodes = await this.getAirportId(city)
+
+		console.log("Codes ", city, airportCodes.iata)
+
+		await axios.post(
+			"/api/updateAirport", 
+			{ 	
+				city: city,
+				airportCode: airportCodes.iata ? airportCodes.iata : ""
+			}
+		).then(res => {
+			console.log(res)
+		})
+	}
 
 	componentDidMount(){
 
@@ -164,6 +188,7 @@ export default class Airport extends Component {
 											<div 
 												className={styles.addButton}
 												data-city={city}
+												onClick={this.updateCity}
 											> 
 												Get Airport CODE 
 											</div>
