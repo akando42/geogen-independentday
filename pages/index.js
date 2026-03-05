@@ -107,7 +107,6 @@ export default class Main extends Component {
 	  	city === "Bikini Atoll" ? "Marshall Islands" :
   		city;
 	  
-
 	  const res = await fetch(
 	    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(the_city)}.json?types=place&limit=1&access_token=${mapboxgl.accessToken}`
 	  );

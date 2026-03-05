@@ -47,7 +47,8 @@ export default class Airport extends Component {
 		this.state = {
 			authenticated: false,
 			adminEmail: '',
-			adminPassword: ''
+			adminPassword: '',
+			cities: []
 		}
 
 		this.setEmail = this.setEmail.bind(this)
@@ -152,29 +153,48 @@ export default class Airport extends Component {
 		})
 	}
 
-	componentDidMount(){
+	async getCities(){
+		await axios.get("/api/listAirports").then(res => {
+			console.log("Cities ", res.data.cities)
 
+			this.setState({
+				cities: res.data.cities
+			})
+		})
+	}
+
+	componentDidMount(){
+		this.getCities()
 	}
 
 	render(){
 		console.log("Fertile Cities ", this.props.fertileCities)
 		console.log("Selfharm Cities ", this.props.selfharmCities)
-		console.log("Cities ", this.props.uniqueCities)
+		console.log(this.props.uniqueCities.length, "Cities ", this.props.uniqueCities)
 
 
+		let databaseCities = this.state.cities.map(city => {return city.city})
+		console.log(databaseCities.length, "Database Cities ", databaseCities)
+		const diff = this.props.uniqueCities.filter(x => !databaseCities.includes(x))
+
+		console.log(diff)
+
+		// this.state.cities.map(city => {
+		// 	if (city.)
+		// })
 		return (
 			<div>
 			{	
 				this.state.authenticated
 				?	<div className={styles.container}>
-						<div>AIRPORT</div>
+						<div> {this.state.cities.length} AIRPORT</div>
 						<div className={styles.list}>
 							{	
-								this.props.uniqueCities.map(city => {
+								this.state.cities.map(city => {
 									return ( 
 										<div className={styles.row}>
 											<div className={styles.cityName}>
-												{city}
+												{city.city}
 											</div>
 											
 											<div 
@@ -187,10 +207,13 @@ export default class Airport extends Component {
 
 											<div 
 												className={styles.addButton}
-												data-city={city}
+												data-city={city.city}
 												onClick={this.updateCity}
 											> 
 												Get Airport CODE 
+											</div>
+											<div>
+												{city.airport}
 											</div>
 										</div> 
 									)
