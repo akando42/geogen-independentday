@@ -48,6 +48,7 @@ export default class Main extends Component {
   		zoom: 2,
   		cities: [], 
   		uniqueCities: [],
+  		airportCities: [],
   		sign: "Expansion",
   		headLine: "GeoGenetics",
   		showingDates: true,
@@ -282,8 +283,8 @@ export default class Main extends Component {
 	}
 
 	async searchFlights(fromAirport, toAirport){
-		// console.log("From AIRPORT ", fromAirport)
-		// console.log("To AIRPORT", toAirport)
+		console.log("From AIRPORT ", fromAirport)
+		console.log("To AIRPORT", toAirport)
 
 		const startDate = new Date(this.state.today);
 		startDate.setMonth(startDate.getMonth() + 3)
@@ -349,7 +350,7 @@ export default class Main extends Component {
 	}
 
 	async importExport(nation){
-
+		console.log("Pulling Trading Economics Data for", nation)
 		let exportCategories = await axios.get(`/api/export?country=${nation}`)
 		let exportData = exportCategories.data.sort((a,b) => (a - b))
 		console.log("Export ", nation, exportData)
@@ -381,6 +382,8 @@ export default class Main extends Component {
 		let cityData = this.state.uniqueCities
 			.filter(uniqueCity => uniqueCity.city === city)
 
+
+
 		// this.setState({
 		// 	activeCity: cityData[0],
 		// 	showingCity: true
@@ -392,20 +395,33 @@ export default class Main extends Component {
 
 		// let population = await this.getCityPopulation(cityData[0].city)
 		// console.log('POPULATION', population);
-		let airport = null;
-		airport = await this.getAirportId(cityData[0].city);
+		
+		// let airport = null;
+		// airport = await this.getAirportId(cityData[0].city);
+
+		let airportCityCode = this.state.airportCities.filter(airportCity => {
+			if (airportCity.city === city){
+				return airportCity.airport
+			}
+		})
+
+		console.log("AIRPORT CITY ", airportCityCode[0])
 
 		this.setState({
 			showingCity: true, 
 			activeCity: cityData[0],
 			activeNation: nation,
-			activeAirport: airport ? airport.iata : "N/A"
+			activeAirport: airportCityCode ? airportCityCode[0].airport : "N/A",
+			// activeAirport: airport ? airport.iata : "N/A"
 		})
 
 		try {
 			// console.log('AIRPORT', airport);
-			let airportCode = airport.id
+			// let airportCode = airport.id
+
+			let airportCode = `${airportCityCode[0].airport}.AIRPORT`
 			let hanoiCode = "HAN.AIRPORT"
+
 		  await this.searchFlights(hanoiCode, airportCode)
 
 		} catch (err) {
@@ -425,7 +441,10 @@ export default class Main extends Component {
 			})
 
 		} catch (err){
-			console.error(err.message)
+			console.error(
+				"Trading Economics Errors", 
+				err.message
+			)
 		}
 
 		// console.log(
@@ -1014,6 +1033,17 @@ export default class Main extends Component {
 	    );
 	}
 
+	async getAirportCities(){
+		await axios.get("/api/listAirports").then(res => {
+			console.log("Cities ", res.data.cities)
+
+			this.setState({
+				airportCities: res.data.cities
+			})
+
+		})
+	}
+
 	componentDidMount(){
 		this.getUserLocation()
 		// Display all Cities and showing each Cities steps
@@ -1024,6 +1054,8 @@ export default class Main extends Component {
 		this.loadMap(this.props.fertileCities)
 		this.loadUniqueCities()
 		this.showDate()
+
+		this.getAirportCities()
 
 		// this.intervalId = setInterval(() => {
 		// 	const city = this.state.cities[

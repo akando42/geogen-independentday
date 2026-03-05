@@ -172,16 +172,13 @@ export default class Airport extends Component {
 		console.log("Selfharm Cities ", this.props.selfharmCities)
 		console.log(this.props.uniqueCities.length, "Cities ", this.props.uniqueCities)
 
+		// let databaseCities = this.state.cities.map(city => {return city.city})
+		// console.log(databaseCities.length, "Database Cities ", databaseCities)
+		
+		// const diff = this.props.uniqueCities.filter(x => !databaseCities.includes(x))
+		// console.log(diff)
 
-		let databaseCities = this.state.cities.map(city => {return city.city})
-		console.log(databaseCities.length, "Database Cities ", databaseCities)
-		const diff = this.props.uniqueCities.filter(x => !databaseCities.includes(x))
 
-		console.log(diff)
-
-		// this.state.cities.map(city => {
-		// 	if (city.)
-		// })
 		return (
 			<div>
 			{	
