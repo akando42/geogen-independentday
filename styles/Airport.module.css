@@ -64,3 +64,12 @@
 	color: white;
 	text-align: center;
 }
+
+.airportCode {
+	background-color: red;
+	color: white;
+	width: 4vw;
+	border: 1px solid white;
+	text-align: center;
+
+}

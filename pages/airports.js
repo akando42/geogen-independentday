@@ -163,6 +163,89 @@ export default class Airport extends Component {
 		})
 	}
 
+	async getFlightInCost(event){
+		const today = new Date().toDateString()
+
+		const startDate = new Date(today);
+		startDate.setMonth(startDate.getMonth() + 3)
+		let bookingDate = startDate.toISOString().split('T')[0];
+
+		console.log("Dataset ", event.target.dataset)
+
+		let originAirport = `${event.target.dataset.originairport}.AIRPORT`
+		let destinAirport = `${event.target.dataset.destinairport}.AIRPORT`
+
+		console.log(
+			"Booking Flight In For ", 
+			bookingDate, 
+			originAirport, 
+			destinAirport
+		)
+
+		let payloadIn =  {
+      		fromId: originAirport,
+      		toId: destinAirport,
+      		departDate: bookingDate,
+      		cabinClass: "ECONOMY",
+      		currency_code: "USD",
+    	}
+
+    	let inFlights = await axios.post(
+    	"/api/searchFlights",
+	    	payloadIn
+	    ).then(res => {
+	    	console.log("FLIGHT IN DATA ", bookingDate, res.data.flights)
+	    	return res.data.flights
+	    })  
+
+	    let flightIn = parseInt(
+  			inFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/inFlights.length
+  		)
+  		// console.log(fromAirport, toAirport,"Flight In in USD ", flightIn)
+	}
+
+	async getFlightOutCost(){
+		const today = new Date().toDateString()
+
+		const startDate = new Date(today);
+		startDate.setMonth(startDate.getMonth() + 3)
+		let bookingDate = startDate.toISOString().split('T')[0];
+
+		console.log("Dataset ", event.target.dataset)
+
+		let originAirport = `${event.target.dataset.originairport}.AIRPORT`
+		let destinAirport = `${event.target.dataset.destinairport}.AIRPORT`
+
+		console.log(
+			"Booking Flight In For ", 
+			bookingDate, 
+			originAirport, 
+			destinAirport
+		)
+
+		let payloadOut =  {
+	      fromId: originAirport,
+	      toId: destinAirport,
+	      departDate: bookingDate,
+	      cabinClass: "ECONOMY",
+	      currency_code: "USD",
+	    }
+
+	    let outFlights = await axios.post(
+	    	"/api/searchFlights",
+	    	payloadOut
+	    ).then(res => {
+	    	console.log("FLIGHT OUT DATA ", bookingDate, res.data.flights)
+	    	return res.data.flights
+	    })
+
+	    let flightOut = parseInt(
+  			outFlights.reduce((sum, flight) => sum + flight.priceRounded.units,0)/outFlights.length
+  		)
+
+  		console.log(originAirport, destinAirport,"Flight Out in USD ", flightOut)
+	}
+
 	componentDidMount(){
 		this.getCities()
 	}
@@ -209,8 +292,39 @@ export default class Airport extends Component {
 											> 
 												Get Airport CODE 
 											</div>
-											<div>
+											<div
+												className={styles.airportCode}
+											>
 												{city.airport}
+											</div>
+											<div 
+												className={styles.addButton}
+												onClick={this.getFlightInCost}
+												data-originAirport={city.airport}
+												data-destinAirport="HAN"
+											> 
+												Get Flight In Cost 
+											</div>
+
+											<div
+												className={styles.airportCode}
+											>
+												$000
+											</div>
+											
+											<div 
+												className={styles.addButton}
+												onClick={this.getFlightOutCost}
+												data-originAirport="HAN"
+												data-destinAirport={city.airport}
+											> 
+												Get Flight Out Cost 
+											</div>
+
+											<div
+												className={styles.airportCode}
+											>
+												$000
 											</div>
 										</div> 
 									)
