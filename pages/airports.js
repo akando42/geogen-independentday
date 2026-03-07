@@ -10,7 +10,12 @@ import { getSortedCities } from '../libs/posts'
 import { auth } from "@/libs/firebase"
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth"
 
+import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from '!mapbox-gl';
+
 import styles from '../styles/Airport.module.css'
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';
 
 export async function getStaticProps(){
 	const fertileSteps = './public/content/geogen/Expansion'
@@ -57,6 +62,12 @@ export default class Airport extends Component {
 
 		this.getAirportId = this.getAirportId.bind(this)
 		this.updateCity = this.updateCity.bind(this)
+
+		this.getCityCoordinate = this.getCityCoordinate.bind(this)
+		this.updateCityCoordinate = this.updateCityCoordinate.bind(this)
+
+		this.getCityNation = this.getCityNation.bind(this)
+		this.updateCityNation = this.updateCityNation.bind(this)
 	}
 
 	async getAirportId(city) {
@@ -246,14 +257,171 @@ export default class Airport extends Component {
   		console.log(originAirport, destinAirport,"Flight Out in USD ", flightOut)
 	}
 
+	async updateCityCoordinate(city, lat, lng){
+		console.log("Updating city coordinate", city, lat, lng)
+
+		// Update City Coordinate
+		await axios.post(
+			"/api/updateCityCoordinate", 
+			{ 	
+				city: city,
+				lat: lat, 
+				lng: lng
+			}
+		).then(res => {
+			console.log(res.data.data)
+			let cities = this.state.cities
+
+			let updatedCities = cities.map(thecity => 
+				thecity.city == city 
+					?	{...thecity, lat: lat, lng: lng}
+					:   thecity  
+				)
+			this.setState({
+				cities: updatedCities
+			})
+
+		})
+	}
+
+	async getCityCoordinate(){
+		let city = event.target.dataset.city
+
+		let the_city = 
+		  	city === "Saigon" ? "Ho Chi Minh" :
+		  	city === "Dayton" ? "Cleveland" :
+		  	city === "Santa Fe" ? "Santa Fe US" :
+		  	city === "Bavaria" ? "Bavaria Germany" :
+		  	city === "Delhi" ? "Delhi India" :
+		  	city === "Vinh" ? "Vinh Vietnam" :
+		  	city === "Athen" ? "Athen Greece" :
+		  	// city === "Bikini Atoll" ? "Marshall Islands" :
+	  		city;
+
+	  	console.log("Getting Coordinate for ", the_city)
+	  
+		const res = await fetch(
+			`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(the_city)}.json?types=place&limit=1&access_token=${mapboxgl.accessToken}`
+		);
+
+		const data = await res.json();
+		// console.log(city)
+		console.log(data)
+		// console.log(res)
+
+		if (data.features[0]){
+			// console.log(data.features[0].center)
+			let cityCoordinate = data.features[0].center
+
+			console.log(
+				the_city, 
+				"lat ", cityCoordinate[1],
+				"lng ", cityCoordinate[0]
+			)
+
+			await this.updateCityCoordinate(
+				city, 
+				cityCoordinate[1], 
+				cityCoordinate[0] 
+			)
+
+			return cityCoordinate; // [lng, lat]
+		} else {
+			if (city == "Jarkata"){
+				let cityCoordinate = [107.01733715281085, -6.204944715958651]
+				console.log(the_city, "coordinate ", cityCoordinate)
+				await this.updateCityCoordinate(
+					the_city, 
+					cityCoordinate[1], 
+					cityCoordinate[0] 
+				)
+				return cityCoordinate
+			}
+
+			let cityCoordinate = [105, 21]
+			await this.updateCityCoordinate(
+				the_city, 
+				cityCoordinate[1], 
+				cityCoordinate[0] 
+			)
+			return cityCoordinate
+		}
+
+		location.reload()
+	}
+
+	async getCityNation(lat, lng) {
+		const accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';;
+		// const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${accessToken}`;
+
+		const url =`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json` +`?types=place&limit=1&access_token=${accessToken}`;
+		
+		return await axios.get(url).then(res => {
+
+			let data = res.data
+			// console.log("Mapbox Data", data)	
+
+			let place_name = data.features[0].text
+			let place = data.features[0].place_name
+
+			let nation = place.split(',').pop().trim();
+			// console.log("Nation ", nation)
+
+			// this.setState({
+			// 	userPlace: place_name,
+			// 	nation: nation
+			// })
+
+			return {
+				city: place_name, 
+				nation: nation
+			}
+		});
+	}
+
+	async updateCityNation(event){
+		let city = event.target.dataset.city
+		let lat = event.target.dataset.lat
+		let lng = event.target.dataset.lng
+
+		let data = await this.getCityNation(lat, lng)
+		console.log("Updating City Nation ", data)
+
+		// Update City Database with Nation value
+		// Update City Coordinate
+		await axios.post(
+			"/api/updateCityNation", 
+			{ 	
+				city: city,
+				nation: data.nation
+			}
+		).then(res => {
+			console.log(res.data.data)
+			let cities = this.state.cities
+
+			let updatedCities = cities.map(thecity => 
+				thecity.city == city
+					?	{...thecity, nation: data.nation}
+					:   thecity  
+				)
+
+			this.setState({
+				cities: updatedCities
+			})
+
+		})
+	}
+
 	componentDidMount(){
 		this.getCities()
 	}
 
 	render(){
-		console.log("Fertile Cities ", this.props.fertileCities)
-		console.log("Selfharm Cities ", this.props.selfharmCities)
-		console.log(this.props.uniqueCities.length, "Cities ", this.props.uniqueCities)
+		// console.log("Fertile Cities ", this.props.fertileCities)
+		// console.log("Fertile Steps ", this.props.fertileSteps)
+
+		// console.log("Selfharm Cities ", this.props.selfharmCities)
+		// console.log(this.props.uniqueCities.length, "Cities ", this.props.uniqueCities)
 
 		// let databaseCities = this.state.cities.map(city => {return city.city})
 		// console.log(databaseCities.length, "Database Cities ", databaseCities)
@@ -292,6 +460,7 @@ export default class Airport extends Component {
 											> 
 												Get Airport CODE 
 											</div>
+
 											<div
 												className={styles.airportCode}
 											>
@@ -326,6 +495,45 @@ export default class Airport extends Component {
 											>
 												$000
 											</div>
+
+											<div
+												className={styles.addButton}
+												onClick={this.getCityCoordinate}
+												data-city={city.city}
+											>
+												Get City Coordinates
+											</div>
+
+											<div
+												className={styles.cityCoordinate}
+											>
+												{ city.lat ? city.lat : "lat" }
+											</div>
+
+											<div
+												className={styles.cityCoordinate}
+											>
+												{ city.lng ? city.lng : "lng" }
+											</div>
+
+											<div
+												className={styles.addButton}
+												onClick={this.updateCityNation}
+												data-city={city.city}
+												data-lat={city.lat}
+												data-lng={city.lng}
+											>
+												Get Nation
+											</div>
+
+											<div
+												className={styles.cityCoordinate}
+												
+											>
+												{ city.nation ? city.nation : "nation" }
+											</div>
+
+
 										</div> 
 									)
 								})

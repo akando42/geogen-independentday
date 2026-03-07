@@ -71,5 +71,15 @@
 	width: 4vw;
 	border: 1px solid white;
 	text-align: center;
+}
 
+.cityCoordinate {
+	background-color: red;
+	color: white;
+	width: auto;
+	padding: 0 6px;
+	font-size: 16px;
+	border: 1px solid white;
+	text-align: center;
+	margin: 0 3px;
 }

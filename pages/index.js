@@ -1044,6 +1044,7 @@ export default class Main extends Component {
 	}
 
 	componentDidMount(){
+		
 		this.getUserLocation()
 		// Display all Cities and showing each Cities steps
 		// this.mapMode()

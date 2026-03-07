@@ -64,6 +64,8 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [ ] Log Flight Cost Estimation in Database
 
+[X] List city by nation
+
 [ ] Firebase Average Income for Nations from Trading Economics 
 
 [ ] Find Airport Near Current User Location or Ask User to Select
