@@ -65,6 +65,7 @@ export default class Main extends Component {
   		showingCityExport: false,
   		activeCityFlightIn: 0, 
   		activeCityFlightOut: 0,
+  		activeCityIncome: 2100,
   		activeCityImport: '',
   		activeCityImage: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no"
 		}
@@ -399,19 +400,23 @@ export default class Main extends Component {
 		// let airport = null;
 		// airport = await this.getAirportId(cityData[0].city);
 
-		let airportCityCode = this.state.airportCities.filter(airportCity => {
+		let airportCityData = this.state.airportCities.filter(airportCity => {
 			if (airportCity.city === city){
-				return airportCity.airport
+				return {
+					airport: airportCity.airport,
+					monthy_income: airportCity.monthy_income
+				}
 			}
 		})
 
-		console.log("AIRPORT CITY ", airportCityCode[0])
+		console.log("AIRPORT CITY ", airportCityData[0])
 
 		this.setState({
 			showingCity: true, 
 			activeCity: cityData[0],
 			activeNation: nation,
-			activeAirport: airportCityCode ? airportCityCode[0].airport : "N/A",
+			activeAirport: airportCityData ? airportCityData[0].airport : "N/A",
+			activeCityIncome: airportCityData ? airportCityData[0].monthy_income : 3200
 			// activeAirport: airport ? airport.iata : "N/A"
 		})
 
@@ -1271,7 +1276,7 @@ export default class Main extends Component {
 			  							</div>
 
 			  							<div className={styles.flightExpense}>
-			  								$<CountUp end="3200" />
+			  								$<CountUp end={this.state.activeCityIncome} />
 			  							</div>
 
 			  							<div className={styles.statsTitle}> 
