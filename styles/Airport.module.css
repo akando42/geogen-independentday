@@ -83,3 +83,9 @@
 	text-align: center;
 	margin: 0 3px;
 }
+
+.cityAverageIncome {
+	background-color: white;
+	color: red;
+	padding: 0 10px;
+}

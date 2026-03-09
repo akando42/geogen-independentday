@@ -53,7 +53,196 @@ export default class Airport extends Component {
 			authenticated: false,
 			adminEmail: '',
 			adminPassword: '',
-			cities: []
+			cities: [],
+			nations: [
+			  {
+			    "name": "United States",
+			    "gdp_per_capital": 66683
+			  },
+			  {
+			    "name": "Poland",
+			    "gdp_per_capital": 17984
+			  },
+			  {
+			    "name": "Russia",
+			    "gdp_per_capital": 11043
+			  },
+			  {
+			    "name": "Kazakhstan",
+			    "gdp_per_capital": 11850
+			  },
+			  {
+			    "name": "North Korea",
+			    "gdp_per_capital": 1450
+			  },
+			  {
+			    "name": "France",
+			    "gdp_per_capital": 39441
+			  },
+			  {
+			    "name": "Germany",
+			    "gdp_per_capital": 44109
+			  },
+			  {
+			    "name": "Switzerland",
+			    "gdp_per_capital": 89783
+			  },
+			  {
+			    "name": "India",
+			    "gdp_per_capital": 2397
+			  },
+			  {
+			    "name": "Marshall Islands",
+			    "gdp_per_capital": 7800
+			  },
+			  {
+			    "name": "United Kingdom",
+			    "gdp_per_capital": 47265
+			  },
+			  {
+			    "name": "China",
+			    "gdp_per_capital": 13122
+			  },
+			  {
+			    "name": "Vietnam",
+			    "gdp_per_capital": 4018
+			  },
+			  {
+			    "name": "Pakistan",
+			    "gdp_per_capital": 1644
+			  },
+			  {
+			    "name": "Singapore",
+			    "gdp_per_capital": 67707
+			  },
+			  {
+			    "name": "South Korea",
+			    "gdp_per_capital": 36239
+			  },
+			  {
+			    "name": "Taiwan",
+			    "gdp_per_capital": 39477
+			  },
+			  {
+			    "name": "Austria",
+			    "gdp_per_capital": 45562
+			  },
+			  {
+			    "name": "Brazil",
+			    "gdp_per_capital": 9565
+			  },
+			  {
+			    "name": "Thailand",
+			    "gdp_per_capital": 	6573
+			  },
+			  {
+			    "name": "Argentina",
+			    "gdp_per_capital": 12667
+			  },
+			  {
+			    "name": "Ukraine",
+			    "gdp_per_capital": 2219
+			  },
+			  {
+			    "name": "Iraq",
+			    "gdp_per_capital": 4180
+			  },
+			  {
+			    "name": "Qatar",
+			    "gdp_per_capital": 62189
+			  },
+			  {
+			    "name": "Hungary",
+			    "gdp_per_capital": 16525
+			  },
+			  {
+			    "name": "Australia",
+			    "gdp_per_capital": 61212
+			  },
+			  {
+			    "name": "Greece",
+			    "gdp_per_capital": 21654
+			  },
+			  {
+			    "name": "Portugal",
+			    "gdp_per_capital": 22479
+			  },
+			  {
+			    "name": "Canada",
+			    "gdp_per_capital": 44402
+			  },
+			  {
+			    "name": "Romania",
+			    "gdp_per_capital": 12493
+			  },
+			  {
+			    "name": "Netherlands",
+			    "gdp_per_capital": 51471
+			  },
+			  {
+			    "name": "Norway",
+			    "gdp_per_capital": 79670
+			  },
+			  {
+			    "name": "Italy",
+			    "gdp_per_capital": 34398
+			  },
+			  {
+			    "name": "Mexico",
+			    "gdp_per_capital": 10313
+			  },
+			  {
+			    "name": "Hong Kong",
+			    "gdp_per_capital": 44725
+			  },
+			  {
+			    "name": "Mongolia",
+			    "gdp_per_capital": 4615
+			  },
+			  {
+			    "name": "Bulgaria",
+			    "gdp_per_capital": 10090
+			  },
+			  {
+			    "name": "Egypt",
+			    "gdp_per_capital": 4138
+			  },
+			  {
+			    "name": "Indonesia",
+			    "gdp_per_capital": 4368
+			  },
+			  {
+			    "name": "Malaysia",
+			    "gdp_per_capital": 11868
+			  },
+			  {
+			    "name": "Cambodia",
+			    "gdp_per_capital": 2184
+			  },
+			  {
+			    "name": "Japan",
+			    "gdp_per_capital": 37145
+			  },
+			  {
+			    "name": "Philippines",
+			    "gdp_per_capital": 3925
+			  },
+			  {
+			    "name": "Israel",
+			    "gdp_per_capital": 41845
+			  },
+			  {
+			    "name": "Sweden",
+			    "gdp_per_capital": 54916
+			  },
+			  {
+			    "name": "Türkiye",
+			    "gdp_per_capital": 15148
+			  },
+			  {
+			    "name": "Venezuela",
+			    "gdp_per_capital": 3000
+			  }]
 		}
 
 		this.setEmail = this.setEmail.bind(this)
@@ -68,6 +257,7 @@ export default class Airport extends Component {
 
 		this.getCityNation = this.getCityNation.bind(this)
 		this.updateCityNation = this.updateCityNation.bind(this)
+		this.updateCityIncome = this.updateCityIncome.bind(this)
 	}
 
 	async getAirportId(city) {
@@ -167,6 +357,16 @@ export default class Airport extends Component {
 	async getCities(){
 		await axios.get("/api/listAirports").then(res => {
 			console.log("Cities ", res.data.cities)
+
+			let nations = res.data.cities.map(city => city.nation)
+			// let uniqueNations = [...new Set(nations)]
+
+			// uniqueNations = uniqueNations.map(uniqueNation => {
+			// 	return {
+			// 		name: uniqueNation,
+			// 		gdp_per_capital: 0
+			// 	}
+			// }) 
 
 			this.setState({
 				cities: res.data.cities
@@ -412,6 +612,36 @@ export default class Airport extends Component {
 		})
 	}
 
+	async updateCityIncome(event){
+		console.log(
+			"Updating Income for ", 
+			event.target.dataset.city, 
+			event.target.dataset.income
+		)
+
+		await axios.post(
+			"/api/updateCityIncome",
+			{
+				city: event.target.dataset.city,
+				monthy_income: event.target.dataset.income
+			}
+		).then(res => {
+			console.log("RES", res.data.data)
+			let data = res.data.data
+			let updatedCities = this.state.cities.map(thecity => 
+				thecity.city == data.city
+					?	{...thecity, monthy_income: data.monthy_income}
+					:   thecity  
+				)
+
+			this.setState({
+				cities: updatedCities
+			})
+		})
+
+
+	}
+
 	componentDidMount(){
 		this.getCities()
 	}
@@ -439,6 +669,12 @@ export default class Airport extends Component {
 						<div className={styles.list}>
 							{	
 								this.state.cities.map(city => {
+									let gdp_per_capital = this.state.nations.filter(nation => nation.name == city.nation)[0].gdp_per_capital
+									gdp_per_capital = parseInt(gdp_per_capital/12)
+									console.log(
+										"Average Monthly Income ",
+										gdp_per_capital
+									)
 									return ( 
 										<div className={styles.row}>
 											<div className={styles.cityName}>
@@ -496,6 +732,7 @@ export default class Airport extends Component {
 												$000
 											</div>
 
+											{/*
 											<div
 												className={styles.addButton}
 												onClick={this.getCityCoordinate}
@@ -503,6 +740,7 @@ export default class Airport extends Component {
 											>
 												Get City Coordinates
 											</div>
+											*/}
 
 											<div
 												className={styles.cityCoordinate}
@@ -516,6 +754,7 @@ export default class Airport extends Component {
 												{ city.lng ? city.lng : "lng" }
 											</div>
 
+											{/*
 											<div
 												className={styles.addButton}
 												onClick={this.updateCityNation}
@@ -525,13 +764,27 @@ export default class Airport extends Component {
 											>
 												Get Nation
 											</div>
-
+											*/}
 											<div
 												className={styles.cityCoordinate}
 												
 											>
 												{ city.nation ? city.nation : "nation" }
 											</div>
+											{
+												city.monthy_income 
+												? 	<div className={styles.cityCoordinate}> 
+														{city.monthy_income} 
+													</div>
+												: 	<div 
+														className={styles.cityAverageIncome}
+														onClick={this.updateCityIncome}
+														data-city={city.city}
+														data-income={gdp_per_capital}
+													>
+														{ gdp_per_capital }
+													</div>
+											}
 
 
 										</div> 

@@ -62,21 +62,23 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Improve showcity() Load Function
 
-[ ] Log Flight Cost Estimation in Database
-
 [X] List city by nation
 
 [ ] Firebase Average Income for Nations from Trading Economics 
-
-[ ] Find Airport Near Current User Location or Ask User to Select
-
-[ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
 
 [ ] Show Images of People from the City (Instagram)
 
 [ ] Show Images of Food from the City (Yelp)
 
 [ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
+
+[ ] Log Flight Cost Estimation in Database
+
+[ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
+
+[ ] Find Airport Near Current User Location or Ask User to Select
+
+
 
 [ ] Display Weather Data
 
