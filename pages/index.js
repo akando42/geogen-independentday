@@ -1240,7 +1240,7 @@ export default class Main extends Component {
 			  										onClick={this.showCityData}
 			  										className={styles.backButton}
 			  									> 
-			  										X
+			  										←
 			  									</div>
 			  									{
 			  										this.state.activeCityImages.map(image => {

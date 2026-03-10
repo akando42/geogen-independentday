@@ -70,9 +70,13 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Show Images of People from the City (Instagram)
 
+[X] Show Images of Food from the City Google Image
+
 [ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
 
-[ ] Show Images of Food from the City Google Image
+[ ] Add 3 Instagram profiles per city
+
+[ ] Add 3 Food Image per City
 
 [ ] Log Flight Cost Estimation in Database
 
