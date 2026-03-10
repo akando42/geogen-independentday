@@ -445,7 +445,20 @@
 	text-align: center;
 }
 
+.instagramPeople {
+	display: flex;
+	flex-direction: row;
+	height: 30vh;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
 
+	/* hide scrollbar Firefox */
+	scrollbar-width: none;
+
+	/* hide scrollbar IE/Edge */
+	-ms-overflow-style: none;
+}
 
 
 

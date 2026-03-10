@@ -64,7 +64,7 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] List city by nation
 
-[ ] Firebase Average Income for Nations from Trading Economics 
+[X] Firebase Average Income for Nations from Trading Economics 
 
 [ ] Show Images of People from the City (Instagram)
 
@@ -77,8 +77,6 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 [ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
 
 [ ] Find Airport Near Current User Location or Ask User to Select
-
-
 
 [ ] Display Weather Data
 

@@ -13,6 +13,7 @@ import React from 'react'
 import axios from 'axios'
 
 import CountUp from "@/components/CountUp"
+import InstagramEmbed from "@/components/InstagramEmbed"
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';
 
@@ -63,6 +64,7 @@ export default class Main extends Component {
   		showingCityIncome: true,
   		showingCityImport: false, 
   		showingCityExport: false,
+  		showingCityInstagram: false,
   		activeCityFlightIn: 0, 
   		activeCityFlightOut: 0,
   		activeCityIncome: 2100,
@@ -88,6 +90,7 @@ export default class Main extends Component {
 		this.showCityIncome = this.showCityIncome.bind(this)
 		this.showCityImport = this.showCityImport.bind(this)
 		this.showCityExport = this.showCityExport.bind(this)
+		this.showCityInstagram = this.showCityInstagram.bind(this)
 
 		this.getDistance = this.getDistance.bind(this)
 
@@ -416,7 +419,8 @@ export default class Main extends Component {
 			activeCity: cityData[0],
 			activeNation: nation,
 			activeAirport: airportCityData ? airportCityData[0].airport : "N/A",
-			activeCityIncome: airportCityData ? airportCityData[0].monthy_income : 3200
+			activeCityIncome: airportCityData ? airportCityData[0].monthy_income : 3200,
+			activeCityInstagram: airportCityData[0].instagram ? airportCityData[0].instagram : []
 			// activeAirport: airport ? airport.iata : "N/A"
 		})
 
@@ -513,6 +517,7 @@ export default class Main extends Component {
 			showingCityIncome: false,
       showingCityImport: true, 
      	showingCityExport: false,
+     	showingCityInstagram: false
 		})
 	}
 
@@ -521,6 +526,7 @@ export default class Main extends Component {
 			showingCityIncome: false,
       showingCityImport: false, 
      	showingCityExport: true,
+     	showingCityInstagram: false
 		})
 	}
 
@@ -529,6 +535,16 @@ export default class Main extends Component {
 			showingCityIncome: true,
       showingCityImport: false, 
      	showingCityExport: false,
+     	showingCityInstagram: false
+		})
+	}
+
+	async showCityInstagram(){
+		this.setState({
+			showingCityIncome: false,
+      showingCityImport: false, 
+     	showingCityExport: false,
+     	showingCityInstagram: true
 		})
 	}
 
@@ -1202,6 +1218,23 @@ export default class Main extends Component {
   							> 
   								Income Stats 
   							</div>
+
+  							<div 
+  								className={styles.tabSelector}
+  								onClick={this.showCityInstagram}
+  							> 
+  								Instagram
+  							</div> 
+
+  							{/* 
+  							<div 
+  								className={styles.tabSelector}
+  								onClick={this.showCityExport}
+  							> 
+  								Export Items 
+  							</div> 
+  							*/}
+
   							<div 
   								className={styles.tabSelector}
   								onClick={this.showCityImport}
@@ -1209,12 +1242,7 @@ export default class Main extends Component {
   								Import Items 
   							</div> 
 
-  							<div 
-  								className={styles.tabSelector}
-  								onClick={this.showCityExport}
-  							> 
-  								Export Items 
-  							</div> 
+  							
   						</div> 
   						
   						{
@@ -1329,6 +1357,24 @@ export default class Main extends Component {
   							: <div></div>
   						}
 
+  						{
+  							this.state.showingCityInstagram
+  							?	<div className={styles.instagramPeople}>
+  									{
+  										this.state.activeCityInstagram.map(insta => {
+  											return (
+  												<InstagramEmbed
+			  										url={insta}
+			  										scale={0.5}
+													/>
+  											)
+  										})
+  									}
+			  					
+									</div>
+								: <div></div>
+  						}
+  						
   						
   						<div className={styles.activeCityTactics}>
 	  						{
