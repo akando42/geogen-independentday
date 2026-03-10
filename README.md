@@ -66,15 +66,15 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 
 [X] Firebase Average Income for Nations from Trading Economics 
 
-[ ] Show Images of People from the City (Instagram)
+[X] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
 
-[ ] Show Images of Food from the City (Yelp)
-
-[ ] Testing API for Flight Cost Accuracy and maybe Cancel subscription next month
-
-[ ] Log Flight Cost Estimation in Database
+[X] Show Images of People from the City (Instagram)
 
 [ ] Affiliate Program https://www.booking.com/affiliate-program/v2/index.html
+
+[ ] Show Images of Food from the City Google Image
+
+[ ] Log Flight Cost Estimation in Database
 
 [ ] Find Airport Near Current User Location or Ask User to Select
 

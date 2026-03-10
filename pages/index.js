@@ -14,6 +14,7 @@ import axios from 'axios'
 
 import CountUp from "@/components/CountUp"
 import InstagramEmbed from "@/components/InstagramEmbed"
+import YelpEmbed from "@/components/YelpEmbed"
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsbG9kZXNpZ24iLCJhIjoiY2w1aXhxcm5pMGIxMTNsa21ldjRkanV4ZyJ9.ztk5_j48dkFtce1sTx0uWw';
 
@@ -65,11 +66,14 @@ export default class Main extends Component {
   		showingCityImport: false, 
   		showingCityExport: false,
   		showingCityInstagram: false,
+  		showingCityFood: false,
+  		showingCityImages: false,
   		activeCityFlightIn: 0, 
   		activeCityFlightOut: 0,
   		activeCityIncome: 2100,
   		activeCityImport: '',
-  		activeCityImage: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no"
+  		activeCityImage: "https://lh3.googleusercontent.com/gps-cs-s/AHVAweq1ExTtSWGeW94koXFpvmLYNHq-uejteVt1bJ7J34zY0ELRgLQ1KHKDx0ZrZdCofNtpa2a2-rJRZidZSMGU18BIAsxM2q9brQvwPsCkFqywuibByNC-WieCSO-u7UZYUw6E9lU=w408-h305-k-no",
+  		activeCityImages: []
 		}
 
 		this.loadMap = this.loadMap.bind(this)
@@ -91,6 +95,8 @@ export default class Main extends Component {
 		this.showCityImport = this.showCityImport.bind(this)
 		this.showCityExport = this.showCityExport.bind(this)
 		this.showCityInstagram = this.showCityInstagram.bind(this)
+		this.showCityImages = this.showCityImages.bind(this)
+		this.showCityData = this.showCityData.bind(this)
 
 		this.getDistance = this.getDistance.bind(this)
 
@@ -370,18 +376,19 @@ export default class Main extends Component {
 	}
 
 	async getCityImage(city){
-		await axios.get(`/api/place?city=${city}`).then(res => {
+		return await axios.get(`/api/place?city=${city}`).then(res => {
 			console.log("City Image response", res.data.imageURL)
 			if(res.data.imageURL){
 				this.setState({
 					activeCityImage: res.data.imageURL
 				})
+				return res.data.imageURL
 			}
 		})
 	}
 
 	async showCity(city, nation){
-		await this.getCityImage(city)
+		let cityImage = await this.getCityImage(city)
 
 		let cityData = this.state.uniqueCities
 			.filter(uniqueCity => uniqueCity.city === city)
@@ -412,7 +419,13 @@ export default class Main extends Component {
 			}
 		})
 
-		console.log("AIRPORT CITY ", airportCityData[0])
+		console.log("AIRPORT CITY ", cityImage, airportCityData[0], airportCityData[0].food)
+
+		let cityImages = [
+		  cityImage,
+		  ...(airportCityData[0].food || [])
+		];
+
 
 		this.setState({
 			showingCity: true, 
@@ -420,7 +433,9 @@ export default class Main extends Component {
 			activeNation: nation,
 			activeAirport: airportCityData ? airportCityData[0].airport : "N/A",
 			activeCityIncome: airportCityData ? airportCityData[0].monthy_income : 3200,
-			activeCityInstagram: airportCityData[0].instagram ? airportCityData[0].instagram : []
+			activeCityInstagram: airportCityData[0].instagram ? airportCityData[0].instagram : [],
+			activeCityFood: airportCityData[0].food ? airportCityData[0].food : [],
+			activeCityImages: cityImages
 			// activeAirport: airport ? airport.iata : "N/A"
 		})
 
@@ -545,6 +560,22 @@ export default class Main extends Component {
       showingCityImport: false, 
      	showingCityExport: false,
      	showingCityInstagram: true
+		})
+	}
+
+	async showCityImages(){
+		this.setState({
+			showingCityImages: true
+		})
+	}
+
+	async showCityData(){
+		this.setState({
+			showingCityImages: false,
+			showingCityIncome: true,
+      showingCityImport: false, 
+     	showingCityExport: false,
+     	showingCityInstagram: false
 		})
 	}
 
@@ -1197,310 +1228,348 @@ export default class Main extends Component {
   			</div>
   			*/}
 
-  			{
-  				this.state.showingCity && this.state.activeCity
-  				? <div 
-  							className={styles.cityStories}
-  					>
-  						<img
-  							className={styles.cityImage} 
-  							src={this.state.activeCityImage}
-  						/>
+			  			{
+			  				this.state.showingCity && this.state.activeCity
+			  				? <div 
+			  						className={styles.cityStories}
+			  					>
+			  						{
+			  							this.state.showingCityImages
+			  							? <div className={styles.imageSlide}>
+			  									<div
+			  										onClick={this.showCityData}
+			  										className={styles.backButton}
+			  									> 
+			  										X
+			  									</div>
+			  									{
+			  										this.state.activeCityImages.map(image => {
+			  											return (
+			  												<img
+								  								className={styles.foodImage} 
+								  								src={image}
+					  										/>
+					  									)
+			  										})
+			  									}
+			  								</div>
+			  							: <div className={styles.dataSlide}>
+			  									<img
+						  							className={styles.cityImage} 
+						  							src={this.state.activeCityImage}
+						  							onClick={this.showCityImages}
+						  						/>
 
-  						<div className={styles.cityName}>
-  							{this.state.activeCity.city} ({this.state.activeAirport})
-  						</div>
+						  						<div className={styles.cityName}>
+						  							{this.state.activeCity.city} ({this.state.activeAirport})
+						  						</div>
 
-  						<div className={styles.tabList}>
-  							<div 
-  								className={styles.tabSelector}
-  								onClick={this.showCityIncome}
-  							> 
-  								Income Stats 
-  							</div>
+						  						<div className={styles.tabList}>
+						  							<div 
+						  								className={styles.tabSelector}
+						  								onClick={this.showCityIncome}
+						  							> 
+						  								Income Stats 
+						  							</div>
 
-  							<div 
-  								className={styles.tabSelector}
-  								onClick={this.showCityInstagram}
-  							> 
-  								Instagram
-  							</div> 
+						  							<div 
+						  								className={styles.tabSelector}
+						  								onClick={this.showCityInstagram}
+						  							> 
+						  								Instagram
+						  							</div> 
 
-  							{/* 
-  							<div 
-  								className={styles.tabSelector}
-  								onClick={this.showCityExport}
-  							> 
-  								Export Items 
-  							</div> 
-  							*/}
+						  							{/* 
+						  							<div 
+						  								className={styles.tabSelector}
+						  								onClick={this.showCityExport}
+						  							> 
+						  								Export Items 
+						  							</div> 
+						  							*/}
 
-  							<div 
-  								className={styles.tabSelector}
-  								onClick={this.showCityImport}
-  							> 
-  								Import Items 
-  							</div> 
+						  							<div 
+						  								className={styles.tabSelector}
+						  								onClick={this.showCityImport}
+						  							> 
+						  								Import Items 
+						  							</div> 
+						  						</div> 
+						  						
+						  						{
+						  							this.state.showingCityIncome 
+						  							?	<div className={styles.cityFlightInfo}>
+								  							<div className={styles.flightCost}>
+								  								
+								  								<div className={styles.iconContainer}>
+									  								<img 
+									  									src="/Landing.png" 
+									  									className={styles.flightIcon}
+									  								/>
+									  							</div>
 
-  							
-  						</div> 
-  						
-  						{
-  							this.state.showingCityIncome 
-  							?	<div className={styles.cityFlightInfo}>
-		  							<div className={styles.flightCost}>
-		  								
-		  								<div className={styles.iconContainer}>
-			  								<img 
-			  									src="/Landing.png" 
-			  									className={styles.flightIcon}
-			  								/>
-			  							</div>
+								  								<div className={styles.flightExpense}>
+								  									$<CountUp end={this.state.activeCityFlightIn} />
+								  								</div>
+								  								
+								  								<div className={styles.statsTitle}> 
+								  									Flight In 
+								  								</div>
+								  								{/*
+								  								<div className={`${styles.currency} ${styles.currencyLeft}`}>
+								  									USD
+								  								</div>
+								  								*/}
+								  							</div>
 
-		  								<div className={styles.flightExpense}>
-		  									$<CountUp end={this.state.activeCityFlightIn} />
-		  								</div>
-		  								
-		  								<div className={styles.statsTitle}> 
-		  									Flight In 
-		  								</div>
-		  								{/*
-		  								<div className={`${styles.currency} ${styles.currencyLeft}`}>
-		  									USD
-		  								</div>
-		  								*/}
-		  							</div>
+								  							<div className={styles.flightCost}>
 
-		  							<div className={styles.flightCost}>
+								  								<div className={styles.iconContainer}>
+									  								<img 
+									  									src="/Takeoff.png" 
+									  									className={styles.flightIcon}
+									  								/>
+									  							</div>
 
-		  								<div className={styles.iconContainer}>
-			  								<img 
-			  									src="/Takeoff.png" 
-			  									className={styles.flightIcon}
-			  								/>
-			  							</div>
+								  								<div className={styles.flightExpense}>
+								  									$<CountUp end={this.state.activeCityFlightOut} />
+								  								</div>
 
-		  								<div className={styles.flightExpense}>
-		  									$<CountUp end={this.state.activeCityFlightOut} />
-		  								</div>
+								  								<div className={styles.statsTitle}> 
+								  									Flight Out 
+								  								</div>
+								  								
+								  								{/*
+								  								<div className={`${styles.currency} ${styles.currencyRight}`}>
+								  									USD
+								  								</div>
+								  								*/}
+								  							</div>
 
-		  								<div className={styles.statsTitle}> 
-		  									Flight Out 
-		  								</div>
-		  								
-		  								{/*
-		  								<div className={`${styles.currency} ${styles.currencyRight}`}>
-		  									USD
-		  								</div>
-		  								*/}
-		  							</div>
+								  							<div className={styles.flightCost}>
+								  								<div className={styles.iconContainer}>
+									  								<img 
+									  									src="/Avg_Monthy_Income.svg" 
+									  									className={styles.flightIcon}
+									  								/>
+									  							</div>
 
-		  							<div className={styles.flightCost}>
-		  								<div className={styles.iconContainer}>
-			  								<img 
-			  									src="/Avg_Monthy_Income.svg" 
-			  									className={styles.flightIcon}
-			  								/>
-			  							</div>
+									  							<div className={styles.flightExpense}>
+									  								$<CountUp end={this.state.activeCityIncome} />
+									  							</div>
 
-			  							<div className={styles.flightExpense}>
-			  								$<CountUp end={this.state.activeCityIncome} />
-			  							</div>
+									  							<div className={styles.statsTitle}> 
+									  								Avg Month Income 
+									  							</div>
+								  							</div>
+								  						</div>	
+						  							: <div></div>
+						  						}
 
-			  							<div className={styles.statsTitle}> 
-			  								Avg Month Income 
-			  							</div>
-		  							</div>
-		  						</div>	
-  							: <div></div>
-  						}
+						  						{
+						  							this.state.showingCityImport 
+						  							? <div className={styles.topImport}>
+								  							<div className={styles.highlight}>
+								  								Top Import
+								  							</div>
+								  							<div className={styles.importCategory}> 
+									  							{
+									  								this.state.activeCityImport.map(cityImport => {
+									  									return (
+									  										<div > 
+									  											{cityImport.category} 
+									  										</div>
+									  									)
+									  								})
+									  							} 
+								  							</div>
+								  						</div>
+						  							: <div></div>
+						  						}
 
-  						{
-  							this.state.showingCityImport 
-  							? <div className={styles.topImport}>
-		  							<div className={styles.highlight}>
-		  								Top Import
-		  							</div>
-		  							<div className={styles.importCategory}> 
-			  							{
-			  								this.state.activeCityImport.map(cityImport => {
-			  									return (
-			  										<div > 
-			  											{cityImport.category} 
-			  										</div>
-			  									)
-			  								})
-			  							} 
-		  							</div>
-		  						</div>
-  							: <div></div>
-  						}
+						  						{
+						  							this.state.showingCityExport
+						  							? <div className={styles.topImport}>
+								  							<div className={styles.highlight}>
+								  								Top Export
+								  							</div>
+								  							<div className={styles.importCategory}> 
+									  							{
+									  								this.state.activeCityExport.map(cityExport => {
+									  									return (
+									  										<div > 
+									  											{cityExport.category} 
+									  										</div>
+									  									)
+									  								})
+									  							} 
+								  							</div>
+								  						</div>
+						  							: <div></div>
+						  						}
 
-  						{
-  							this.state.showingCityExport
-  							? <div className={styles.topImport}>
-		  							<div className={styles.highlight}>
-		  								Top Export
-		  							</div>
-		  							<div className={styles.importCategory}> 
-			  							{
-			  								this.state.activeCityExport.map(cityExport => {
-			  									return (
-			  										<div > 
-			  											{cityExport.category} 
-			  										</div>
-			  									)
-			  								})
-			  							} 
-		  							</div>
-		  						</div>
-  							: <div></div>
-  						}
+						  						{
+						  							this.state.showingCityInstagram
+						  							?	<div className={styles.instagramPeople}>
+						  									{
+						  										this.state.activeCityInstagram.map(insta => {
+						  											return (
+						  												<InstagramEmbed
+									  										url={insta}
+									  										scale={0.5}
+																			/>
+						  											)
+						  										})
+						  									}
+									  					
+															</div>
+														: <div></div>
+						  						}
 
-  						{
-  							this.state.showingCityInstagram
-  							?	<div className={styles.instagramPeople}>
-  									{
-  										this.state.activeCityInstagram.map(insta => {
-  											return (
-  												<InstagramEmbed
-			  										url={insta}
-			  										scale={0.5}
-													/>
-  											)
-  										})
-  									}
-			  					
-									</div>
-								: <div></div>
-  						}
-  						
-  						
-  						<div className={styles.activeCityTactics}>
-	  						{
-	  							this.state.activeCity.tactics.map(tactic => {
+						  						{
+						  							this.state.showingCityFood
+						  							? <div className={styles.localFood}>
+						  									{
+						  										this.state.activeCityFood.map(food => {
+						  											return (
+						  												<img 
+						  													src={food} 
+						  													className={styles.foodImage}
+						  												/>
+						  											)
+						  										})
+						  									}
+						  								</div>
+						  							: <div></div>
+						  						}
+						  						
+						  						
+						  						<div className={styles.activeCityTactics}>
+							  						{
+							  							this.state.activeCity.tactics.map(tactic => {
 
-	  								let selectedTactic = tactic.tactic.replace(/_/g, ' ')
-	  								let sign = tactic.path.split("/")[2]
-	  								
-	  								return (
-	  									<a 
-	  										className={
-												sign === "Expansion"
-											  	? styles.tacticLink
-											  	: styles.negTacticLink
-											}
-	  										href={tactic.path}
-	  									>
-	  										{selectedTactic}
-	  									</a>
-	  								)
-	  							})
-	  						}
-  						</div>
-  						
-  					</div>
-  				: null
-  			}
+							  								let selectedTactic = tactic.tactic.replace(/_/g, ' ')
+							  								let sign = tactic.path.split("/")[2]
+							  								
+							  								return (
+							  									<a 
+							  										className={
+																		sign === "Expansion"
+																	  	? styles.tacticLink
+																	  	: styles.negTacticLink
+																	}
+							  										href={tactic.path}
+							  									>
+							  										{selectedTactic}
+							  									</a>
+							  								)
+							  							})
+							  						}
+						  						</div>
+						  					</div>
+						  			}	
+						  		</div>
+						  	: null
+						  }
 
-  			<div className={styles.slides}>
-  				<div className={styles.track}>
-  				{
-  					this.state.sign === "Expansion"
-  					? 	this.props.fertileSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
+			  			<div className={styles.slides}>
+			  				<div className={styles.track}>
+			  				{
+			  					this.state.sign === "Expansion"
+			  					? 	this.props.fertileSteps.map(step => {
+				  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+				  						// console.log("tactic ", tactic)
 
-	  						return (
-	  							<div 
-	  								className={styles.step}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Expansion"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
-		  			: 	null
+				  						return (
+				  							<div 
+				  								className={styles.step}
+				  								onClick={this.selectTactic}
+				  								data-tactic={step.tactic}
+				  								data-sign="Expansion"
+				  							>
+				  								{tactic}
+				  							</div>
+				  						)
+				  					})
+					  			: 	null
 
-  				}
+			  				}
 
-  				{
-  					this.state.sign === "Compression"
-  					?	this.props.selfharmSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
-	  						return (
-	  							<div 
-	  								className={styles.selfharmStep}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Compression"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
-  					:   null
-  				}
+			  				{
+			  					this.state.sign === "Compression"
+			  					?	this.props.selfharmSteps.map(step => {
+				  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+				  						// console.log("tactic ", tactic)
+				  						return (
+				  							<div 
+				  								className={styles.selfharmStep}
+				  								onClick={this.selectTactic}
+				  								data-tactic={step.tactic}
+				  								data-sign="Compression"
+				  							>
+				  								{tactic}
+				  							</div>
+				  						)
+				  					})
+			  					:   null
+			  				}
 
-  				{
-  					this.state.sign === "Expansion"
-  					? 	this.props.fertileSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
+			  				{
+			  					this.state.sign === "Expansion"
+			  					? 	this.props.fertileSteps.map(step => {
+				  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+				  						// console.log("tactic ", tactic)
 
-	  						return (
-	  							<div 
-	  								className={styles.step}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Expansion"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
-		  			: 	null
-  				}
+				  						return (
+				  							<div 
+				  								className={styles.step}
+				  								onClick={this.selectTactic}
+				  								data-tactic={step.tactic}
+				  								data-sign="Expansion"
+				  							>
+				  								{tactic}
+				  							</div>
+				  						)
+				  					})
+					  			: 	null
+			  				}
 
-  				{
-  					this.state.sign === "Compression"
-  					?	this.props.selfharmSteps.map(step => {
-	  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
-	  						// console.log("tactic ", tactic)
-	  						return (
-	  							<div 
-	  								className={styles.selfharmStep}
-	  								onClick={this.selectTactic}
-	  								data-tactic={step.tactic}
-	  								data-sign="Compression"
-	  							>
-	  								{tactic}
-	  							</div>
-	  						)
-	  					})
-  					:   null
-  				}
-  				</div>
-  			</div>
-  			
-				{/**
-  			<div>GeoGenetics</div>
-  			<div>Independent Dates Fun </div>
-  			{	 
-  				this.props.dates.map(date => {
-  					return ( 
-  						<div className={styles.dateCard}> 
-  							<div>{date.independent_date}</div>
-  							<div>{date.city}</div>
-  						</div> 
-  					)
-  				})
-  			}
-  			 **/}
-			</div>
-		)
-	}
-}
+			  				{
+			  					this.state.sign === "Compression"
+			  					?	this.props.selfharmSteps.map(step => {
+				  						let tactic = step.tactic.replace(/_/g, ' ').slice(3)
+				  						// console.log("tactic ", tactic)
+				  						return (
+				  							<div 
+				  								className={styles.selfharmStep}
+				  								onClick={this.selectTactic}
+				  								data-tactic={step.tactic}
+				  								data-sign="Compression"
+				  							>
+				  								{tactic}
+				  							</div>
+				  						)
+				  					})
+			  					:   null
+			  				}
+			  				</div>
+			  			</div>
+			  			
+							{/**
+			  			<div>GeoGenetics</div>
+			  			<div>Independent Dates Fun </div>
+			  			{	 
+			  				this.props.dates.map(date => {
+			  					return ( 
+			  						<div className={styles.dateCard}> 
+			  							<div>{date.independent_date}</div>
+			  							<div>{date.city}</div>
+			  						</div> 
+			  					)
+			  				})
+			  			}
+			  			 **/}
+						</div>
+					)
+				}
+			}
