@@ -76,6 +76,25 @@ VietNam aka YIET Nam aka GIET Nam.
 YietNam vs Soviet Union + United States. Chinese Chicken dont help. 
 
 
+# British Dependencies 
+
+Low population count, need a lever like India or China massive population to extend their inventions and powers ==> Lack of Large population 
+==> German failed to cut the British link to India and the US ==> British able to sustain defends with supplies coming from US and India. 
+
+Low total land area with limited natural resources, need to import Energy, Fertilizer and Consumer Products 
+==> Lack of Land-based natural resources 
+
+Able to Design weapons but not massing in large number like the American industry can during WW2 ==> Lack of Mass Manufacturing 
+
+British NEEDs:
+==> Mass manufacturing of consumer and dual use commercial and military components from China. 
+==> Vetting top talents from Large pool of population from India, China and Middle East 
+==> Hiring of Minions from India, China and Middle East for large scale projects. 
+==> Import Energy from United States, Middle East or Russia. 
+==> Import Fertilizers from Middle East or Russia. 
+==> Bordering nations next to British security threats serve as distrations and disruptions
+like Thailand vs the Communist Block, Portugal vs French Continental, Japan vs Qing Dynasty
+via British mobile naval strategy of multi-direction multi-pronged attacks. 
 
 
 
