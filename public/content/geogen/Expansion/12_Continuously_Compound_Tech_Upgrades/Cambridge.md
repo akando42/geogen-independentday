@@ -102,5 +102,13 @@ British NEEDs:
 like Thailand vs the Communist Block, Portugal vs French Continental, Japan vs Qing Dynasty
 via British mobile naval strategy of multi-direction multi-pronged attacks. 
 
+## Largest Import Market and Categories
+Top 3: US, China, Germany 
+Top 3: Pearl, Machineary, Vehicles
+
+## Largest Export Market and Categories
+Top 3: US, Germany, China
+Top 3: Pearl, Machineary, Vehicles
+
 
 
