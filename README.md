@@ -24,6 +24,11 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 ==> Display Current Date and Upcoming Indepdendent Days 
 
 ### TODOs
+
+[ ] City Research Admin Section
+
+[ ] Book Publishing Feature
+
 [X] Process Data into City-based format with steps each city taken
 
 [X] Click on City to Zoom in on it
@@ -83,6 +88,7 @@ Cities with many positive steps Receive a lot of longterm residences and flights
 [ ] Find Airport Near Current User Location or Ask User to Select
 
 [ ] Display Weather Data
+
 
 
 

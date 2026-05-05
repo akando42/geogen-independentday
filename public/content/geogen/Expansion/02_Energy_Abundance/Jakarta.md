@@ -74,10 +74,39 @@ The regular ocean traffic from South East Asia to Australia results in larger po
 
 ## The GeoGen Area major Gene Groups with their Common and Different features.
 
+Early human crossing from Sundaland to Australia
+
+Early Austronesian seafaring gene groups like Sonny Vu or Current US Navy Secretary Hung Cao
+
+Native Islandic people of Malay, Brunei and Indonesia
+
+Han Chinese gene influence
+
+Middle Eastern gene influence
+
+European gene influence
+
+Modern Indonesian gene looks mostly Han Chinese mixing with Native Islanders
 
 ## Present and Past National Border
 
+==> Multi Kingdoms Period
+Each islands of a large connected land area estabalished their all kingdom
 
+Many of the Island port city with frequent traders travelling between the Middle East and East Asia become Sultanate with an Islam Ruler
+
+Some island became trading post and colony of early Portugese explorers from Europe
+
+==> Modern Federation of Thousands Islands (more than 6000 inhabitad) 
+
+Dutch East Indie trading company from the Netherland conquered many island kingdoms 
+and estabalished the modern border of Indonesia during 19 and 20 century
+
+The railroad network and urbanization process started during these Dutch East Indie rule
+
+Japanese occupied Jakarta and gain control of Indonesia from 1942-1945
+
+Indonesia gain independence in 1950 after World War II
 
 ## Major Outputs via Exports, Needs for Import
 ==> Indonesia total oil production is enough only for Domestic consumption
@@ -92,6 +121,10 @@ Largest Trading Partners for Export are China, United States and India
 
 ## Trade Network via Sea Ports, Highway, Railways and AirFreight
 
+Tradewind during the age of sail established the city of Jarkata as the popular stop location for European naval ships
+
+Java island Rail network allows the development of multiple city states on the island and make the island
+become the core population center of Indonesia
 
 ## Internet Cable Port, News Sites, TV Anchors and Social Media Influencers
 
